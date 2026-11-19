@@ -112,3 +112,8 @@ input.hot { background: #fff6b0; border-bottom-color: #000 !important; }
 .cheat-body { display: flex; gap: 10px; overflow: auto; padding: 6px; }
 .cheat-body table { flex: 1; vertical-align: top; }
 .left { width: 280px; }
+
+:focus-visible { outline: 2px solid #ff9800; outline-offset: 1px; }
+input:focus-visible { outline: none; }
+.about p { margin: 6px 0; line-height: 1.5; }
+.disclaimer { background: #fff3c4; padding: 6px 8px; border: 1px solid #c9a800; }

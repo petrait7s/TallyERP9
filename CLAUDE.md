@@ -8,3 +8,6 @@
 - Never commit secrets. Commit small, conventional commits. CI must stay green.
 - Log deviations from Tally ERP 9 in docs/DEVIATIONS.md.
 - Learning content lives in `content/lessons/*.json` (data, not code), bilingual `{en, bn}`.
+- Content is generated: edit `scripts/gen-lessons.ts`, `scripts/gen-bank.ts` or `src/engine/seed.ts`, then run `npm run seed` (rewrites content/*.json and docs/COVERAGE.md). Tests fail if a lesson/task is not completable, a catalog item has no lesson, or the seed JSON is stale.
+- Seed company names that clash between a group and a ledger are impossible through the UI (e.g. ledger "Salaries" under group "Salaries"); the payroll ledger is "Salary Expense".
+- Capture-phase key handlers must not trigger React state updates before later listeners run (use refs / non-reactive stores), see `visitListeners` in `src/ui/store.ts`.

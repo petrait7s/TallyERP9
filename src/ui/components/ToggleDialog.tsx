@@ -26,7 +26,7 @@ export function ToggleDialog(props: { title: string; items: ToggleItem[]; onAcce
 
   return (
     <div className="modal-back">
-      <div className="panel toggle-panel" ref={box} tabIndex={-1} onKeyDown={onKeyDown}>
+      <div className="panel toggle-panel" role="dialog" aria-modal="true" aria-label={props.title} ref={box} tabIndex={-1} onKeyDown={onKeyDown}>
         <div className="panel-title">{props.title}</div>
         <ul className="menu-list">
           {props.items.map((it, i) => (

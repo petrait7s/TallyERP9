@@ -19,7 +19,7 @@ export function PeriodDialog(props: { value: Period; fyStart: string; fyEnd: str
   };
   return (
     <div className="modal-back">
-      <div className="panel modal">
+      <div className="panel modal" role="dialog" aria-modal="true">
         <div className="panel-title">Change Period</div>
         <label className="field">From:&nbsp;
           <input autoFocus value={from} onFocus={(e) => e.target.select()} onChange={(e) => setFrom(e.target.value)}

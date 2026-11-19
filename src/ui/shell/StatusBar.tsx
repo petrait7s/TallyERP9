@@ -10,8 +10,8 @@ export function StatusBar() {
   }, []);
   return (
     <div className="status-bar">
-      <span>TallyLearn NGO v0.1 (practice edition, unaffiliated)</span>
-      <span className="status-hint">{hint}</span>
+      <span>TallyLearn NGO v1.0 (practice edition, unaffiliated with Tally Solutions)</span>
+      <span className="status-hint" role="status" aria-live="polite">{hint}</span>
       <span>{now.toLocaleDateString('en-GB')} {now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</span>
     </div>
   );

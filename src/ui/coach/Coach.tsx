@@ -28,7 +28,7 @@ export function Coach() {
     const t = interview.tasks[interview.current];
     const done = Object.values(interview.done).filter(Boolean).length;
     return (
-      <div className="panel coach">
+      <div className="panel coach" role="complementary" aria-label="Lesson coach">
         <div className="panel-title">Interview {interview.v2 ? 'v2' : ''} <button className="mini" onClick={toggleCoach}>-</button></div>
         <div className="coach-body">
           <div className="coach-meta">Task {interview.current + 1}/{interview.tasks.length} &nbsp; Done {done} &nbsp; <b>{mmss(interview.taskDeadline - now)}</b></div>
@@ -48,7 +48,7 @@ export function Coach() {
   const idx = LESSONS.findIndex((l) => l.id === lesson.id);
   const next = LESSONS[idx + 1];
   return (
-    <div className="panel coach">
+    <div className="panel coach" role="complementary" aria-label="Lesson coach">
       <div className="panel-title">{lesson.id}: {T(lang, lesson.title)} <button className="mini" onClick={toggleCoach}>-</button></div>
       <div className="coach-body">
         <div className="coach-bar"><div style={{ width: `${(Math.min(active.step, lesson.steps.length) / lesson.steps.length) * 100}%` }} /></div>
@@ -114,7 +114,7 @@ export function QuizDialog() {
   const q = qs[i];
   return (
     <div className="modal-back">
-      <div className="panel quiz">
+      <div className="panel quiz" role="dialog" aria-modal="true" aria-label="Quiz">
         <div className="panel-title">{lesson ? `Quiz: ${lesson.id}` : 'Interview MCQ'} {i + 1}/{qs.length}{mcq ? `  -  ${mmss(mcq.mcqDeadline - now)}` : ''}</div>
         <div className="quiz-q">{T(lang, q.q)}</div>
         <ul className="menu-list">{q.options.map((o, k) => <li key={k} className="menu-item" onClick={() => answer(k)}><b>{k + 1}</b>&nbsp; {o}</li>)}</ul>

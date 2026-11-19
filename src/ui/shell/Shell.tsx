@@ -17,6 +17,7 @@ import { MOD_REPORTS } from '../reports/modules';
 import { runFn } from '../functions';
 import { Cheatsheet, Coach, InterviewResult, QuizDialog } from '../coach/Coach';
 import { InterviewStart, LearnScreen } from '../screens/LearnScreen';
+import { AboutScreen } from '../screens/AboutScreen';
 import { useLearn } from '../learn/store';
 import { ToggleDialog } from '../components/ToggleDialog';
 import { LAYOUTS, type Company } from '../../engine';
@@ -104,12 +105,22 @@ export function Shell() {
     setHandler(h);
   };
 
+  useEffect(() => { try { const z = localStorage.getItem('tl:zoom'); if (z) (document.getElementById('root') as HTMLElement).style.zoom = z; } catch { /* no storage */ } }, []);
+
   // F11 / F12 work everywhere (also from inside forms): capture phase, before field handlers
   useEffect(() => {
     const onCapture = (e: KeyboardEvent) => {
       const nk = normalizeKey(e);
       if (nk) useApp.getState().visit(`key:${nk}`);
       const L = useLearn.getState();
+      if (nk === 'Ctrl+=' || nk === 'Ctrl++' || nk === 'Ctrl+-' || nk === 'Ctrl+0') {
+        e.preventDefault();
+        const cur = Number(localStorage.getItem('tl:zoom') ?? '1');
+        const next = nk === 'Ctrl+0' ? 1 : Math.min(1.6, Math.max(0.7, +(cur + (nk === 'Ctrl+-' ? -0.1 : 0.1)).toFixed(2)));
+        try { localStorage.setItem('tl:zoom', String(next)); } catch { /* no storage */ }
+        (document.getElementById('root') as HTMLElement).style.zoom = String(next);
+        return;
+      }
       if (nk === 'Ctrl+/') { e.preventDefault(); e.stopPropagation(); returnFocus.current = document.activeElement as HTMLElement | null; useApp.getState().visit('overlay:cheatsheet'); setCheat(true); return; }
       if ((L.active || L.interview) && e.ctrlKey && !e.altKey) {
         const k = e.key.toLowerCase();
@@ -219,7 +230,8 @@ export function Shell() {
           <Coach />
         </div>
         <div className="centre">
-          {top.id === 'learn' ? <LearnScreen register={register} openCheatsheet={() => { returnFocus.current = document.activeElement as HTMLElement | null; useApp.getState().visit('overlay:cheatsheet'); setCheat(true); }} key="learn" />
+          {top.id === 'about' ? <AboutScreen register={register} key="about" />
+            : top.id === 'learn' ? <LearnScreen register={register} openCheatsheet={() => { returnFocus.current = document.activeElement as HTMLElement | null; useApp.getState().visit('overlay:cheatsheet'); setCheat(true); }} key="learn" />
             : top.id === 'interviewStart' ? <InterviewStart v2={!!top.data?.v2} register={register} key={'iv' + String(top.data?.v2)} />
             : top.id === 'regList' ? <RegisterList reg={top.data!.reg as string} register={register} key={'rl' + top.data!.reg} />
             : top.id === 'regForm' ? <RegisterForm reg={top.data!.reg as string} index={top.data!.index as number | undefined} register={register} key={'rf' + top.data!.reg + String(top.data!.index)} />

@@ -1,7 +1,7 @@
 {
   "name": "tallylearn-ngo",
   "productName": "TallyLearn NGO",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "TallyLearn NGO - Tally ERP 9 style practice simulator for NGO accounting (unaffiliated)",
   "private": true,
   "main": "dist/main/main.js",
@@ -14,7 +14,10 @@
     "lint": "eslint src tests",
     "test": "vitest run",
     "start": "npm run build && electron .",
-    "dist": "npm run build && electron-builder --win nsis portable --publish never"
+    "dist": "npm run build && electron-builder --win nsis portable --publish never",
+    "e2e": "node tests/e2e/smoke.mjs",
+    "seed": "vite-node scripts/gen-seed.ts && vite-node scripts/gen-lessons.ts && vite-node scripts/gen-bank.ts && vite-node scripts/gen-coverage-md.ts",
+    "icons": "vite-node scripts/make-icons.ts"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -38,17 +41,32 @@
   "build": {
     "appId": "org.tallylearn.ngo",
     "productName": "TallyLearn NGO",
-    "directories": { "output": "release" },
-    "files": ["dist/**/*", "content/**/*", "package.json"],
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "content/**/*",
+      "package.json"
+    ],
     "win": {
-      "target": ["nsis", "portable"],
-      "artifactName": "TallyLearn-NGO-${version}-${target}.${ext}"
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "artifactName": "TallyLearn-NGO-${version}-${target}.${ext}",
+      "icon": "build/icon.ico"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "artifactName": "TallyLearn-NGO-Setup-${version}.${ext}"
     },
-    "portable": { "artifactName": "TallyLearn-NGO-Portable-${version}.${ext}" }
-  }
+    "portable": {
+      "artifactName": "TallyLearn-NGO-Portable-${version}.${ext}"
+    }
+  },
+  "author": "TallyLearn NGO contributors",
+  "license": "MIT"
 }

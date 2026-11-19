@@ -42,10 +42,12 @@ export function TallyList(props: { title: string; items: ListItem[]; sel: number
   return (
     <div className={props.wide ? "panel menu-panel wide" : "panel menu-panel"}>
       <div className="panel-title">{props.title}</div>
-      <ul className="menu-list">
+      <ul className="menu-list" role="listbox" aria-label={props.title}>
         {props.items.map((it, i) => (
           <li
             key={i}
+            role={it.heading ? 'presentation' : 'option'}
+            aria-selected={!it.heading && i === props.sel}
             className={it.heading ? 'menu-heading' : i === props.sel ? 'menu-item selected' : 'menu-item'}
             onClick={() => !it.heading && props.onPick?.(i)}
           >

@@ -5,5 +5,5 @@ export default tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.recommended,
   { rules: { '@typescript-eslint/no-explicit-any': 'off' } },
-  { ignores: ['dist/**', 'release/**', 'node_modules/**'] },
+  { ignores: ['dist/**', 'release/**', 'node_modules/**', 'tests/e2e/**'] },
 );

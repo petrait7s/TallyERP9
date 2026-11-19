@@ -118,6 +118,7 @@ export const GATEWAY: MenuItem[] = [
   { label: 'Learning Centre', fn: 'learn' },
   { label: 'NGO Management', heading: true },
   ...NGO,
+  { label: 'About', fn: 'about' },
   { label: 'Quit', quit: true },
   {
     label: 'Company Info', hidden: true,

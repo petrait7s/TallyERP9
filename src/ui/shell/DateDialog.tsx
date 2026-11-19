@@ -7,7 +7,7 @@ export function DateDialog(props: { value: string; value2?: string; onAccept: (i
   const parsed = parseTallyDate(text, props.value);
   return (
     <div className="modal-back">
-      <div className="panel modal">
+      <div className="panel modal" role="dialog" aria-modal="true">
         <div className="panel-title">Change Current Date</div>
         <label className="field">
           Current Date:&nbsp;

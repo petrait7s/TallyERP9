@@ -11,6 +11,9 @@ export function runFn(name: string): void {
   const a = getAdapter();
   st.visit(`fn:${name}`);
   switch (name) {
+    case 'about':
+      st.push({ id: 'about', title: 'About' });
+      return;
     case 'learn':
       st.push({ id: 'learn', title: 'Learning Centre' });
       return;
