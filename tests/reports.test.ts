@@ -61,3 +61,29 @@ describe('report builders', () => {
     expect(csv).toContain('Grand Total');
   });
 });
+
+import { reportToHtml } from '../src/ui/reports/html';
+
+describe('statutory reports and html', () => {
+  it('vat and tds builders', () => {
+    const c = co();
+    addLedger(c, { name: 'VAT Output', group: 'Duties & Taxes', opening: 0, taxType: 'VAT', taxRate: 1500 });
+    addLedger(c, { name: 'TDS Payable', group: 'Duties & Taxes', opening: 0, taxType: 'TDS', taxRate: 1000 });
+    addVoucher(c, { type: 'Receipt', date: '2025-06-01', entries: [{ ledger: 'Bank', amount: P(115) }, { ledger: 'Don', amount: -P(100) }, { ledger: 'VAT Output', amount: -P(15) }] });
+    const vat = buildReport(c, { id: 'vat' }, per, o);
+    expect(vat.rows[0].cells).toEqual(['VAT Output', '', '15.00']);
+    expect(vat.rows.at(-1)!.cells[2]).toBe('15.00');
+    const tds = buildReport(c, { id: 'tds' }, per, o);
+    expect(tds.columns).toHaveLength(6);
+  });
+  it('html is self-contained and escapes', () => {
+    const c = co();
+    c.name = 'A <b> & Co';
+    const m = buildReport(c, { id: 'bs' }, per, o);
+    const html = reportToHtml(m, c.name);
+    expect(html).toContain('A &lt;b&gt; &amp; Co');
+    expect(html).toContain('<table>');
+    expect(html).not.toContain('<script');
+    expect(html).toContain('Liabilities');
+  });
+});

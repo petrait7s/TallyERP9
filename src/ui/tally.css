@@ -84,3 +84,11 @@ input.hot { background: #fff6b0; border-bottom-color: #000 !important; }
 .rtotal td { border-top: 1px solid #000; border-bottom: 3px double #000; font-weight: bold; }
 .rsel td { background: var(--sel); color: #fff; }
 @media print { .button-bar, .status-bar, .top-strip, .left { display: none !important; } .report-panel { max-height: none; width: 100%; max-width: none; } }
+.toggle-panel { width: 440px; outline: none; }
+.toggle-row { display: flex; justify-content: space-between; }
+.preview-panel { width: 860px; }
+.preview-frame { flex: 1; min-height: 560px; border: 0; background: #fff; }
+.v-extras { display: flex; gap: 18px; padding: 4px 10px; }
+.v-extras label { display: flex; align-items: center; gap: 4px; }
+.v-extras .pick-wrap { width: 90px; }
+.v-extras input[value] { font: inherit; }

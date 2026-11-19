@@ -6,3 +6,5 @@ export * from './reports';
 export * from './masters';
 export * from './vouchers';
 export * from './statements';
+export * from './files';
+export * from './statutory';

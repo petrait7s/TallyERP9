@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { addLedger, createCompany, toPaisa } from '../engine';
 import type { Company, Period } from '../engine';
 import type { ButtonDef } from './keys';
+import { getAdapter, saveCompany, uid } from './persist';
 
 export interface ScreenRef {
   /** screen id, e.g. 'gateway', 'menu:Masters', 'stub:Ledgers' */
@@ -13,6 +14,10 @@ export interface ScreenRef {
 
 interface AppState {
   company: Company;
+  /** storage id of the open company */
+  companyId: string;
+  /** replace the open company (select/restore/create) and return to Gateway */
+  openCompany(id: string, c: Company): void;
   currentDate: string;
   /** report period (F2 in reports) */
   period: Period;
@@ -45,6 +50,8 @@ export function demoCompany(): Company {
 
 export const useApp = create<AppState>((set, get) => ({
   company: demoCompany(),
+  companyId: 'demo',
+  openCompany: (id, c) => set({ company: c, companyId: id, period: { from: c.fyStart, to: c.fyEnd }, currentDate: c.fyStart, screens: [{ id: 'gateway', title: 'Gateway of Tally' }], hint: '' }),
   currentDate: '2025-04-01',
   period: { from: '2025-04-01', to: '2026-03-31' },
   setPeriod: (period) => set({ period }),
@@ -68,3 +75,43 @@ export const useApp = create<AppState>((set, get) => ({
   setDate: (iso) => set({ currentDate: iso }),
   setHint: (hint) => set({ hint }),
 }));
+
+
+// ---- autosave: debounce company changes into storage
+let timer: ReturnType<typeof setTimeout> | undefined;
+let pending: { id: string; company: Company } | null = null;
+
+export async function flushSave(): Promise<void> {
+  if (timer) clearTimeout(timer);
+  timer = undefined;
+  const p = pending;
+  pending = null;
+  if (p) await saveCompany(p.id, p.company);
+}
+
+useApp.subscribe((s, prev) => {
+  if (s.company === prev.company) return;
+  if (s.companyId !== prev.companyId) return; // switching: already saved by caller
+  pending = { id: s.companyId, company: s.company };
+  if (timer) clearTimeout(timer);
+  timer = setTimeout(() => { void flushSave(); }, 400);
+});
+
+/** First run seeds the demo company; later runs reopen the last company. */
+export async function boot(): Promise<void> {
+  const a = getAdapter();
+  let metas = await a.list();
+  if (!metas.length) {
+    const id = uid();
+    await saveCompany(id, demoCompany());
+    metas = await a.list();
+  }
+  const last = await a.getLast();
+  const id = metas.find((m) => m.id === last)?.id ?? metas[0].id;
+  const text = await a.load(id);
+  if (text) {
+    const { parseCompanyFile } = await import('../engine');
+    useApp.getState().openCompany(id, parseCompanyFile(text).company);
+    await a.setLast(id);
+  }
+}

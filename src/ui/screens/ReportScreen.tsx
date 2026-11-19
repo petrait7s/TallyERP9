@@ -30,7 +30,7 @@ export function ReportScreen(props: { params: ReportParams; depth: number; regis
   const { company, period, setPeriod, push, pop, mutate, setHint, setExtraButtons } = useApp();
   const memKey = `${props.depth}:${JSON.stringify(props.params)}`;
   const saved = memory.get(memKey);
-  const [detailed, setDetailed] = useState(saved?.detailed ?? false);
+  const [detailed, setDetailed] = useState(saved?.detailed ?? company.config.reportDetailed);
   const [vertical, setVertical] = useState(saved?.vertical ?? false);
   const [side, setSide] = useState<0 | 1>(saved?.side ?? 0);
   const [sel, setSel] = useState(saved?.sel ?? -1);
@@ -76,8 +76,9 @@ export function ReportScreen(props: { params: ReportParams; depth: number; regis
     setHint(err ?? (kind === 'dup' ? 'Voucher duplicated' : 'Voucher cancelled'));
   };
 
-  const keyActions = useRef({ open, exportCsv, voucherAction, pop });
-  keyActions.current = { open, exportCsv, voucherAction, pop };
+  const preview = () => push({ id: 'preview', title: 'Print Preview', data: { params: props.params, opts: { detailed: state.current.detailed, vertical: state.current.vertical } } });
+  const keyActions = useRef({ open, exportCsv, voucherAction, pop, preview });
+  keyActions.current = { open, exportCsv, voucherAction, pop, preview };
 
   useEffect(() => {
     props.register({
@@ -101,7 +102,7 @@ export function ReportScreen(props: { params: ReportParams; depth: number; regis
           case 'Alt+F1': if (st.model.canDetail) setDetailed((d) => !d); return true;
           case 'Alt+F5': if (st.model.canVertical) { setVertical((v) => !v); setSide(0); setSel(-1); } return true;
           case 'Alt+E': a.exportCsv(); return true;
-          case 'Alt+P': window.print(); return true;
+          case 'Alt+P': a.preview(); return true;
           case 'Alt+2': a.voucherAction('dup'); return true;
           case 'Alt+X': a.voucherAction('cancel'); return true;
         }
@@ -117,7 +118,7 @@ export function ReportScreen(props: { params: ReportParams; depth: number; regis
       { key: 'Alt+F1', label: detailed ? 'Condensed' : 'Detailed', disabled: !model.canDetail, action: () => setDetailed((d) => !d) },
       { key: 'Alt+F5', label: vertical ? 'Horizontal' : 'Vertical', disabled: !model.canVertical, action: () => setVertical((v) => !v) },
       { key: 'Alt+E', label: 'Export', action: () => keyActions.current.exportCsv() },
-      { key: 'Alt+P', label: 'Print', action: () => window.print() },
+      { key: 'Alt+P', label: 'Print', action: () => keyActions.current.preview() },
       { key: 'Esc', label: 'Back', action: () => keyActions.current.pop() },
     ]);
     return () => setExtraButtons([]);

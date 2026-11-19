@@ -19,6 +19,10 @@ export interface Ledger {
   costCentresApplicable?: boolean;
   currency?: string;
   /** opening outstanding bills (signed paisa, +Dr/-Cr) for bill-wise ledgers */
+  /** statutory simulation: VAT or TDS liability ledger */
+  taxType?: 'VAT' | 'TDS';
+  /** rate in basis points (1500 = 15.00%) */
+  taxRate?: number;
   openingBills?: { ref: string; amount: Paisa; date: string }[];
 }
 
@@ -104,7 +108,34 @@ export interface Godown {
   parent: string | null; // null = Primary location
 }
 
+/** F11 feature switches */
+export interface Features {
+  inventory: boolean;
+  billWise: boolean;
+  costCentres: boolean;
+  interest: boolean;
+  budgets: boolean;
+  multiCurrency: boolean;
+  bankRecon: boolean;
+  optionalVouchers: boolean;
+  vatTds: boolean;
+  payroll: boolean;
+}
+
+/** F12 configuration */
+export interface Config {
+  /** Payment/Receipt/Sales/Purchase in single-entry layout (false = Dr/Cr lines) */
+  singleEntry: boolean;
+  showNarration: boolean;
+  showChequeNo: boolean;
+  allowPostDated: boolean;
+  /** reports open in detailed view */
+  reportDetailed: boolean;
+}
+
 export interface Company {
+  /** data format version (see migrate) */
+  version: number;
   name: string;
   fyStart: string; // ISO date
   fyEnd: string;
@@ -121,6 +152,8 @@ export interface Company {
   godowns: Godown[];
   vouchers: Voucher[];
   nextId: number;
+  features: Features;
+  config: Config;
 }
 
 export interface Period {

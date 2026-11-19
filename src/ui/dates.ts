@@ -46,3 +46,17 @@ export function weekday(isoDate: string): string {
   const [y, m, d] = isoDate.split('-').map(Number);
   return DAYS[new Date(Date.UTC(y, m - 1, d)).getUTCDay()];
 }
+
+/** Last day of a 12-month financial year beginning on `startIso` (1-Apr-2025 -> 31-Mar-2026). */
+export function fyEndFor(startIso: string): string {
+  const [y, m, d] = startIso.split('-').map(Number);
+  const dt = new Date(Date.UTC(y + 1, m - 1, d));
+  dt.setUTCDate(dt.getUTCDate() - 1);
+  return dt.toISOString().slice(0, 10);
+}
+
+export function nextDay(iso: string): string {
+  const dt = new Date(`${iso}T00:00:00Z`);
+  dt.setUTCDate(dt.getUTCDate() + 1);
+  return dt.toISOString().slice(0, 10);
+}

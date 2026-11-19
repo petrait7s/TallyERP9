@@ -1,5 +1,5 @@
 import { defaultGroups } from './groups';
-import type { Company, Entry, Ledger, Voucher, VoucherKind, VoucherType } from './types';
+import type { Company, Config, Entry, Features, Ledger, Voucher, VoucherKind, VoucherType } from './types';
 import { checkVoucherRules, validateBills } from './vouchers';
 
 export function defaultVoucherTypes(): VoucherType[] {
@@ -10,8 +10,21 @@ export function defaultVoucherTypes(): VoucherType[] {
   ];
 }
 
-export function createCompany(name: string, fyStart: string, fyEnd: string, currency = 'BDT'): Company {
+export const DATA_VERSION = 1;
+
+export function allFeatures(on = true): Features {
+  return { inventory: on, billWise: on, costCentres: on, interest: on, budgets: on, multiCurrency: on, bankRecon: on, optionalVouchers: on, vatTds: on, payroll: on };
+}
+
+export function defaultConfig(): Config {
+  return { singleEntry: true, showNarration: true, showChequeNo: false, allowPostDated: false, reportDetailed: false };
+}
+
+export function createCompany(name: string, fyStart: string, fyEnd: string, currency = 'BDT', features: Features = allFeatures()): Company {
   return {
+    version: DATA_VERSION,
+    features,
+    config: defaultConfig(),
     name, fyStart, fyEnd, currency,
     groups: defaultGroups(),
     ledgers: [
@@ -64,6 +77,8 @@ export function validateEntries(c: Company, entries: Entry[], nonAccounting = fa
   if (total !== 0) throw new AccountingError(`Voucher not balanced (diff ${total} paisa)`);
   void nonAccounting;
   if (kind) checkVoucherRules(c, kind, entries);
+  if (!c.features.costCentres && entries.some((e) => e.costCentres?.length)) throw new AccountingError('Cost centres are not enabled (F11 Features)');
+  if (!c.features.billWise && entries.some((e) => e.bills?.some((b) => b.method !== 'On Account'))) throw new AccountingError('Bill-wise details are not enabled (F11 Features)');
   validateBills(c, entries, excludeId);
 }
 
@@ -105,7 +120,7 @@ export function addVoucher(c: Company, nv: NewVoucher): Voucher {
   return v;
 }
 
-export function alterVoucher(c: Company, id: number, patch: Partial<Pick<Voucher, 'date' | 'entries' | 'narration'>>): Voucher {
+export function alterVoucher(c: Company, id: number, patch: Partial<Pick<Voucher, 'date' | 'entries' | 'narration' | 'optional' | 'postDated' | 'chequeNo'>>): Voucher {
   const v = c.vouchers.find((x) => x.id === id);
   if (!v) throw new AccountingError(`No voucher ${id}`);
   const vt = c.voucherTypes.find((t) => t.name === v.type)!;

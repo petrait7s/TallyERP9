@@ -10,6 +10,9 @@ import { TallyList, useListNav } from '../components/TallyList';
 import { MasterFormScreen, MasterList } from '../screens/MasterScreens';
 import { VoucherScreen } from '../screens/VoucherScreens';
 import { ReportScreen } from '../screens/ReportScreen';
+import { PreviewScreen } from '../screens/PreviewScreen';
+import { CompanyScreen } from '../screens/CompanyScreens';
+import { ToggleDialog } from '../components/ToggleDialog';
 import { LAYOUTS, type Company } from '../../engine';
 
 function voucherMenu(c: Company): MenuItem[] {
@@ -29,12 +32,13 @@ function findMenu(path: string[], company: Company): MenuItem[] {
 
 function Menu(props: { path: string[]; register: (h: KeyHandler | null) => void }) {
   const { push, pop, setHint, company } = useApp();
-  const items = findMenu(props.path, company);
+  const items = findMenu(props.path, company).filter((i) => (!i.feature || company.features[i.feature]) && !(props.path.length === 0 && i.hidden));
   const title = props.path.length ? props.path[props.path.length - 1] : 'Gateway of Tally';
   const nav = useListNav(items, (i) => {
     const it = items[i];
     if (it.quit) window.close();
     else if (it.voucher) push({ id: 'voucherEntry', title: it.voucher, data: { typeName: it.voucher } });
+    else if (it.action) push({ id: 'company', title: it.label, data: { action: it.action } });
     else if (it.report) push({ id: 'report', title: it.label, data: { params: it.report } });
     else if (it.pick) push({ id: 'masterList', title: it.label, data: { kind: it.pick.kind, mode: 'pick', pickReport: it.pick.report } });
     else if (it.master)
@@ -78,6 +82,8 @@ export function Shell() {
   const router = useRef(new KeyRouter());
   const [handler, setHandler] = useState<KeyHandler | null>(null);
   const [dateOpen, setDateOpen] = useState(false);
+  const [overlay, setOverlay] = useState<'features' | 'config' | null>(null);
+  const returnFocus = useRef<HTMLElement | null>(null);
   const top = screens[screens.length - 1];
 
   const register = (h: KeyHandler | null) => {
@@ -86,10 +92,24 @@ export function Shell() {
     setHandler(h);
   };
 
+  // F11 / F12 work everywhere (also from inside forms): capture phase, before field handlers
+  useEffect(() => {
+    const onCapture = (e: KeyboardEvent) => {
+      if ((e.key !== 'F11' && e.key !== 'F12') || e.ctrlKey || e.altKey || dateOpen) return;
+      e.preventDefault();
+      e.stopPropagation();
+      returnFocus.current = document.activeElement as HTMLElement | null;
+      setOverlay(e.key === 'F11' ? 'features' : 'config');
+    };
+    window.addEventListener('keydown', onCapture, true);
+    return () => window.removeEventListener('keydown', onCapture, true);
+  }, [dateOpen]);
+  const closeOverlay = () => { setOverlay(null); setTimeout(() => returnFocus.current?.focus(), 0); };
+
   // global keys wrap the screen handler
   useEffect(() => {
     const onDown = (e: KeyboardEvent) => {
-      if (dateOpen) return;
+      if (dateOpen || overlay) return;
       const target = e.target as HTMLElement;
       if (target?.tagName === 'INPUT') return;
       if (e.key === 'F2' && screens[screens.length - 1].id !== 'report') {
@@ -108,13 +128,15 @@ export function Shell() {
           if (vt) st.push({ id: 'voucherEntry', title: vt.name, data: { typeName: vt.name } });
           return;
         }
+        if (hk === 'F1') { st.push({ id: 'company', title: 'Select Company', data: { action: 'select' } }); return; }
+        if (hk === 'F3' || hk === 'Alt+F3') { st.push({ id: 'menu', title: 'Company Info', data: { path: ['Company Info'] } }); return; }
         if (hk === 'F10') { st.push({ id: 'menu', title: 'Accounting Vouchers', data: { path: ['Accounting Vouchers'] } }); return; }
       }
       if (router.current.dispatch(e)) e.preventDefault();
     };
     window.addEventListener('keydown', onDown);
     return () => window.removeEventListener('keydown', onDown);
-  }, [dateOpen, screens]);
+  }, [dateOpen, screens, overlay]);
 
   const buttons: ButtonDef[] = useMemo(() => {
     const base: ButtonDef[] = [
@@ -130,6 +152,10 @@ export function Shell() {
     for (const b of base) {
       const kind = (Object.keys(LAYOUTS) as (keyof typeof LAYOUTS)[]).find((k) => LAYOUTS[k].hotkey === b.key && b.key !== 'F10');
       if (kind && !inForm) b.action = () => useApp.getState().push({ id: 'voucherEntry', title: kind, data: { typeName: kind } });
+      if (b.key === 'F1' && !inForm) b.action = () => useApp.getState().push({ id: 'company', title: 'Select Company', data: { action: 'select' } });
+      if (b.key === 'F3' && !inForm) b.action = () => useApp.getState().push({ id: 'menu', title: 'Company Info', data: { path: ['Company Info'] } });
+      if (b.key === 'F11') b.action = () => setOverlay('features');
+      if (b.key === 'F12') b.action = () => setOverlay('config');
       if (b.key === 'F10' && !inForm) b.action = () => useApp.getState().push({ id: 'menu', title: 'Accounting Vouchers', data: { path: ['Accounting Vouchers'] } });
     }
     const own = handler?.buttons?.() ?? [];
@@ -155,6 +181,8 @@ export function Shell() {
         </div>
         <div className="centre">
           {top.id === 'voucherEntry' ? <VoucherScreen typeName={top.data!.typeName as string} voucherId={top.data!.voucherId as number | undefined} register={register} key={top.title + String(top.data!.voucherId ?? '')} />
+            : top.id === 'preview' ? <PreviewScreen params={top.data!.params as any} opts={top.data!.opts as any} register={register} key={'pv' + screens.length} />
+            : top.id === 'company' ? <CompanyScreen action={top.data!.action as string} cid={top.data!.cid as string | undefined} lines={top.data!.lines as string[] | undefined} title={top.title} register={register} key={top.title + String(top.data!.cid ?? '')} />
             : top.id === 'report' ? <ReportScreen params={top.data!.params as any} depth={screens.length} register={register} key={screens.length + JSON.stringify(top.data!.params)} />
             : top.id === 'masterList' ? <MasterList kind={top.data!.kind as any} mode={top.data!.mode as any} pickReport={top.data!.pickReport as any} register={register} key={top.title} />
             : top.id === 'masterForm' ? <MasterFormScreen kind={top.data!.kind as any} mode={top.data!.mode as any} name={top.data!.name as string} register={register} key={top.title + (top.data!.mode as string)} />
@@ -165,6 +193,33 @@ export function Shell() {
         <ButtonBar buttons={buttons} />
       </div>
       <StatusBar />
+      {overlay === 'features' ? (
+        <ToggleDialog title="Company Features (F11)" onCancel={closeOverlay}
+          items={[
+            { key: 'inventory', label: 'Maintain Inventory (stock items, godowns)', value: company.features.inventory },
+            { key: 'billWise', label: 'Maintain bill-wise details', value: company.features.billWise },
+            { key: 'costCentres', label: 'Maintain cost centres (projects / donors / funds)', value: company.features.costCentres },
+            { key: 'interest', label: 'Calculate interest on overdue balances', value: company.features.interest },
+            { key: 'budgets', label: 'Maintain budgets and controls', value: company.features.budgets },
+            { key: 'multiCurrency', label: 'Allow multiple currencies', value: company.features.multiCurrency },
+            { key: 'bankRecon', label: 'Bank reconciliation and banking', value: company.features.bankRecon },
+            { key: 'optionalVouchers', label: 'Allow optional vouchers', value: company.features.optionalVouchers },
+            { key: 'vatTds', label: 'Enable statutory (VAT / TDS, simulated)', value: company.features.vatTds },
+            { key: 'payroll', label: 'Maintain payroll', value: company.features.payroll },
+          ]}
+          onAccept={(v) => { const err = useApp.getState().mutate((c) => { Object.assign(c.features, v); }); setHint(err ?? 'Features updated'); closeOverlay(); }} />
+      ) : null}
+      {overlay === 'config' ? (
+        <ToggleDialog title="Configuration (F12)" onCancel={closeOverlay}
+          items={[
+            { key: 'singleEntry', label: 'Single-entry layout for Payment/Receipt/Sales/Purchase', value: company.config.singleEntry },
+            { key: 'showNarration', label: 'Show narration in vouchers', value: company.config.showNarration },
+            { key: 'showChequeNo', label: 'Show cheque number in vouchers', value: company.config.showChequeNo },
+            { key: 'allowPostDated', label: 'Allow post-dated vouchers', value: company.config.allowPostDated },
+            { key: 'reportDetailed', label: 'Open reports in detailed view', value: company.config.reportDetailed },
+          ]}
+          onAccept={(v) => { const err = useApp.getState().mutate((c) => { Object.assign(c.config, v); }); setHint(err ?? 'Configuration updated'); closeOverlay(); }} />
+      ) : null}
       {dateOpen ? (
         <DateDialog
           value={currentDate}

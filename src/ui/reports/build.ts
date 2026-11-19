@@ -1,7 +1,7 @@
 import {
   balanceSheetGroups, costCentreStatement, costCentreSummary, dayBefore, dayBook, formatAmount, formatDrCr, fundStatement,
   groupChildren, groupSummary, ieGroups, isUnder, ledgerAccount, ledgerBalance, outstandingsReport, ratios, receiptsPayments,
-  stockSummary, type Company, type GLine, type Paisa, type Period, type SummaryRow,
+  stockSummary, tdsPayable, vatSummary, type Company, type GLine, type Paisa, type Period, type SummaryRow,
 } from '../../engine';
 import { formatDate } from '../dates';
 import type { BuildOpts, ReportModel, ReportParams, Row } from './types';
@@ -205,6 +205,18 @@ export function buildReport(c: Company, params: ReportParams, period: Period, op
     case 'ratio': {
       const rows: Row[] = ratios(c, period.to).map((r) => ({ cells: [r.name, r.value] }));
       return { title: 'Ratio Analysis', subtitle: `as at ${formatDate(period.to)}`, layout: 'single', columns: ['Particulars', 'Value'], numericFrom: 1, rows, canDetail: false, canVertical: false };
+    }
+    case 'vat': {
+      const v = vatSummary(c, period);
+      const rows: Row[] = v.rows.map((r) => ({ cells: [r.ledger, amt(r.input), amt(r.output)], drill: { id: 'ledger', ledger: r.ledger } }));
+      rows.push({ cells: ['Total', amt(v.totalInput), amt(v.totalOutput)], total: true, bold: true });
+      rows.push({ cells: [v.payable >= 0 ? 'Net VAT payable' : 'Net VAT refundable / carried forward', '', amt(Math.abs(v.payable))], bold: true, heading: true });
+      return { title: 'VAT Summary (simulated)', subtitle: range(period), layout: 'single', columns: ['VAT Ledger', 'Input VAT (Dr)', 'Output VAT (Cr)'], numericFrom: 1, rows, canDetail: false, canVertical: false };
+    }
+    case 'tds': {
+      const list = tdsPayable(c, period, period.to);
+      const rows: Row[] = list.map((r) => ({ cells: [r.ledger, amt(r.deducted), amt(r.deposited), amt(r.balance), amt(r.overdue), r.nextDue ? formatDate(r.nextDue) : ''], drill: { id: 'ledger', ledger: r.ledger } }));
+      return { title: 'TDS Payable & Challan Tracker (simulated)', subtitle: `${range(period)} | due: 15th of following month`, layout: 'single', columns: ['TDS Ledger', 'Deducted', 'Deposited (challan)', 'Balance payable', 'Overdue', 'Next due'], numericFrom: 1, rows, canDetail: false, canVertical: false };
     }
     case 'funds': {
       const f = fundStatement(c, period);

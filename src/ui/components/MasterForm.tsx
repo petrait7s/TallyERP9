@@ -34,7 +34,8 @@ export function MasterForm({ kind, mode, name, initial, onDone, once }: Props) {
   const [nested, setNested] = useState<{ field: string; kind: MasterKind; name: string } | null>(null);
   const inputs = useRef<(HTMLInputElement | null)[]>([]);
 
-  const visible = def.fields.filter((f) => !f.visible || f.visible(draft));
+  const feat = (f: FieldDef) => !f.feature || company.features[f.feature];
+  const visible = def.fields.filter((f) => feat(f) && (!f.visible || f.visible(draft)));
   const cur = visible[Math.min(idx, visible.length - 1)];
   const readOnly = mode === 'display';
 
@@ -119,7 +120,7 @@ export function MasterForm({ kind, mode, name, initial, onDone, once }: Props) {
         if (v === null) { setError(`Select a ${cur.label}`); return; }
         d = { ...draft, [cur.key]: v };
       }
-      const count = def.fields.filter((f) => !f.visible || f.visible(d)).length;
+      const count = def.fields.filter((f) => feat(f) && (!f.visible || f.visible(d))).length;
       if (idx >= count - 1) accept(d); else go(idx + 1);
     }
   };

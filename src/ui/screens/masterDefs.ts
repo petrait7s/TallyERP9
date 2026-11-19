@@ -1,4 +1,4 @@
-import { formatAmount, groupPath, type Company, type MasterKind, type MasterMap } from '../../engine';
+import { formatAmount, groupPath, type Company, type Features, type MasterKind, type MasterMap } from '../../engine';
 
 export interface FieldDef {
   key: string;
@@ -8,6 +8,8 @@ export interface FieldDef {
   /** Alt+C creates this kind on the fly */
   createKind?: MasterKind;
   visible?: (d: Draft) => boolean;
+  /** hidden unless this F11 feature is on */
+  feature?: keyof Features;
   hint?: string;
 }
 export type Draft = Record<string, string>;
@@ -78,21 +80,24 @@ export const DEFS: Record<MasterKind, MasterDef> = {
     fields: [
       { key: 'name', label: 'Name', type: 'text' },
       { key: 'group', label: 'Under', type: 'select', options: (c) => names(c.groups), createKind: 'group' },
-      { key: 'currency', label: 'Currency', type: 'select', options: (c) => names(c.currencies), createKind: 'currency' },
-      { key: 'billWise', label: 'Maintain balances bill-by-bill', type: 'select', options: () => ['No', 'Yes'] },
-      { key: 'costCentres', label: 'Cost centres are applicable', type: 'select', options: () => ['No', 'Yes'] },
+      { key: 'currency', label: 'Currency', type: 'select', options: (c) => names(c.currencies), createKind: 'currency', feature: 'multiCurrency' },
+      { key: 'billWise', label: 'Maintain balances bill-by-bill', type: 'select', options: () => ['No', 'Yes'], feature: 'billWise' },
+      { key: 'costCentres', label: 'Cost centres are applicable', type: 'select', options: () => ['No', 'Yes'], feature: 'costCentres' },
+      { key: 'taxType', label: 'Statutory tax type', type: 'select', options: () => ['None', 'VAT', 'TDS'], feature: 'vatTds' },
+      { key: 'taxRate', label: 'Tax rate (%)', type: 'rate', feature: 'vatTds', visible: (d) => d.taxType === 'VAT' || d.taxType === 'TDS', hint: 'e.g. 15' },
       { key: 'opening', label: 'Opening Balance', type: 'amount', hint: 'e.g. 85,000 or 2,00,000 Cr' },
     ],
-    blank: (c) => ({ name: '', group: '', currency: c.currency, billWise: 'No', costCentres: 'No', opening: '' }),
+    blank: (c) => ({ name: '', group: '', currency: c.currency, billWise: 'No', costCentres: 'No', taxType: 'None', taxRate: '', opening: '' }),
     toDraft: (c, n) => {
       const l = c.ledgers.find((x) => x.name === n)!;
-      return { name: l.name, group: l.group, currency: l.currency ?? c.currency, billWise: l.billWise ? 'Yes' : 'No', costCentres: l.costCentresApplicable ? 'Yes' : 'No', opening: formatOpening(l.opening) };
+      return { name: l.name, group: l.group, currency: l.currency ?? c.currency, billWise: l.billWise ? 'Yes' : 'No', costCentres: l.costCentresApplicable ? 'Yes' : 'No', taxType: l.taxType ?? 'None', taxRate: l.taxRate ? String(l.taxRate / 100) : '', opening: formatOpening(l.opening) };
     },
     fromDraft: (c, d) => ({
       name: d.name.trim(), group: d.group,
       opening: parseOpening(d.opening, defaultSideForGroup(c, d.group)),
       billWise: d.billWise === 'Yes', costCentresApplicable: d.costCentres === 'Yes',
       ...(d.currency && d.currency !== c.currency ? { currency: d.currency } : {}),
+      ...(d.taxType === 'VAT' || d.taxType === 'TDS' ? { taxType: d.taxType as 'VAT' | 'TDS', taxRate: d.taxRate ? parseScaled(d.taxRate, 100) : 0 } : {}),
     }),
   },
   voucherType: {

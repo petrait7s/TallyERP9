@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-  addVoucher, alterVoucher, cancelVoucher, deleteVoucher, formatAmount, isUnder, LAYOUTS, nextVoucherNumber, toPaisa,
+  addVoucher, alterVoucher, cancelVoucher, deleteVoucher, formatAmount, isUnder, LAYOUTS, nextVoucherNumber, taxAmount, toPaisa,
   type BillRef, type Company, type CostAlloc, type Entry, type Paisa,
 } from '../../engine';
 import { formatDate, parseTallyDate, weekday } from '../dates';
@@ -47,7 +47,7 @@ export function VoucherForm({ typeName, voucherId, onDone }: Props) {
     const acc = existing.entries.filter((e) => Math.sign(e.amount) === sign);
     return acc.length === 1 && base.accountGroups!.some((g) => isUnder(company.groups, company.ledgers.find((l) => l.name === acc[0].ledger)!.group, g));
   })();
-  const single = base.mode === 'single' && singleOk;
+  const single = base.mode === 'single' && singleOk && company.config.singleEntry;
   const partSide: Side = base.accountSide === 'Dr' ? 'Cr' : 'Dr';
 
   const initLines = (): { account: string; lines: Line[]; accBills?: BillRef[]; accCosts?: CostAlloc[] } => {
@@ -74,6 +74,13 @@ export function VoucherForm({ typeName, voucherId, onDone }: Props) {
   const [accCosts, setAccCosts] = useState(init.accCosts);
   const [lines, setLines] = useState<Line[]>(init.lines);
   const [narration, setNarration] = useState(existing?.narration ?? '');
+  const [optional, setOptional] = useState(existing?.optional ? 'Yes' : 'No');
+  const [postDated, setPostDated] = useState(existing?.postDated ? 'Yes' : 'No');
+  const [cheque, setCheque] = useState(existing?.chequeNo ?? '');
+  const showOptional = company.features.optionalVouchers;
+  const showPost = company.config.allowPostDated;
+  const showCheque = company.config.showChequeNo;
+  const showNarr = company.config.showNarration;
   const [focus, setFocus] = useState('date');
   const [error, setError] = useState('');
   const [confirm, setConfirm] = useState<'' | 'delete' | 'cancel'>('');
@@ -96,9 +103,15 @@ export function VoucherForm({ typeName, voucherId, onDone }: Props) {
     ids.push(`${i}.ledger`);
     if (l.ledger) ids.push(`${i}.amount`);
   });
-  ids.push('narration');
+  if (showOptional) ids.push('optional');
+  if (showPost) ids.push('postdated');
+  if (showCheque) ids.push('cheque');
+  if (showNarr) ids.push('narration');
 
+  const extrasStart = ids.find((x) => x === 'optional' || x === 'postdated' || x === 'cheque' || x === 'narration');
   const goto = (id: string) => { setFocus(id); setError(''); };
+  const toExtras = () => { if (extrasStart) goto(extrasStart); else accept(); };
+  const advance = (id: string) => { if (ids[ids.length - 1] === id) accept(); else goto(nextId(id)); };
   const nextId = (id: string) => ids[Math.min(ids.length - 1, ids.indexOf(id) + 1)];
   const prevId = (id: string) => ids[Math.max(0, ids.indexOf(id) - 1)];
 
@@ -121,7 +134,7 @@ export function VoucherForm({ typeName, voucherId, onDone }: Props) {
   // ---- allocation flow
   const finishTarget = (t: number | 'account') => {
     setAlloc(null);
-    goto(t === 'account' ? 'narration' : nextId(`${t}.amount`));
+    if (t === 'account') toExtras(); else goto(nextId(`${t}.amount`));
   };
   const startAlloc = (t: number | 'account', from: 'amount' | 'cost') => {
     const name = t === 'account' ? account : lines[t].ledger;
@@ -168,7 +181,7 @@ export function VoucherForm({ typeName, voucherId, onDone }: Props) {
 
   const resetForNext = () => {
     setLines(single ? [blank(partSide)] : [blank('Dr')]);
-    setAccBills(undefined); setAccCosts(undefined); setNarration('');
+    setAccBills(undefined); setAccCosts(undefined); setNarration(''); setOptional('No'); setPostDated('No'); setCheque('');
     goto('date');
   };
 
@@ -176,8 +189,9 @@ export function VoucherForm({ typeName, voucherId, onDone }: Props) {
     let entries: Entry[];
     try { entries = buildEntries(); } catch (e) { setError((e as Error).message); return; }
     const err = mutate((c) => {
-      if (existing) alterVoucher(c, existing.id, { date: dateIso, entries, narration: narration || undefined });
-      else addVoucher(c, { type: typeName, date: dateIso, entries, narration: narration || undefined });
+      const extra = { optional: optional === 'Yes' || undefined, postDated: postDated === 'Yes' || undefined, chequeNo: cheque || undefined };
+      if (existing) alterVoucher(c, existing.id, { date: dateIso, entries, narration: narration || undefined, ...extra });
+      else addVoucher(c, { type: typeName, date: dateIso, entries, narration: narration || undefined, ...extra });
     });
     if (err) { setError(err); return; }
     setHint(`${typeName} voucher ${number} ${existing ? 'altered' : 'created'}`);
@@ -226,6 +240,11 @@ export function VoucherForm({ typeName, voucherId, onDone }: Props) {
       if (d > c) { side = 'Cr'; amt = formatAmount(d - c); }
       else if (c > d) { side = 'Dr'; amt = formatAmount(c - d); }
     }
+    const picked = ledgerOf(v);
+    if (single && picked?.taxType === 'VAT' && picked.taxRate && !amt) {
+      const base$ = lines.filter((l, k) => k !== i && l.ledger && !ledgerOf(l.ledger)?.taxType).reduce((x, l) => x + (safe(l.amount) || 0), 0);
+      if (base$ > 0) amt = formatAmount(taxAmount(base$, picked.taxRate));
+    }
     setLines((xs) => {
       const ys = xs.map((x, k) => (k === i ? { ...x, side, ledger: v, amount: amt, costs: undefined, bills: undefined } : x));
       if (i === ys.length - 1) ys.push(blank(single ? partSide : 'Dr'));
@@ -235,7 +254,7 @@ export function VoucherForm({ typeName, voucherId, onDone }: Props) {
   };
   const startAllocOrNarr = () => {
     if (!lines.some((l) => l.ledger)) { setError('Enter at least one line'); return; }
-    if (single) startAlloc('account', 'amount'); else goto('narration');
+    if (single) startAlloc('account', 'amount'); else toExtras();
   };
 
   const onKeyDown = (e: React.KeyboardEvent) => {
@@ -277,6 +296,7 @@ export function VoucherForm({ typeName, voucherId, onDone }: Props) {
       setLine(i, { amount: formatAmount(p) });
       startAlloc(i, 'amount');
     } else if (focus === 'narration') accept();
+    else if (focus === 'cheque') advance('cheque');
   };
 
   const row = (l: Line, i: number) => (
@@ -334,11 +354,33 @@ export function VoucherForm({ typeName, voucherId, onDone }: Props) {
         <tbody>{lines.map(row)}</tbody>
       </table>
       {!single ? <div className="v-totals">Dr {formatAmount(dr)} &nbsp; Cr {formatAmount(cr)}{dr !== cr ? ` (diff ${formatAmount(Math.abs(dr - cr))})` : ''}</div> : null}
-      <div className="v-narr">
-        Narration:&nbsp;
-        <input ref={(el) => { refs.current.narration = el; }} className={focus === 'narration' ? 'hot' : ''} value={narration}
-          onFocus={() => setFocus('narration')} onChange={(e) => setNarration(e.target.value)} />
+      <div className="v-extras">
+        {showOptional ? (
+          <label>Optional:&nbsp;
+            <PickInput value={optional} active={focus === 'optional'} options={['No', 'Yes']} onPick={(v) => { setOptional(v); advance('optional'); }}
+              onFocus={() => setFocus('optional')} inputRef={(el) => { refs.current.optional = el; }} />
+          </label>
+        ) : null}
+        {showPost ? (
+          <label>Post-dated:&nbsp;
+            <PickInput value={postDated} active={focus === 'postdated'} options={['No', 'Yes']} onPick={(v) => { setPostDated(v); advance('postdated'); }}
+              onFocus={() => setFocus('postdated')} inputRef={(el) => { refs.current.postdated = el; }} />
+          </label>
+        ) : null}
+        {showCheque ? (
+          <label>Cheque No.:&nbsp;
+            <input ref={(el) => { refs.current.cheque = el; }} className={focus === 'cheque' ? 'hot' : ''} value={cheque}
+              onFocus={() => setFocus('cheque')} onChange={(e) => setCheque(e.target.value)} />
+          </label>
+        ) : null}
       </div>
+      {showNarr ? (
+        <div className="v-narr">
+          Narration:&nbsp;
+          <input ref={(el) => { refs.current.narration = el; }} className={focus === 'narration' ? 'hot' : ''} value={narration}
+            onFocus={() => setFocus('narration')} onChange={(e) => setNarration(e.target.value)} />
+        </div>
+      ) : null}
       {confirm ? <div className="form-msg warn">{confirm === 'delete' ? 'Delete' : 'Cancel'} this voucher? (Y/N)</div> : null}
       {error ? <div className="form-msg err">{error}</div> : null}
       {alloc ? (
