@@ -5,3 +5,4 @@ export * from './company';
 export * from './reports';
 export * from './masters';
 export * from './vouchers';
+export * from './statements';

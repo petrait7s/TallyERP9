@@ -69,3 +69,18 @@ input.hot { background: #fff6b0; border-bottom-color: #000 !important; }
 .alloc-table td { padding: 2px 6px; }
 .alloc-table input { width: 100%; font: inherit; border: 0; border-bottom: 1px solid #999; background: transparent; outline: none; }
 .alloc-table input:focus { background: #fff6b0; }
+.report-panel { width: 880px; max-width: calc(100vw - 460px); display: flex; flex-direction: column; max-height: calc(100vh - 110px); }
+.report-sub { padding: 3px 8px; background: #e7eef5; font-size: 12px; }
+.report-body { overflow: auto; flex: 1; }
+.report-body.two { display: flex; }
+.report-body.two .rtable-wrap { flex: 1; border-right: 1px solid var(--border); }
+.rside-title { text-align: center; font-weight: bold; padding: 2px; background: #d7e3ee; }
+.rtable { width: 100%; border-collapse: collapse; }
+.rtable th { position: sticky; top: 0; background: #e7eef5; text-align: left; padding: 2px 8px; border-bottom: 1px solid var(--border); font-size: 12px; }
+.rtable td { padding: 1px 8px; white-space: nowrap; }
+.rtable .num { text-align: right; }
+.rbold td { font-weight: bold; }
+.rhead td { font-weight: bold; color: var(--title); text-decoration: underline; }
+.rtotal td { border-top: 1px solid #000; border-bottom: 3px double #000; font-weight: bold; }
+.rsel td { background: var(--sel); color: #fff; }
+@media print { .button-bar, .status-bar, .top-strip, .left { display: none !important; } .report-panel { max-height: none; width: 100%; max-width: none; } }

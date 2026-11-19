@@ -13,7 +13,7 @@ const iso = (y: number, m: number, d: number) =>
  * Tally-style date entry. "1" -> day in default month/year; "1/4" or "1-4" -> day+month in default year;
  * "1-4-25" / "1/4/2025" full. Returns ISO or null.
  */
-export function parseTallyDate(input: string, defaultIso: string): string | null {
+export function parseTallyDate(input: string, defaultIso: string, fy?: { from: string; to: string }): string | null {
   const parts = input.trim().split(/[-/.\s]+/).filter(Boolean);
   if (!parts.length || parts.length > 3) return null;
   const monthIdx = parts[1] && /^[A-Za-z]+$/.test(parts[1])
@@ -27,6 +27,12 @@ export function parseTallyDate(input: string, defaultIso: string): string | null
   let y = parts[2] ? Number(parts[2]) : dy;
   if (parts[2] && parts[2].length <= 2) y = 2000 + y;
   void dd;
+  if (!parts[2] && fy) {
+    // no year typed: pick the year that falls inside the financial year
+    for (const yy of [dy, dy - 1, dy + 1]) {
+      if (valid(yy, m, d) && iso(yy, m, d) >= fy.from && iso(yy, m, d) <= fy.to) return iso(yy, m, d);
+    }
+  }
   return valid(y, m, d) ? iso(y, m, d) : null;
 }
 

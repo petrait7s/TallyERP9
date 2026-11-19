@@ -41,6 +41,9 @@ describe('dates', () => {
     expect(parseTallyDate('1-Apr-2025', '2025-06-01')).toBe('2025-04-01');
     expect(parseTallyDate('5 june', '2025-04-01')).toBe('2025-06-05');
     expect(parseTallyDate('5-Foo', '2025-04-01')).toBeNull();
+    const fy = { from: '2025-04-01', to: '2026-03-31' };
+    expect(parseTallyDate('15-2', '2025-04-01', fy)).toBe('2026-02-15');
+    expect(parseTallyDate('15-5', '2026-03-31', fy)).toBe('2025-05-15');
   });
   it('formats', () => {
     expect(formatDate('2025-04-01')).toBe('1-Apr-2025');

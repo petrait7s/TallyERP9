@@ -8,7 +8,8 @@ import { StatusBar } from './StatusBar';
 import { DateDialog } from './DateDialog';
 import { TallyList, useListNav } from '../components/TallyList';
 import { MasterFormScreen, MasterList } from '../screens/MasterScreens';
-import { VoucherRegister, VoucherScreen } from '../screens/VoucherScreens';
+import { VoucherScreen } from '../screens/VoucherScreens';
+import { ReportScreen } from '../screens/ReportScreen';
 import { LAYOUTS, type Company } from '../../engine';
 
 function voucherMenu(c: Company): MenuItem[] {
@@ -34,7 +35,8 @@ function Menu(props: { path: string[]; register: (h: KeyHandler | null) => void 
     const it = items[i];
     if (it.quit) window.close();
     else if (it.voucher) push({ id: 'voucherEntry', title: it.voucher, data: { typeName: it.voucher } });
-    else if (it.register) push({ id: 'register', title: it.label });
+    else if (it.report) push({ id: 'report', title: it.label, data: { params: it.report } });
+    else if (it.pick) push({ id: 'masterList', title: it.label, data: { kind: it.pick.kind, mode: 'pick', pickReport: it.pick.report } });
     else if (it.master)
       push(it.master.mode === 'create'
         ? { id: 'masterForm', title: it.label, data: { kind: it.master.kind, mode: 'create' } }
@@ -90,7 +92,7 @@ export function Shell() {
       if (dateOpen) return;
       const target = e.target as HTMLElement;
       if (target?.tagName === 'INPUT') return;
-      if (e.key === 'F2') {
+      if (e.key === 'F2' && screens[screens.length - 1].id !== 'report') {
         e.preventDefault();
         setDateOpen(true);
         return;
@@ -112,7 +114,7 @@ export function Shell() {
     };
     window.addEventListener('keydown', onDown);
     return () => window.removeEventListener('keydown', onDown);
-  }, [dateOpen]);
+  }, [dateOpen, screens]);
 
   const buttons: ButtonDef[] = useMemo(() => {
     const base: ButtonDef[] = [
@@ -153,8 +155,8 @@ export function Shell() {
         </div>
         <div className="centre">
           {top.id === 'voucherEntry' ? <VoucherScreen typeName={top.data!.typeName as string} voucherId={top.data!.voucherId as number | undefined} register={register} key={top.title + String(top.data!.voucherId ?? '')} />
-            : top.id === 'register' ? <VoucherRegister register={register} key="register" />
-            : top.id === 'masterList' ? <MasterList kind={top.data!.kind as any} mode={top.data!.mode as any} register={register} key={top.title} />
+            : top.id === 'report' ? <ReportScreen params={top.data!.params as any} depth={screens.length} register={register} key={screens.length + JSON.stringify(top.data!.params)} />
+            : top.id === 'masterList' ? <MasterList kind={top.data!.kind as any} mode={top.data!.mode as any} pickReport={top.data!.pickReport as any} register={register} key={top.title} />
             : top.id === 'masterForm' ? <MasterFormScreen kind={top.data!.kind as any} mode={top.data!.mode as any} name={top.data!.name as string} register={register} key={top.title + (top.data!.mode as string)} />
             : top.id === 'menu' ? <Menu path={(top.data?.path as string[]) ?? []} register={register} key={top.title} />
             : top.id === 'stub' ? <Stub title={top.title} register={register} key={top.title} />

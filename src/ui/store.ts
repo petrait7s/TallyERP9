@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { addLedger, createCompany, toPaisa } from '../engine';
-import type { Company } from '../engine';
+import type { Company, Period } from '../engine';
 import type { ButtonDef } from './keys';
 
 export interface ScreenRef {
@@ -14,6 +14,9 @@ export interface ScreenRef {
 interface AppState {
   company: Company;
   currentDate: string;
+  /** report period (F2 in reports) */
+  period: Period;
+  setPeriod(p: Period): void;
   screens: ScreenRef[];
   /** transient message shown in the status bar */
   hint: string;
@@ -31,6 +34,7 @@ interface AppState {
 export function demoCompany(): Company {
   const c = createCompany('Sylhet Community Development Foundation', '2025-04-01', '2026-03-31');
   addLedger(c, { name: 'Islami Bank A/c', group: 'Bank Accounts', opening: toPaisa(420000) });
+  addLedger(c, { name: 'Capital Fund', group: 'Capital Fund', opening: -toPaisa(420000) });
   addLedger(c, { name: 'Local Donations', group: 'Donations', opening: 0 });
   addLedger(c, { name: 'Rent', group: 'Admin Expenses', opening: 0 });
   addLedger(c, { name: 'Rahim Traders', group: 'Sundry Debtors', opening: 0, billWise: true });
@@ -42,6 +46,8 @@ export function demoCompany(): Company {
 export const useApp = create<AppState>((set, get) => ({
   company: demoCompany(),
   currentDate: '2025-04-01',
+  period: { from: '2025-04-01', to: '2026-03-31' },
+  setPeriod: (period) => set({ period }),
   screens: [{ id: 'gateway', title: 'Gateway of Tally' }],
   hint: '',
   extraButtons: [],

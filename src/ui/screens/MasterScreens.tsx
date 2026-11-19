@@ -7,13 +7,17 @@ import { useApp } from '../store';
 import { DEFS } from './masterDefs';
 
 /** List of existing masters (Alter / Display). Enter opens form. */
-export function MasterList(props: { kind: MasterKind; mode: FormMode; register: (h: KeyHandler | null) => void }) {
+export function MasterList(props: { kind: MasterKind; mode: FormMode | 'pick'; pickReport?: 'ledger' | 'group' | 'centre'; register: (h: KeyHandler | null) => void }) {
   const { push, pop, company } = useApp();
   const def = DEFS[props.kind];
   const names = listMasters(company, props.kind);
   const items = [...names.map((label) => ({ label })), { label: 'End of List', heading: true }];
   const nav = useListNav(items, (i) => {
-    if (names[i]) push({ id: 'masterForm', title: names[i], data: { kind: props.kind, mode: props.mode, name: names[i] } });
+    if (!names[i]) return;
+    if (props.mode === 'pick') {
+      const key = props.pickReport === 'centre' ? 'centre' : props.pickReport!;
+      push({ id: 'report', title: names[i], data: { params: { id: props.pickReport, [key]: names[i] } } });
+    } else push({ id: 'masterForm', title: names[i], data: { kind: props.kind, mode: props.mode, name: names[i] } });
   });
   const ref = useRef(nav);
   ref.current = nav;

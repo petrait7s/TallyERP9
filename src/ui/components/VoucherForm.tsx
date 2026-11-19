@@ -265,7 +265,7 @@ export function VoucherForm({ typeName, voucherId, onDone }: Props) {
     if (k !== 'Enter') return;
     stop();
     if (focus === 'date') {
-      const iso = parseTallyDate(dateText, dateIso);
+      const iso = parseTallyDate(dateText, dateIso, { from: company.fyStart, to: company.fyEnd });
       if (!iso) { setError('Invalid date'); return; }
       if (iso < company.fyStart || iso > company.fyEnd) { setError('Date outside financial year'); return; }
       setDateIso(iso); setDateText(formatDate(iso)); goto(nextId('date'));
