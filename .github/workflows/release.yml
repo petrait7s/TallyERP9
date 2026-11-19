@@ -65,6 +65,14 @@ jobs:
           cd dist-artifacts
           sha256sum *.exe *.AppImage > SHA256SUMS.txt
           cat SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+        with:
+          name: tallylearn-ngo-all
+          path: |
+            dist-artifacts/*.exe
+            dist-artifacts/*.AppImage
+            dist-artifacts/SHA256SUMS.txt
       - uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
