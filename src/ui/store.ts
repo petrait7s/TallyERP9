@@ -31,6 +31,11 @@ interface AppState {
 export function demoCompany(): Company {
   const c = createCompany('Sylhet Community Development Foundation', '2025-04-01', '2026-03-31');
   addLedger(c, { name: 'Islami Bank A/c', group: 'Bank Accounts', opening: toPaisa(420000) });
+  addLedger(c, { name: 'Local Donations', group: 'Donations', opening: 0 });
+  addLedger(c, { name: 'Rent', group: 'Admin Expenses', opening: 0 });
+  addLedger(c, { name: 'Rahim Traders', group: 'Sundry Debtors', opening: 0, billWise: true });
+  addLedger(c, { name: 'Training Fee', group: 'Direct Incomes', opening: 0, costCentresApplicable: true });
+  c.costCentres.push({ name: 'WASH-Jaflong', category: 'Primary Cost Category' }, { name: 'Health-Camp', category: 'Primary Cost Category' });
   return c;
 }
 

@@ -15,10 +15,15 @@ const iso = (y: number, m: number, d: number) =>
  */
 export function parseTallyDate(input: string, defaultIso: string): string | null {
   const parts = input.trim().split(/[-/.\s]+/).filter(Boolean);
-  if (!parts.length || parts.length > 3 || parts.some((p) => !/^\d{1,4}$/.test(p))) return null;
+  if (!parts.length || parts.length > 3) return null;
+  const monthIdx = parts[1] && /^[A-Za-z]+$/.test(parts[1])
+    ? MON.findIndex((x) => parts[1].toLowerCase().startsWith(x.toLowerCase()) && parts[1].length >= 3) + 1
+    : 0;
+  if (parts[1] && /^[A-Za-z]+$/.test(parts[1]) && !monthIdx) return null;
+  if (parts.some((p, i) => !(i === 1 && monthIdx) && !/^\d{1,4}$/.test(p))) return null;
   const [dy, dm, dd] = defaultIso.split('-').map(Number);
   const d = Number(parts[0]);
-  const m = parts[1] ? Number(parts[1]) : dm;
+  const m = monthIdx || (parts[1] ? Number(parts[1]) : dm);
   let y = parts[2] ? Number(parts[2]) : dy;
   if (parts[2] && parts[2].length <= 2) y = 2000 + y;
   void dd;

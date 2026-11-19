@@ -18,6 +18,8 @@ export interface Ledger {
   billWise?: boolean;
   costCentresApplicable?: boolean;
   currency?: string;
+  /** opening outstanding bills (signed paisa, +Dr/-Cr) for bill-wise ledgers */
+  openingBills?: { ref: string; amount: Paisa; date: string }[];
 }
 
 export type VoucherKind =

@@ -1,5 +1,6 @@
 import { defaultGroups } from './groups';
 import type { Company, Entry, Ledger, Voucher, VoucherKind, VoucherType } from './types';
+import { checkVoucherRules, validateBills } from './vouchers';
 
 export function defaultVoucherTypes(): VoucherType[] {
   const k = (kind: VoucherKind, nonAccounting = false): VoucherType => ({ name: kind, kind, nonAccounting });
@@ -39,7 +40,7 @@ export function addLedger(c: Company, l: Ledger): void {
   c.ledgers.push({ ...l });
 }
 
-export function validateEntries(c: Company, entries: Entry[], nonAccounting = false): void {
+export function validateEntries(c: Company, entries: Entry[], nonAccounting = false, kind?: VoucherKind, excludeId?: number): void {
   if (entries.length < 2) throw new AccountingError('Voucher needs at least two entries');
   const names = new Set(c.ledgers.map((l) => l.name));
   for (const e of entries) {
@@ -60,11 +61,13 @@ export function validateEntries(c: Company, entries: Entry[], nonAccounting = fa
     }
   }
   const total = entries.reduce((s, e) => s + e.amount, 0);
-  if (!nonAccounting && total !== 0) throw new AccountingError(`Voucher not balanced (diff ${total} paisa)`);
-  if (nonAccounting && total !== 0) throw new AccountingError(`Voucher not balanced (diff ${total} paisa)`);
+  if (total !== 0) throw new AccountingError(`Voucher not balanced (diff ${total} paisa)`);
+  void nonAccounting;
+  if (kind) checkVoucherRules(c, kind, entries);
+  validateBills(c, entries, excludeId);
 }
 
-function nextNumber(c: Company, type: string): string {
+export function nextVoucherNumber(c: Company, type: string): string {
   const n = c.vouchers.filter((v) => v.type === type).reduce((m, v) => Math.max(m, Number(v.number) || 0), 0);
   return String(n + 1);
 }
@@ -85,11 +88,11 @@ export function addVoucher(c: Company, nv: NewVoucher): Voucher {
   const vt = c.voucherTypes.find((t) => t.name === nv.type);
   if (!vt) throw new AccountingError(`Unknown voucher type: ${nv.type}`);
   if (nv.date < c.fyStart || nv.date > c.fyEnd) throw new AccountingError('Date outside financial year');
-  validateEntries(c, nv.entries, vt.nonAccounting);
+  validateEntries(c, nv.entries, vt.nonAccounting, vt.kind);
   const v: Voucher = {
     id: c.nextId++,
     type: nv.type,
-    number: nv.number ?? nextNumber(c, nv.type),
+    number: nv.number ?? nextVoucherNumber(c, nv.type),
     date: nv.date,
     entries: nv.entries.map((e) => ({ ...e })),
     narration: nv.narration,
@@ -107,7 +110,7 @@ export function alterVoucher(c: Company, id: number, patch: Partial<Pick<Voucher
   if (!v) throw new AccountingError(`No voucher ${id}`);
   const vt = c.voucherTypes.find((t) => t.name === v.type)!;
   const entries = patch.entries ?? v.entries;
-  validateEntries(c, entries, vt.nonAccounting);
+  validateEntries(c, entries, vt.nonAccounting, vt.kind, id);
   Object.assign(v, patch, { entries: entries.map((e) => ({ ...e })) });
   return v;
 }

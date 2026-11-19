@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { KeyRouter, type ButtonDef, type KeyHandler } from '../keys';
+import { KeyRouter, normalizeKey, type ButtonDef, type KeyHandler } from '../keys';
 import { useApp } from '../store';
 import { formatDate, weekday } from '../dates';
 import { GATEWAY, type MenuItem } from './menus';
@@ -8,20 +8,33 @@ import { StatusBar } from './StatusBar';
 import { DateDialog } from './DateDialog';
 import { TallyList, useListNav } from '../components/TallyList';
 import { MasterFormScreen, MasterList } from '../screens/MasterScreens';
+import { VoucherRegister, VoucherScreen } from '../screens/VoucherScreens';
+import { LAYOUTS, type Company } from '../../engine';
 
-function findMenu(path: string[]): MenuItem[] {
+function voucherMenu(c: Company): MenuItem[] {
+  return c.voucherTypes.map((t) => {
+    const hk = LAYOUTS[t.kind].hotkey;
+    const unique = t.name === t.kind && hk !== 'F10';
+    return { label: unique ? `${hk}: ${t.name}` : t.name, voucher: t.name };
+  });
+}
+
+function findMenu(path: string[], company: Company): MenuItem[] {
+  if (path.length === 1 && path[0] === 'Accounting Vouchers') return voucherMenu(company);
   let items = GATEWAY;
   for (const p of path) items = items.find((x) => x.label === p)?.children ?? [];
   return items;
 }
 
 function Menu(props: { path: string[]; register: (h: KeyHandler | null) => void }) {
-  const { push, pop, setHint } = useApp();
-  const items = findMenu(props.path);
+  const { push, pop, setHint, company } = useApp();
+  const items = findMenu(props.path, company);
   const title = props.path.length ? props.path[props.path.length - 1] : 'Gateway of Tally';
   const nav = useListNav(items, (i) => {
     const it = items[i];
     if (it.quit) window.close();
+    else if (it.voucher) push({ id: 'voucherEntry', title: it.voucher, data: { typeName: it.voucher } });
+    else if (it.register) push({ id: 'register', title: it.label });
     else if (it.master)
       push(it.master.mode === 'create'
         ? { id: 'masterForm', title: it.label, data: { kind: it.master.kind, mode: 'create' } }
@@ -83,6 +96,18 @@ export function Shell() {
         return;
       }
       if (/^F\d+$/.test(e.key) || e.ctrlKey || e.altKey) e.preventDefault();
+      const st = useApp.getState();
+      const topId = st.screens[st.screens.length - 1].id;
+      if (topId !== 'voucherEntry' && topId !== 'masterForm') {
+        const hk = normalizeKey(e);
+        const kind = (Object.keys(LAYOUTS) as (keyof typeof LAYOUTS)[]).find((k) => LAYOUTS[k].hotkey === hk && hk !== 'F10');
+        if (kind) {
+          const vt = st.company.voucherTypes.find((t) => t.name === kind);
+          if (vt) st.push({ id: 'voucherEntry', title: vt.name, data: { typeName: vt.name } });
+          return;
+        }
+        if (hk === 'F10') { st.push({ id: 'menu', title: 'Accounting Vouchers', data: { path: ['Accounting Vouchers'] } }); return; }
+      }
       if (router.current.dispatch(e)) e.preventDefault();
     };
     window.addEventListener('keydown', onDown);
@@ -98,11 +123,18 @@ export function Shell() {
       { key: 'F7', label: 'Journal' }, { key: 'F8', label: 'Sales' }, { key: 'F9', label: 'Purchase' },
       { key: 'F10', label: 'Other Vchrs' }, { key: 'F11', label: 'Features' }, { key: 'F12', label: 'Configure' },
     ];
+    const topId = screens[screens.length - 1].id;
+    const inForm = topId === 'voucherEntry' || topId === 'masterForm';
+    for (const b of base) {
+      const kind = (Object.keys(LAYOUTS) as (keyof typeof LAYOUTS)[]).find((k) => LAYOUTS[k].hotkey === b.key && b.key !== 'F10');
+      if (kind && !inForm) b.action = () => useApp.getState().push({ id: 'voucherEntry', title: kind, data: { typeName: kind } });
+      if (b.key === 'F10' && !inForm) b.action = () => useApp.getState().push({ id: 'menu', title: 'Accounting Vouchers', data: { path: ['Accounting Vouchers'] } });
+    }
     const own = handler?.buttons?.() ?? [];
     const merged = [...own, ...extraButtons];
     const out = base.map((b) => merged.find((o) => o.key === b.key) ?? b);
     return [...out, ...merged.filter((o) => !base.some((b) => b.key === o.key))];
-  }, [handler, extraButtons]);
+  }, [handler, extraButtons, screens]);
 
   return (
     <div className="tally">
@@ -120,7 +152,9 @@ export function Shell() {
           </div>
         </div>
         <div className="centre">
-          {top.id === 'masterList' ? <MasterList kind={top.data!.kind as any} mode={top.data!.mode as any} register={register} key={top.title} />
+          {top.id === 'voucherEntry' ? <VoucherScreen typeName={top.data!.typeName as string} voucherId={top.data!.voucherId as number | undefined} register={register} key={top.title + String(top.data!.voucherId ?? '')} />
+            : top.id === 'register' ? <VoucherRegister register={register} key="register" />
+            : top.id === 'masterList' ? <MasterList kind={top.data!.kind as any} mode={top.data!.mode as any} register={register} key={top.title} />
             : top.id === 'masterForm' ? <MasterFormScreen kind={top.data!.kind as any} mode={top.data!.mode as any} name={top.data!.name as string} register={register} key={top.title + (top.data!.mode as string)} />
             : top.id === 'menu' ? <Menu path={(top.data?.path as string[]) ?? []} register={register} key={top.title} />
             : top.id === 'stub' ? <Stub title={top.title} register={register} key={top.title} />

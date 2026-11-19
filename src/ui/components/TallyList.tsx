@@ -38,9 +38,9 @@ export function useListNav(items: ListItem[], onEnter: (i: number) => void) {
   return { sel, setSel, typed, onKey };
 }
 
-export function TallyList(props: { title: string; items: ListItem[]; sel: number; typed?: string; onPick?: (i: number) => void }) {
+export function TallyList(props: { title: string; items: ListItem[]; sel: number; typed?: string; onPick?: (i: number) => void; wide?: boolean }) {
   return (
-    <div className="panel menu-panel">
+    <div className={props.wide ? "panel menu-panel wide" : "panel menu-panel"}>
       <div className="panel-title">{props.title}</div>
       <ul className="menu-list">
         {props.items.map((it, i) => (

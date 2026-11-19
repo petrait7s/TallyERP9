@@ -4,6 +4,10 @@ import { ACCOUNTING_KINDS, DEFS, INVENTORY_KINDS } from '../screens/masterDefs';
 
 export interface MenuItem {
   /** opens a master screen */
+  /** voucher type name to create */
+  voucher?: string;
+  /** opens voucher register */
+  register?: boolean;
   master?: { mode: 'create' | 'alter' | 'display'; kind: MasterKind };
   label: string;
   /** submenu */
@@ -29,13 +33,7 @@ export const GATEWAY: MenuItem[] = [
   { label: 'Alter', children: masterTree('alter') },
   { label: 'Display Masters', children: masterTree('display') },
   { label: 'Transactions', heading: true },
-  {
-    label: 'Accounting Vouchers',
-    children: [
-      { label: 'F4: Contra' }, { label: 'F5: Payment' }, { label: 'F6: Receipt' }, { label: 'F7: Journal' },
-      { label: 'F8: Sales' }, { label: 'F9: Purchase' }, { label: 'Ctrl+F8: Credit Note' }, { label: 'Ctrl+F9: Debit Note' },
-    ],
-  },
+  { label: 'Accounting Vouchers', children: [] }, // filled dynamically from voucher types
   { label: 'Inventory Vouchers' },
   { label: 'Utilities', heading: true },
   { label: 'Banking' },
@@ -46,7 +44,7 @@ export const GATEWAY: MenuItem[] = [
   { label: 'Stock Summary' },
   { label: 'Ratio Analysis' },
   { label: 'Display', children: [
-    { label: 'Trial Balance' }, { label: 'Day Book' }, { label: 'Account Books' },
+    { label: 'Trial Balance' }, { label: 'Day Book', register: true }, { label: 'Account Books' },
     { label: 'Statements of Accounts' }, { label: 'Inventory Books' }, { label: 'Statutory Reports' },
   ] },
   { label: 'Quit', quit: true },
