@@ -120,13 +120,13 @@ export function VoucherForm({ typeName, voucherId, onDone }: Props) {
   const ledgerNames = (i: number): string[] => {
     let ls = company.ledgers;
     if (base.allowedGroups) ls = ls.filter((l) => base.allowedGroups!.some((g) => isUnder(company.groups, l.group, g)));
-    let names = ls.map((l) => l.name).filter((n) => !(single && n === account));
+    let names = ls.map((l) => l.name).filter((n) => !(single && n === account)).sort((a, b) => a.localeCompare(b));
     if (i > 0 && !lines[i].ledger && lines[i - 1].ledger) names = [END, ...names];
     if (i > 0 && !single && !lines[i].ledger && lines[i - 1].ledger) return names;
     return names;
   };
   const accountNames = () =>
-    company.ledgers.filter((l) => base.accountGroups!.some((g) => isUnder(company.groups, l.group, g))).map((l) => l.name);
+    company.ledgers.filter((l) => base.accountGroups!.some((g) => isUnder(company.groups, l.group, g))).map((l) => l.name).sort((a, b) => (a === 'Cash' ? -1 : b === 'Cash' ? 1 : a.localeCompare(b)));
 
   const setLine = (i: number, patch: Partial<Line>) => setLines((xs) => xs.map((x, k) => (k === i ? { ...x, ...patch } : x)));
   const ledgerOf = (n: string) => company.ledgers.find((l) => l.name === n);

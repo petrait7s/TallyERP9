@@ -1,0 +1,317 @@
+{
+ "A1": {
+  "title": "Company: create/alter/select/shut/split/backup/restore/repair, roles, Vault, FY change",
+  "screen": "F1, F3, Company Info",
+  "seed": "SCDF seed",
+  "lessons": [
+   "B2",
+   "B3",
+   "A5",
+   "A6",
+   "C1",
+   "X1",
+   "X2"
+  ]
+ },
+ "A2": {
+  "title": "Masters: groups, ledgers, voucher types/classes, currencies, cost centres",
+  "screen": "Masters",
+  "seed": "SCDF seed",
+  "lessons": [
+   "B4",
+   "I3",
+   "C2",
+   "X1",
+   "X2"
+  ]
+ },
+ "A3": {
+  "title": "Accounting vouchers incl. optional, post-dated, memorandum, reversing",
+  "screen": "F4-F10 vouchers",
+  "seed": "SCDF seed",
+  "lessons": [
+   "B5",
+   "B7",
+   "I1",
+   "C2",
+   "C4",
+   "X1",
+   "X2"
+  ]
+ },
+ "A4": {
+  "title": "Inventory: items, batches, price lists, reorder, orders, BOM",
+  "screen": "Inventory + NGO > Inventory (advanced)",
+  "seed": "SCDF seed",
+  "lessons": [
+   "I8",
+   "C3",
+   "X2"
+  ]
+ },
+ "A5": {
+  "title": "Banking: cheques, PDC, reconciliation",
+  "screen": "NGO > Treasury & Banking",
+  "seed": "SCDF seed",
+  "lessons": [
+   "I6",
+   "C4",
+   "X2"
+  ]
+ },
+ "A6": {
+  "title": "Bill-wise & credit control",
+  "screen": "Outstandings, NGO > Credit Control",
+  "seed": "SCDF seed",
+  "lessons": [
+   "I2",
+   "C5",
+   "X2"
+  ]
+ },
+ "A7": {
+  "title": "Budgets, controls, scenarios",
+  "screen": "NGO > Projects & Budgets, Audit",
+  "seed": "SCDF seed",
+  "lessons": [
+   "A4",
+   "C2",
+   "X2"
+  ]
+ },
+ "A8": {
+  "title": "Reports (BS, I&E, R&P, TB, books, ratio, statistics, audit)",
+  "screen": "Gateway > Reports / Display",
+  "seed": "SCDF seed",
+  "lessons": [
+   "B1",
+   "B6",
+   "I7",
+   "A7",
+   "A8",
+   "X1",
+   "X2"
+  ]
+ },
+ "A9": {
+  "title": "Audit: edit log, exceptions, gaps, backdated",
+  "screen": "NGO > Audit & Compliance",
+  "seed": "SCDF seed",
+  "lessons": [
+   "A6",
+   "C6",
+   "E1",
+   "N18",
+   "X2"
+  ]
+ },
+ "A10": {
+  "title": "Data: CSV/XML, print/PDF, report configuration",
+  "screen": "Alt+E, Alt+P, XML functions",
+  "seed": "SCDF seed",
+  "lessons": [
+   "A7",
+   "C7",
+   "X2"
+  ]
+ },
+ "A11": {
+  "title": "Payroll",
+  "screen": "NGO > Payroll",
+  "seed": "SCDF seed",
+  "lessons": [
+   "C8",
+   "N11",
+   "X1",
+   "X2"
+  ]
+ },
+ "A12": {
+  "title": "Statutory (BD simulated): VAT, TDS, challan",
+  "screen": "Display > Statutory Reports",
+  "seed": "SCDF seed",
+  "lessons": [
+   "A3",
+   "N16",
+   "X2"
+  ]
+ },
+ "B1": {
+  "title": "Fund accounting",
+  "screen": "NGO > Funds & Donors",
+  "seed": "SCDF seed registers",
+  "lessons": [
+   "N1",
+   "X1",
+   "X2"
+  ]
+ },
+ "B2": {
+  "title": "Donor management",
+  "screen": "NGO > Funds & Donors",
+  "seed": "SCDF seed registers",
+  "lessons": [
+   "N2",
+   "X2"
+  ]
+ },
+ "B3": {
+  "title": "Grant management",
+  "screen": "NGO > Grants",
+  "seed": "SCDF seed registers",
+  "lessons": [
+   "I4",
+   "N3",
+   "X1",
+   "X2"
+  ]
+ },
+ "B4": {
+  "title": "Foreign donation compliance (simulated)",
+  "screen": "NGO > Grants",
+  "seed": "SCDF seed registers",
+  "lessons": [
+   "A1",
+   "N4",
+   "X2"
+  ]
+ },
+ "B5": {
+  "title": "Project / programme costing",
+  "screen": "NGO > Projects & Budgets",
+  "seed": "SCDF seed registers",
+  "lessons": [
+   "I3",
+   "N5",
+   "X1",
+   "X2"
+  ]
+ },
+ "B6": {
+  "title": "Budget management",
+  "screen": "NGO > Projects & Budgets",
+  "seed": "SCDF seed registers",
+  "lessons": [
+   "A4",
+   "N6",
+   "X2"
+  ]
+ },
+ "B7": {
+  "title": "Membership & subscription",
+  "screen": "NGO > Membership",
+  "seed": "SCDF seed registers",
+  "lessons": [
+   "I5",
+   "N7",
+   "X2"
+  ]
+ },
+ "B8": {
+  "title": "Beneficiary / programme records",
+  "screen": "NGO > Beneficiaries",
+  "seed": "SCDF seed registers",
+  "lessons": [
+   "N8",
+   "X2"
+  ]
+ },
+ "B9": {
+  "title": "Procurement",
+  "screen": "NGO > Procurement",
+  "seed": "SCDF seed registers",
+  "lessons": [
+   "N9",
+   "X2"
+  ]
+ },
+ "B10": {
+  "title": "Fixed assets",
+  "screen": "NGO > Fixed Assets",
+  "seed": "SCDF seed registers",
+  "lessons": [
+   "A2",
+   "N10",
+   "X2"
+  ]
+ },
+ "B11": {
+  "title": "HR & payroll (NGO)",
+  "screen": "NGO > Payroll",
+  "seed": "SCDF seed registers",
+  "lessons": [
+   "C8",
+   "N11",
+   "X1",
+   "X2"
+  ]
+ },
+ "B12": {
+  "title": "Petty cash & imprest",
+  "screen": "NGO > Petty Cash",
+  "seed": "SCDF seed registers",
+  "lessons": [
+   "N12",
+   "X2"
+  ]
+ },
+ "B13": {
+  "title": "Fundraising campaigns",
+  "screen": "NGO > Fundraising",
+  "seed": "SCDF seed registers",
+  "lessons": [
+   "N13",
+   "X2"
+  ]
+ },
+ "B14": {
+  "title": "Bank & treasury",
+  "screen": "NGO > Treasury & Banking",
+  "seed": "SCDF seed registers",
+  "lessons": [
+   "I6",
+   "N14",
+   "X2"
+  ]
+ },
+ "B15": {
+  "title": "Receivables/payables/sub-grants",
+  "screen": "NGO > Sub-grants, Outstandings",
+  "seed": "SCDF seed registers",
+  "lessons": [
+   "I2",
+   "N15",
+   "X2"
+  ]
+ },
+ "B16": {
+  "title": "Reporting pack",
+  "screen": "NGO > Reporting Pack",
+  "seed": "SCDF seed registers",
+  "lessons": [
+   "N17",
+   "X1",
+   "X2"
+  ]
+ },
+ "B17": {
+  "title": "Audit & compliance",
+  "screen": "NGO > Audit & Compliance",
+  "seed": "SCDF seed registers",
+  "lessons": [
+   "C6",
+   "N18",
+   "X2"
+  ]
+ },
+ "B18": {
+  "title": "Governance (user log, budget approval)",
+  "screen": "NGO > Security & Data, Budgets",
+  "seed": "SCDF seed registers",
+  "lessons": [
+   "C1",
+   "N6",
+   "X2"
+  ]
+ }
+}

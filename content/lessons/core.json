@@ -1,0 +1,1006 @@
+[
+ {
+  "id": "C1",
+  "level": "core",
+  "company": "scdf",
+  "title": {
+   "en": "Security: user roles and Tally Vault",
+   "bn": "নিরাপত্তা: ইউজার রোল ও ভল্ট"
+  },
+  "goal": {
+   "en": "Add a user, sign in as Auditor and protect the company.",
+   "bn": "ইউজার যোগ করুন, অডিটর হিসেবে সাইন-ইন ও কোম্পানি সুরক্ষিত করুন।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Add user \"auditor2\" (role Auditor) in Users & Roles.",
+     "bn": "Users & Roles-এ \"auditor2\" (Auditor) যোগ করুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "row",
+     "reg": "users",
+     "where": {
+      "name": "auditor2"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Sign in as the Auditor (Select User).",
+     "bn": "Select User দিয়ে অডিটর হিসেবে সাইন-ইন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "user",
+     "role": "Auditor"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Set a Tally Vault password for the company.",
+     "bn": "কোম্পানির ভল্ট পাসওয়ার্ড দিন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "vault"
+    }
+   }
+  ],
+  "quiz": [
+   {
+    "q": {
+     "en": "Which role can only view?",
+     "bn": "কোন রোল শুধু দেখতে পারে?"
+    },
+    "options": [
+     "Auditor",
+     "Admin",
+     "Data Entry",
+     "Owner"
+    ],
+    "answer": 0
+   }
+  ],
+  "solution": [
+   {
+    "op": "row",
+    "reg": "users",
+    "row": {
+     "name": "auditor2",
+     "role": "Auditor",
+     "password": "x"
+    }
+   },
+   {
+    "op": "user",
+    "role": "Auditor",
+    "name": "auditor2"
+   },
+   {
+    "op": "vault",
+    "pw": "learn"
+   }
+  ],
+  "covers": [
+   "A1",
+   "B18"
+  ]
+ },
+ {
+  "id": "C2",
+  "level": "core",
+  "company": "scdf",
+  "title": {
+   "en": "Voucher types, classes and optional vouchers",
+   "bn": "ভাউচার টাইপ, ক্লাস ও অপশনাল ভাউচার"
+  },
+  "goal": {
+   "en": "Customise voucher types and use scenarios.",
+   "bn": "ভাউচার টাইপ কাস্টমাইজ ও সিনারিও ব্যবহার।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Create voucher type \"Zakat Receipt\" based on Receipt.",
+     "bn": "\"Zakat Receipt\" ভাউচার টাইপ (Receipt-ভিত্তিক) তৈরি।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "master",
+     "kind": "voucherType",
+     "name": "Zakat Receipt",
+     "where": {
+      "kind": "Receipt"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Add a voucher class for \"Zakat Receipt\".",
+     "bn": "\"Zakat Receipt\"-এর ভাউচার ক্লাস যোগ।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "row",
+     "reg": "voucherClasses",
+     "where": {
+      "type": "Zakat Receipt"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Enter an OPTIONAL Payment: Training 5,555 from Islami Bank A/c.",
+     "bn": "অপশনাল পেমেন্ট: Training ৫,৫৫৫।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "voucher",
+     "vtype": "Payment",
+     "amount": 555500,
+     "optional": true
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Scenario (optional vouchers).",
+     "bn": "Scenario খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:audit.scenario"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "master",
+    "kind": "voucherType",
+    "obj": {
+     "name": "Zakat Receipt",
+     "kind": "Receipt"
+    }
+   },
+   {
+    "op": "row",
+    "reg": "voucherClasses",
+    "row": {
+     "type": "Zakat Receipt",
+     "class": "Zakat",
+     "defaultLedger": "Local Donations"
+    }
+   },
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Payment",
+     "date": "2026-03-05",
+     "entries": [
+      {
+       "ledger": "Training",
+       "amount": 555500
+      },
+      {
+       "ledger": "Islami Bank A/c",
+       "amount": -555500
+      }
+     ],
+     "optional": true
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:audit.scenario"
+   }
+  ],
+  "covers": [
+   "A2",
+   "A3",
+   "A7"
+  ]
+ },
+ {
+  "id": "C3",
+  "level": "core",
+  "company": "scdf",
+  "title": {
+   "en": "Advanced inventory: batches, reorder, orders",
+   "bn": "অ্যাডভান্সড ইনভেন্টরি"
+  },
+  "goal": {
+   "en": "Batches, reorder levels, physical stock and orders.",
+   "bn": "ব্যাচ, রিঅর্ডার, ফিজিক্যাল স্টক ও অর্ডার।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Add a stock movement: Blanket, 50, batch C3-B1.",
+     "bn": "স্টক মুভমেন্ট: Blanket ৫০, ব্যাচ C3-B1।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "row",
+     "reg": "stockMoves",
+     "where": {
+      "batch": "C3-B1"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Add a reorder level of 120 for Blanket.",
+     "bn": "Blanket-এর রিঅর্ডার লেভেল ১২০।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "row",
+     "reg": "reorder",
+     "where": {
+      "item": "Blanket",
+      "level": "120"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Add a Sales order SO-C3.",
+     "bn": "সেলস অর্ডার SO-C3 যোগ।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "row",
+     "reg": "orders",
+     "where": {
+      "id": "SO-C3"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Batch-wise Stock.",
+     "bn": "Batch-wise Stock খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:inv.batches"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "row",
+    "reg": "stockMoves",
+    "row": {
+     "date": "2026-03-01",
+     "item": "Blanket",
+     "godown": "Main Store",
+     "qty": "50",
+     "rate": "450.00",
+     "batch": "C3-B1",
+     "type": "Receipt"
+    }
+   },
+   {
+    "op": "row",
+    "reg": "reorder",
+    "row": {
+     "item": "Blanket",
+     "level": "120",
+     "physical": ""
+    }
+   },
+   {
+    "op": "row",
+    "reg": "orders",
+    "row": {
+     "id": "SO-C3",
+     "type": "Sales",
+     "party": "Upazila Health Complex",
+     "item": "Blanket",
+     "qty": "30",
+     "pending": "30",
+     "date": "2026-03-02"
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:inv.batches"
+   }
+  ],
+  "covers": [
+   "A4"
+  ]
+ },
+ {
+  "id": "C4",
+  "level": "core",
+  "company": "scdf",
+  "title": {
+   "en": "Banking: cheques and post-dated cheques",
+   "bn": "ব্যাংকিং: চেক ও পোস্ট-ডেটেড চেক"
+  },
+  "goal": {
+   "en": "Record cheque numbers and manage PDCs.",
+   "bn": "চেক নম্বর ও পিডিসি ম্যানেজ করুন।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "F12: turn on \"Show cheque number\" and \"Allow post-dated vouchers\".",
+     "bn": "F12: চেক নম্বর ও পোস্ট-ডেটেড অন করুন।"
+    },
+    "hint": {
+     "en": "Try: F12",
+     "bn": "চেষ্টা করুন: F12"
+    },
+    "keys": "F12",
+    "check": {
+     "t": "all",
+     "checks": [
+      {
+       "t": "config",
+       "key": "showChequeNo",
+       "on": true
+      },
+      {
+       "t": "config",
+       "key": "allowPostDated",
+       "on": true
+      }
+     ]
+    }
+   },
+   {
+    "instruction": {
+     "en": "Payment with cheque C4-1001: Stationery 2,468 from Islami Bank A/c.",
+     "bn": "চেক C4-1001 দিয়ে পেমেন্ট: Stationery ২,৪৬৮।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "voucher",
+     "vtype": "Payment",
+     "chequeNo": "C4-1001",
+     "amount": 246800
+    }
+   },
+   {
+    "instruction": {
+     "en": "Receipt post-dated cheque C4-PDC (Local Donations 9,999).",
+     "bn": "পোস্ট-ডেটেড রিসিপ্ট C4-PDC (৯,৯৯৯)।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "voucher",
+     "postDated": true,
+     "chequeNo": "C4-PDC"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Cheque Register and Post-dated Cheques.",
+     "bn": "Cheque Register ও Post-dated Cheques খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "all",
+     "checks": [
+      {
+       "t": "visited",
+       "key": "report:mod:bank.cheques"
+      },
+      {
+       "t": "visited",
+       "key": "report:mod:bank.pdc"
+      }
+     ]
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "config",
+    "key": "showChequeNo",
+    "on": true
+   },
+   {
+    "op": "config",
+    "key": "allowPostDated",
+    "on": true
+   },
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Payment",
+     "date": "2026-03-06",
+     "entries": [
+      {
+       "ledger": "Stationery",
+       "amount": 246800
+      },
+      {
+       "ledger": "Islami Bank A/c",
+       "amount": -246800
+      }
+     ],
+     "chequeNo": "C4-1001"
+    }
+   },
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Receipt",
+     "date": "2026-03-27",
+     "entries": [
+      {
+       "ledger": "Islami Bank A/c",
+       "amount": 999900
+      },
+      {
+       "ledger": "Local Donations",
+       "amount": -999900
+      }
+     ],
+     "postDated": true,
+     "chequeNo": "C4-PDC"
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:bank.cheques"
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:bank.pdc"
+   }
+  ],
+  "covers": [
+   "A5",
+   "A3"
+  ]
+ },
+ {
+  "id": "C5",
+  "level": "core",
+  "company": "scdf",
+  "title": {
+   "en": "Credit control: ageing, interest, reminders",
+   "bn": "ক্রেডিট কন্ট্রোল"
+  },
+  "goal": {
+   "en": "Chase overdue balances.",
+   "bn": "বকেয়া আদায়ের ফলো-আপ।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Open Receivables ageing.",
+     "bn": "Receivables খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:outstanding"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Interest on Overdue (12%).",
+     "bn": "Interest on Overdue (১২%) খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:cc.interest"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Payment Reminders.",
+     "bn": "Payment Reminders খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:cc.reminders"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Confirmation Letter.",
+     "bn": "Confirmation Letter খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:cc.letter"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "visit",
+    "key": "report:outstanding"
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:cc.interest"
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:cc.reminders"
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:cc.letter"
+   }
+  ],
+  "covers": [
+   "A6"
+  ]
+ },
+ {
+  "id": "C6",
+  "level": "core",
+  "company": "scdf",
+  "title": {
+   "en": "Audit: exceptions, edit log, gaps and backdating",
+   "bn": "অডিট: এক্সেপশন, এডিট লগ"
+  },
+  "goal": {
+   "en": "Find what an auditor would find.",
+   "bn": "অডিটর যা খুঁজে পাবে তা বের করুন।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Open Audit Exceptions and read the categories.",
+     "bn": "Audit Exceptions খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:audit.exceptions"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open the Edit Log.",
+     "bn": "Edit Log খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:audit.editlog"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open the Day Book and look for cancelled vouchers.",
+     "bn": "Day Book-এ বাতিল ভাউচার দেখুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:daybook"
+    }
+   }
+  ],
+  "quiz": [
+   {
+    "q": {
+     "en": "A gap in voucher numbers may indicate:",
+     "bn": "ভাউচার নম্বরে ফাঁক নির্দেশ করে:"
+    },
+    "options": [
+     "deleted vouchers",
+     "a bank holiday",
+     "higher income",
+     "a new project"
+    ],
+    "answer": 0
+   }
+  ],
+  "solution": [
+   {
+    "op": "visit",
+    "key": "report:mod:audit.exceptions"
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:audit.editlog"
+   },
+   {
+    "op": "visit",
+    "key": "report:daybook"
+   }
+  ],
+  "covers": [
+   "A9",
+   "B17"
+  ]
+ },
+ {
+  "id": "C7",
+  "level": "core",
+  "company": "scdf",
+  "title": {
+   "en": "Data exchange: CSV, XML and print",
+   "bn": "ডেটা এক্সচেঞ্জ: CSV, XML ও প্রিন্ট"
+  },
+  "goal": {
+   "en": "Export and import data.",
+   "bn": "ডেটা এক্সপোর্ট ও ইমপোর্ট।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "In any report press Alt+E to export CSV.",
+     "bn": "যেকোনো রিপোর্টে Alt+E দিয়ে CSV এক্সপোর্ট।"
+    },
+    "hint": {
+     "en": "Try: Alt+E",
+     "bn": "চেষ্টা করুন: Alt+E"
+    },
+    "keys": "Alt+E",
+    "check": {
+     "t": "visited",
+     "key": "key:Alt+E"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Security & Data > Export Masters (XML).",
+     "bn": "Export Masters (XML)।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "fn:xmlExport"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Security & Data > Import Ledgers (XML): paste <LEDGER NAME=\"XML Ledger\" PARENT=\"Donations\" OPENING=\"0\"/>.",
+     "bn": "Import Ledgers (XML): XML পেস্ট করুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "master",
+     "kind": "ledger",
+     "name": "XML Ledger"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "visit",
+    "key": "key:Alt+E"
+   },
+   {
+    "op": "visit",
+    "key": "fn:xmlExport"
+   },
+   {
+    "op": "run",
+    "action": "xmlImport",
+    "v": {
+     "xml": "<LEDGER NAME=\"XML Ledger\" PARENT=\"Donations\" OPENING=\"0\"/>"
+    }
+   }
+  ],
+  "covers": [
+   "A10"
+  ]
+ },
+ {
+  "id": "C8",
+  "level": "core",
+  "company": "scdf",
+  "title": {
+   "en": "Payroll: full cycle",
+   "bn": "পেরোল: সম্পূর্ণ চক্র"
+  },
+  "goal": {
+   "en": "Employee to payslip.",
+   "bn": "কর্মী থেকে পে-স্লিপ।"
+  },
+  "setup": [
+   {
+    "op": "deleteVoucher",
+    "narr": "Payroll 2026-03"
+   }
+  ],
+  "steps": [
+   {
+    "instruction": {
+     "en": "Add employee E100 in Employee Master.",
+     "bn": "Employee Master-এ E100 যোগ।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "row",
+     "reg": "employees",
+     "where": {
+      "id": "E100"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Post payroll for 2026-03.",
+     "bn": "২০২৬-০৩ পেরোল পোস্ট করুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "voucher",
+     "vtype": "Journal",
+     "narr": "Payroll 2026-03"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open a Payslip.",
+     "bn": "পে-স্লিপ খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:payroll.slip"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Project-wise Payroll Cost.",
+     "bn": "Project-wise Payroll Cost খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:payroll.project"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "row",
+    "reg": "employees",
+    "row": {
+     "id": "E100",
+     "name": "New Officer",
+     "designation": "Officer",
+     "type": "Staff",
+     "basic": "15000.00",
+     "allowance": "6000.00",
+     "pfPct": "8",
+     "advance": "0.00",
+     "split": "ADMIN: General Admin:100",
+     "joined": "2026-03-01"
+    }
+   },
+   {
+    "op": "run",
+    "action": "payroll",
+    "v": {
+     "month": "2026-03"
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:payroll.slip"
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:payroll.project"
+   }
+  ],
+  "covers": [
+   "A11",
+   "B11"
+  ]
+ },
+ {
+  "id": "E1",
+  "level": "core",
+  "company": "scdf",
+  "title": {
+   "en": "Error Lab: find and fix the wrong entries",
+   "bn": "এরর ল্যাব: ভুল এন্ট্রি খুঁজে ঠিক করুন"
+  },
+  "goal": {
+   "en": "Five entries are wrong. Use the Day Book and Audit reports.",
+   "bn": "পাঁচটি এন্ট্রি ভুল। Day Book ও অডিট রিপোর্ট ব্যবহার করুন।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Fix wrong entry #1 (see Audit & Compliance > Error Lab Status for progress).",
+     "bn": "ভুল এন্ট্রি #1 ঠিক করুন (Error Lab Status দেখুন)।"
+    },
+    "hint": {
+     "en": "Try: Day Book > Enter / Alt+X",
+     "bn": "চেষ্টা করুন: Day Book > Enter / Alt+X"
+    },
+    "keys": "Day Book > Enter / Alt+X",
+    "check": {
+     "t": "metric",
+     "name": "labFixed",
+     "min": 1
+    }
+   },
+   {
+    "instruction": {
+     "en": "Fix wrong entry #2 (see Audit & Compliance > Error Lab Status for progress).",
+     "bn": "ভুল এন্ট্রি #2 ঠিক করুন (Error Lab Status দেখুন)।"
+    },
+    "hint": {
+     "en": "Try: Day Book > Enter / Alt+X",
+     "bn": "চেষ্টা করুন: Day Book > Enter / Alt+X"
+    },
+    "keys": "Day Book > Enter / Alt+X",
+    "check": {
+     "t": "metric",
+     "name": "labFixed",
+     "min": 2
+    }
+   },
+   {
+    "instruction": {
+     "en": "Fix wrong entry #3 (see Audit & Compliance > Error Lab Status for progress).",
+     "bn": "ভুল এন্ট্রি #3 ঠিক করুন (Error Lab Status দেখুন)।"
+    },
+    "hint": {
+     "en": "Try: Day Book > Enter / Alt+X",
+     "bn": "চেষ্টা করুন: Day Book > Enter / Alt+X"
+    },
+    "keys": "Day Book > Enter / Alt+X",
+    "check": {
+     "t": "metric",
+     "name": "labFixed",
+     "min": 3
+    }
+   },
+   {
+    "instruction": {
+     "en": "Fix wrong entry #4 (see Audit & Compliance > Error Lab Status for progress).",
+     "bn": "ভুল এন্ট্রি #4 ঠিক করুন (Error Lab Status দেখুন)।"
+    },
+    "hint": {
+     "en": "Try: Day Book > Enter / Alt+X",
+     "bn": "চেষ্টা করুন: Day Book > Enter / Alt+X"
+    },
+    "keys": "Day Book > Enter / Alt+X",
+    "check": {
+     "t": "metric",
+     "name": "labFixed",
+     "min": 4
+    }
+   },
+   {
+    "instruction": {
+     "en": "Fix wrong entry #5 (see Audit & Compliance > Error Lab Status for progress).",
+     "bn": "ভুল এন্ট্রি #5 ঠিক করুন (Error Lab Status দেখুন)।"
+    },
+    "hint": {
+     "en": "Try: Day Book > Enter / Alt+X",
+     "bn": "চেষ্টা করুন: Day Book > Enter / Alt+X"
+    },
+    "keys": "Day Book > Enter / Alt+X",
+    "check": {
+     "t": "metric",
+     "name": "labFixed",
+     "min": 5
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "fixLab",
+    "id": "E1"
+   },
+   {
+    "op": "fixLab",
+    "id": "E2"
+   },
+   {
+    "op": "fixLab",
+    "id": "E3"
+   },
+   {
+    "op": "fixLab",
+    "id": "E4"
+   },
+   {
+    "op": "fixLab",
+    "id": "E5"
+   }
+  ],
+  "covers": [
+   "A9"
+  ]
+ }
+]

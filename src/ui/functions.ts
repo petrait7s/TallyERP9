@@ -9,7 +9,11 @@ import { loadSeed } from './seeds';
 export function runFn(name: string): void {
   const st = useApp.getState();
   const a = getAdapter();
+  st.visit(`fn:${name}`);
   switch (name) {
+    case 'learn':
+      st.push({ id: 'learn', title: 'Learning Centre' });
+      return;
     case 'xmlExport':
       void a.saveText(`${st.company.name.replace(/[^\w]+/g, '_')}-masters.xml`, exportMastersXml(st.company)).then((p) => st.setHint(p ? `XML exported: ${p}` : 'Export cancelled'));
       return;

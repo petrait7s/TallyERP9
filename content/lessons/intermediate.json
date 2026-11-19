@@ -1,0 +1,927 @@
+[
+ {
+  "id": "I1",
+  "level": "intermediate",
+  "company": "scdf",
+  "title": {
+   "en": "Journal adjustments: prepaid, outstanding, depreciation",
+   "bn": "জার্নাল অ্যাডজাস্টমেন্ট"
+  },
+  "goal": {
+   "en": "Post year-end adjustments with F7.",
+   "bn": "F7 দিয়ে বছরশেষের সমন্বয় দিন।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Journal: Dr Prepaid Expenses / Cr Rent 9,999.",
+     "bn": "জার্নাল: Prepaid Expenses ডেবিট / Rent ক্রেডিট ৯,৯৯৯।"
+    },
+    "hint": {
+     "en": "Try: F7",
+     "bn": "চেষ্টা করুন: F7"
+    },
+    "keys": "F7",
+    "check": {
+     "t": "voucher",
+     "vtype": "Journal",
+     "ledgers": [
+      "Prepaid Expenses",
+      "Rent"
+     ],
+     "amount": 999900
+    }
+   },
+   {
+    "instruction": {
+     "en": "Journal: Dr Depreciation / Cr Accumulated Depreciation 8,888.",
+     "bn": "জার্নাল: Depreciation ডেবিট / Accumulated Depreciation ক্রেডিট ৮,৮৮৮।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "voucher",
+     "vtype": "Journal",
+     "ledgers": [
+      "Depreciation",
+      "Accumulated Depreciation"
+     ],
+     "amount": 888800
+    }
+   },
+   {
+    "instruction": {
+     "en": "Journal: Dr Audit Fee / Cr Outstanding Audit Fee 7,777.",
+     "bn": "জার্নাল: Audit Fee ডেবিট / Outstanding Audit Fee ক্রেডিট ৭,৭৭৭।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "voucher",
+     "vtype": "Journal",
+     "ledgers": [
+      "Audit Fee",
+      "Outstanding Audit Fee"
+     ],
+     "amount": 777700
+    }
+   }
+  ],
+  "quiz": [
+   {
+    "q": {
+     "en": "An expense incurred but not yet paid is booked as:",
+     "bn": "খরচ হয়েছে কিন্তু পরিশোধ হয়নি:"
+    },
+    "options": [
+     "Outstanding expense (liability)",
+     "Prepaid expense",
+     "Income",
+     "Capital"
+    ],
+    "answer": 0
+   }
+  ],
+  "solution": [
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Journal",
+     "date": "2026-03-30",
+     "entries": [
+      {
+       "ledger": "Prepaid Expenses",
+       "amount": 999900
+      },
+      {
+       "ledger": "Rent",
+       "amount": -999900
+      }
+     ]
+    }
+   },
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Journal",
+     "date": "2026-03-30",
+     "entries": [
+      {
+       "ledger": "Depreciation",
+       "amount": 888800
+      },
+      {
+       "ledger": "Accumulated Depreciation",
+       "amount": -888800
+      }
+     ]
+    }
+   },
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Journal",
+     "date": "2026-03-30",
+     "entries": [
+      {
+       "ledger": "Audit Fee",
+       "amount": 777700
+      },
+      {
+       "ledger": "Outstanding Audit Fee",
+       "amount": -777700
+      }
+     ]
+    }
+   }
+  ],
+  "covers": [
+   "A3"
+  ]
+ },
+ {
+  "id": "I2",
+  "level": "intermediate",
+  "company": "scdf",
+  "title": {
+   "en": "Bill-wise: new ref, advance, agst ref, ageing",
+   "bn": "বিল-ভিত্তিক: নতুন রেফ, অগ্রিম, এগেইনস্ট রেফ, বয়স"
+  },
+  "goal": {
+   "en": "Track what each party owes.",
+   "bn": "প্রতিটি পক্ষের পাওনা ট্র্যাক করুন।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "F8 Sales: party Tea Garden Community Group, Training Fee 16,500, bill New Ref \"I2-INV\".",
+     "bn": "F8 সেলস: Tea Garden Community Group, Training Fee ১৬,৫০০, বিল New Ref \"I2-INV\"।"
+    },
+    "hint": {
+     "en": "Try: F8",
+     "bn": "চেষ্টা করুন: F8"
+    },
+    "keys": "F8",
+    "check": {
+     "t": "voucher",
+     "vtype": "Sales",
+     "ledgers": [
+      "Tea Garden Community Group",
+      "Training Fee"
+     ],
+     "amount": 1650000
+    }
+   },
+   {
+    "instruction": {
+     "en": "F6 Receipt 5,500 from the party against reference I2-INV (Agst Ref). 11,000 should remain.",
+     "bn": "পার্টি থেকে ৫,৫০০ I2-INV-এর বিপরীতে (Agst Ref) রিসিপ্ট নিন। ১১,০০০ বাকি থাকবে।"
+    },
+    "hint": {
+     "en": "Try: F6 > Agst Ref",
+     "bn": "চেষ্টা করুন: F6 > Agst Ref"
+    },
+    "keys": "F6 > Agst Ref",
+    "check": {
+     "t": "bill",
+     "ledger": "Tea Garden Community Group",
+     "ref": "I2-INV",
+     "pending": 1100000
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Outstandings > Receivables to see ageing.",
+     "bn": "Outstandings > Receivables খুলে বয়স দেখুন।"
+    },
+    "hint": {
+     "en": "Try: Display > Statements of Accounts > Outstandings",
+     "bn": "চেষ্টা করুন: Display > Statements of Accounts > Outstandings"
+    },
+    "keys": "Display > Statements of Accounts > Outstandings",
+    "check": {
+     "t": "visited",
+     "key": "report:outstanding"
+    }
+   }
+  ],
+  "quiz": [
+   {
+    "q": {
+     "en": "\"Agst Ref\" is used to...",
+     "bn": "\"Agst Ref\" ব্যবহার হয়..."
+    },
+    "options": [
+     "settle an existing bill",
+     "create a new bill",
+     "delete a bill",
+     "print a bill"
+    ],
+    "answer": 0
+   }
+  ],
+  "solution": [
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Sales",
+     "date": "2026-03-10",
+     "entries": [
+      {
+       "ledger": "Tea Garden Community Group",
+       "amount": 1650000,
+       "bills": [
+        {
+         "method": "New Ref",
+         "ref": "I2-INV",
+         "amount": 1650000
+        }
+       ]
+      },
+      {
+       "ledger": "Training Fee",
+       "amount": -1650000
+      }
+     ]
+    }
+   },
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Receipt",
+     "date": "2026-03-15",
+     "entries": [
+      {
+       "ledger": "Islami Bank A/c",
+       "amount": 550000
+      },
+      {
+       "ledger": "Tea Garden Community Group",
+       "amount": -550000,
+       "bills": [
+        {
+         "method": "Agst Ref",
+         "ref": "I2-INV",
+         "amount": 550000
+        }
+       ]
+      }
+     ]
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:outstanding"
+   }
+  ],
+  "covers": [
+   "A6",
+   "B15"
+  ]
+ },
+ {
+  "id": "I3",
+  "level": "intermediate",
+  "company": "scdf",
+  "title": {
+   "en": "Cost centres as projects, donors and campaigns",
+   "bn": "কস্ট সেন্টার: প্রকল্প, দাতা ও ক্যাম্পেইন"
+  },
+  "goal": {
+   "en": "Tag income and expense to a cost centre.",
+   "bn": "আয়-ব্যয় কস্ট সেন্টারে ট্যাগ করুন।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Create cost centre \"Fundraising Gala\" under category \"Campaigns\".",
+     "bn": "\"Campaigns\" ক্যাটাগরির অধীনে \"Fundraising Gala\" কস্ট সেন্টার তৈরি করুন।"
+    },
+    "hint": {
+     "en": "Try: Create > Cost Centre",
+     "bn": "চেষ্টা করুন: Create > Cost Centre"
+    },
+    "keys": "Create > Cost Centre",
+    "check": {
+     "t": "master",
+     "kind": "costCentre",
+     "name": "Fundraising Gala",
+     "where": {
+      "category": "Campaigns"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Pay Campaign Costs 33,333 from Islami Bank A/c allocated to \"Fundraising Gala\".",
+     "bn": "Islami Bank A/c থেকে Campaign Costs ৩৩,৩৩৩ \"Fundraising Gala\"-তে বরাদ্দ করে পেমেন্ট দিন।"
+    },
+    "hint": {
+     "en": "Try: F5 > cost allocation",
+     "bn": "চেষ্টা করুন: F5 > cost allocation"
+    },
+    "keys": "F5 > cost allocation",
+    "check": {
+     "t": "voucher",
+     "vtype": "Payment",
+     "ledgers": [
+      "Campaign Costs"
+     ],
+     "amount": 3333300,
+     "centre": "Fundraising Gala"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Display > Statements of Accounts > Project / Cost Centre Statement.",
+     "bn": "Project / Cost Centre Statement খুলুন।"
+    },
+    "hint": {
+     "en": "Try: Display > Statements of Accounts",
+     "bn": "চেষ্টা করুন: Display > Statements of Accounts"
+    },
+    "keys": "Display > Statements of Accounts",
+    "check": {
+     "t": "visited",
+     "key": "report:centres"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "master",
+    "kind": "costCentre",
+    "obj": {
+     "name": "Fundraising Gala",
+     "category": "Campaigns"
+    }
+   },
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Payment",
+     "date": "2026-02-02",
+     "entries": [
+      {
+       "ledger": "Campaign Costs",
+       "amount": 3333300,
+       "costCentres": [
+        {
+         "costCentre": "Fundraising Gala",
+         "amount": 3333300
+        }
+       ]
+      },
+      {
+       "ledger": "Islami Bank A/c",
+       "amount": -3333300
+      }
+     ]
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:centres"
+   }
+  ],
+  "covers": [
+   "A2",
+   "B5"
+  ]
+ },
+ {
+  "id": "I4",
+  "level": "intermediate",
+  "company": "scdf",
+  "title": {
+   "en": "Restricted grant lifecycle and utilisation",
+   "bn": "সীমাবদ্ধ অনুদানের জীবনচক্র ও ব্যবহার"
+  },
+  "goal": {
+   "en": "Receive a grant tranche and review utilisation.",
+   "bn": "অনুদানের কিস্তি গ্রহণ ও ব্যবহার পর্যালোচনা।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Open NGO Management > Grants > Donor Report (utilisation) for grant G2.",
+     "bn": "Grants > Donor Report (utilisation) খুলুন (G2)।"
+    },
+    "hint": {
+     "en": "Try: NGO Management > Grants",
+     "bn": "চেষ্টা করুন: NGO Management > Grants"
+    },
+    "keys": "NGO Management > Grants",
+    "check": {
+     "t": "visited",
+     "key": "report:mod:grants.utilisation"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Record a Grant Receipt voucher: Islami Bank A/c Dr / BRAC Education Cr 1,11,111.",
+     "bn": "Grant Receipt ভাউচার: Islami Bank A/c ডেবিট / BRAC Education ক্রেডিট ১,১১,১১১।"
+    },
+    "hint": {
+     "en": "Try: Accounting Vouchers > Grant Receipt",
+     "bn": "চেষ্টা করুন: Accounting Vouchers > Grant Receipt"
+    },
+    "keys": "Accounting Vouchers > Grant Receipt",
+    "check": {
+     "t": "voucher",
+     "vtype": "Grant Receipt",
+     "ledgers": [
+      "Islami Bank A/c",
+      "BRAC Education"
+     ],
+     "amount": 11111100
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open the Tranche Schedule for G2.",
+     "bn": "G2-এর Tranche Schedule খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:grants.tranches"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "visit",
+    "key": "report:mod:grants.utilisation"
+   },
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Grant Receipt",
+     "date": "2026-03-05",
+     "entries": [
+      {
+       "ledger": "Islami Bank A/c",
+       "amount": 11111100
+      },
+      {
+       "ledger": "BRAC Education",
+       "amount": -11111100
+      }
+     ]
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:grants.tranches"
+   }
+  ],
+  "covers": [
+   "B3"
+  ]
+ },
+ {
+  "id": "I5",
+  "level": "intermediate",
+  "company": "scdf",
+  "title": {
+   "en": "Membership and entrance fees",
+   "bn": "সদস্যপদ ও ভর্তি ফি"
+  },
+  "goal": {
+   "en": "Record subscriptions and see arrears.",
+   "bn": "চাঁদা এন্ট্রি করুন এবং বকেয়া দেখুন।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Receipt: Cash Dr / Membership Fees Cr 4,800.",
+     "bn": "রিসিপ্ট: Cash / Membership Fees ৪,৮০০।"
+    },
+    "hint": {
+     "en": "Try: F6",
+     "bn": "চেষ্টা করুন: F6"
+    },
+    "keys": "F6",
+    "check": {
+     "t": "voucher",
+     "ledgers": [
+      "Cash",
+      "Membership Fees"
+     ],
+     "amount": 480000
+    }
+   },
+   {
+    "instruction": {
+     "en": "Receipt: Cash Dr / Entrance Fees Cr 1,234.",
+     "bn": "রিসিপ্ট: Cash / Entrance Fees ১,২৩৪।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "voucher",
+     "ledgers": [
+      "Cash",
+      "Entrance Fees"
+     ],
+     "amount": 123400
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Membership > Subscription Status (arrears and advance).",
+     "bn": "Membership > Subscription Status খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:members.status"
+    }
+   }
+  ],
+  "quiz": [
+   {
+    "q": {
+     "en": "Life membership fees are normally treated as:",
+     "bn": "আজীবন সদস্য ফি সাধারণত:"
+    },
+    "options": [
+     "Capital / corpus fund",
+     "Annual income",
+     "Expense",
+     "Liability to repay"
+    ],
+    "answer": 0
+   }
+  ],
+  "solution": [
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Receipt",
+     "date": "2026-03-02",
+     "entries": [
+      {
+       "ledger": "Cash",
+       "amount": 480000
+      },
+      {
+       "ledger": "Membership Fees",
+       "amount": -480000
+      }
+     ]
+    }
+   },
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Receipt",
+     "date": "2026-03-02",
+     "entries": [
+      {
+       "ledger": "Cash",
+       "amount": 123400
+      },
+      {
+       "ledger": "Entrance Fees",
+       "amount": -123400
+      }
+     ]
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:members.status"
+   }
+  ],
+  "covers": [
+   "B7"
+  ]
+ },
+ {
+  "id": "I6",
+  "level": "intermediate",
+  "company": "scdf",
+  "title": {
+   "en": "Bank reconciliation",
+   "bn": "ব্যাংক রিকনসিলিয়েশন"
+  },
+  "goal": {
+   "en": "Match the books with the bank statement.",
+   "bn": "বই ও ব্যাংক স্টেটমেন্ট মিলান।"
+  },
+  "setup": [
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Payment",
+     "date": "2026-03-12",
+     "entries": [
+      {
+       "ledger": "Stationery",
+       "amount": 500000
+      },
+      {
+       "ledger": "Islami Bank A/c",
+       "amount": -500000
+      }
+     ],
+     "chequeNo": "I6-CHQ",
+     "narration": "I6 cheque"
+    }
+   }
+  ],
+  "steps": [
+   {
+    "instruction": {
+     "en": "Open Treasury & Banking > Bank Reconciliation for Islami Bank A/c.",
+     "bn": "Bank Reconciliation খুলুন (Islami Bank A/c)।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:bank.reco"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Mark the cheque I6-CHQ as cleared: Treasury & Banking > Mark Voucher Reconciled.",
+     "bn": "I6-CHQ চেক ক্লিয়ার করুন: Mark Voucher Reconciled।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "voucher",
+     "chequeNo": "I6-CHQ",
+     "bankDate": true
+    }
+   }
+  ],
+  "quiz": [
+   {
+    "q": {
+     "en": "A cheque issued but not yet presented to the bank is called:",
+     "bn": "ইস্যু করা কিন্তু ব্যাংকে জমা না পড়া চেক:"
+    },
+    "options": [
+     "Outstanding (uncleared) cheque",
+     "Bounced cheque",
+     "Stale cheque",
+     "Post-dated cheque"
+    ],
+    "answer": 0
+   }
+  ],
+  "solution": [
+   {
+    "op": "visit",
+    "key": "report:mod:bank.reco"
+   },
+   {
+    "op": "run",
+    "action": "reconcile",
+    "v": {
+     "chequeNo": "I6-CHQ",
+     "bankDate": "2026-03-20"
+    }
+   }
+  ],
+  "covers": [
+   "A5",
+   "B14"
+  ]
+ },
+ {
+  "id": "I7",
+  "level": "intermediate",
+  "company": "scdf",
+  "title": {
+   "en": "Reading I&E, R&P and the Balance Sheet",
+   "bn": "I&E, R&P ও ব্যালান্স শিট পড়া"
+  },
+  "goal": {
+   "en": "Understand accrual vs cash statements.",
+   "bn": "এক্রুয়াল ও নগদ ভিত্তিক বিবরণী বুঝুন।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Open Income & Expenditure A/c.",
+     "bn": "Income & Expenditure A/c খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:ie"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Receipts & Payments A/c.",
+     "bn": "Receipts & Payments A/c খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:rp"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open the Balance Sheet and press Alt+F1 for detail.",
+     "bn": "Balance Sheet খুলে Alt+F1 দিন।"
+    },
+    "hint": {
+     "en": "Try: Alt+F1",
+     "bn": "চেষ্টা করুন: Alt+F1"
+    },
+    "keys": "Alt+F1",
+    "check": {
+     "t": "all",
+     "checks": [
+      {
+       "t": "visited",
+       "key": "report:bs"
+      },
+      {
+       "t": "visited",
+       "key": "key:Alt+F1"
+      }
+     ]
+    }
+   }
+  ],
+  "quiz": [
+   {
+    "q": {
+     "en": "Receipts & Payments is prepared on:",
+     "bn": "Receipts & Payments তৈরি হয়:"
+    },
+    "options": [
+     "Cash basis",
+     "Accrual basis",
+     "Estimate basis",
+     "Budget basis"
+    ],
+    "answer": 0
+   },
+   {
+    "q": {
+     "en": "Surplus of I&E goes to:",
+     "bn": "I&E-এর উদ্বৃত্ত যায়:"
+    },
+    "options": [
+     "Capital / General Fund in the Balance Sheet",
+     "Cash",
+     "Expenses",
+     "Debtors"
+    ],
+    "answer": 0
+   }
+  ],
+  "solution": [
+   {
+    "op": "visit",
+    "key": "report:ie"
+   },
+   {
+    "op": "visit",
+    "key": "report:rp"
+   },
+   {
+    "op": "visit",
+    "key": "report:bs"
+   },
+   {
+    "op": "visit",
+    "key": "key:Alt+F1"
+   }
+  ],
+  "covers": [
+   "A8"
+  ]
+ },
+ {
+  "id": "I8",
+  "level": "intermediate",
+  "company": "scdf",
+  "title": {
+   "en": "Inventory for relief goods",
+   "bn": "ত্রাণ সামগ্রীর ইনভেন্টরি"
+  },
+  "goal": {
+   "en": "Create a stock item and view stock.",
+   "bn": "স্টক আইটেম তৈরি ও স্টক দেখুন।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Create stock item \"Mosquito Net\" (group Relief Goods, unit Nos, opening 10 @ 220).",
+     "bn": "\"Mosquito Net\" স্টক আইটেম তৈরি (Relief Goods, Nos, ১০ @ ২২০)।"
+    },
+    "hint": {
+     "en": "Try: Create > Inventory Masters > Stock Item",
+     "bn": "চেষ্টা করুন: Create > Inventory Masters > Stock Item"
+    },
+    "keys": "Create > Inventory Masters > Stock Item",
+    "check": {
+     "t": "master",
+     "kind": "stockItem",
+     "name": "Mosquito Net",
+     "where": {
+      "unit": "Nos"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Add a stock receipt of 5 for Mosquito Net in Stock Movements.",
+     "bn": "Stock Movements-এ Mosquito Net ৫টি রিসিপ্ট যোগ করুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "row",
+     "reg": "stockMoves",
+     "where": {
+      "item": "Mosquito Net",
+      "qty": "5"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Inventory (advanced) > Stock Summary.",
+     "bn": "Stock Summary খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:inv.stock"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "master",
+    "kind": "stockItem",
+    "obj": {
+     "name": "Mosquito Net",
+     "group": "Relief Goods",
+     "unit": "Nos",
+     "openingQty": 10,
+     "openingRate": 22000
+    }
+   },
+   {
+    "op": "row",
+    "reg": "stockMoves",
+    "row": {
+     "date": "2026-03-01",
+     "item": "Mosquito Net",
+     "godown": "Main Store",
+     "qty": "5",
+     "rate": "220.00",
+     "batch": "MN-1",
+     "type": "Receipt"
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:inv.stock"
+   }
+  ],
+  "covers": [
+   "A4"
+  ]
+ }
+]

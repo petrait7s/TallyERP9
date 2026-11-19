@@ -15,6 +15,9 @@ import { CompanyScreen } from '../screens/CompanyScreens';
 import { ActionScreen, AskScreen, RegisterForm, RegisterList } from '../screens/ModuleScreens';
 import { MOD_REPORTS } from '../reports/modules';
 import { runFn } from '../functions';
+import { Cheatsheet, Coach, InterviewResult, QuizDialog } from '../coach/Coach';
+import { InterviewStart, LearnScreen } from '../screens/LearnScreen';
+import { useLearn } from '../learn/store';
 import { ToggleDialog } from '../components/ToggleDialog';
 import { LAYOUTS, type Company } from '../../engine';
 
@@ -90,6 +93,8 @@ export function Shell() {
   const [handler, setHandler] = useState<KeyHandler | null>(null);
   const [dateOpen, setDateOpen] = useState(false);
   const [overlay, setOverlay] = useState<'features' | 'config' | null>(null);
+  const [cheat, setCheat] = useState(false);
+  const modalOpen = useLearn((l) => l.active?.phase === 'quiz' || l.interview?.phase === 'mcq' || l.interview?.phase === 'result');
   const returnFocus = useRef<HTMLElement | null>(null);
   const top = screens[screens.length - 1];
 
@@ -102,21 +107,31 @@ export function Shell() {
   // F11 / F12 work everywhere (also from inside forms): capture phase, before field handlers
   useEffect(() => {
     const onCapture = (e: KeyboardEvent) => {
+      const nk = normalizeKey(e);
+      if (nk) useApp.getState().visit(`key:${nk}`);
+      const L = useLearn.getState();
+      if (nk === 'Ctrl+/') { e.preventDefault(); e.stopPropagation(); returnFocus.current = document.activeElement as HTMLElement | null; useApp.getState().visit('overlay:cheatsheet'); setCheat(true); return; }
+      if ((L.active || L.interview) && e.ctrlKey && !e.altKey) {
+        const k = e.key.toLowerCase();
+        const acts: Record<string, () => void> = { h: L.showHint, k: L.showKeys, l: L.toggleLang, j: L.toggleCoach, r: L.reset, n: L.nextTask, m: L.finishTasks };
+        if (acts[k] && !(L.interview && ['h', 'k', 'r'].includes(k)) && !(L.active && ['n', 'm'].includes(k))) { e.preventDefault(); e.stopPropagation(); acts[k](); return; }
+      }
       if ((e.key !== 'F11' && e.key !== 'F12') || e.ctrlKey || e.altKey || dateOpen) return;
       e.preventDefault();
       e.stopPropagation();
       returnFocus.current = document.activeElement as HTMLElement | null;
+      useApp.getState().visit(e.key === 'F11' ? 'overlay:features' : 'overlay:config');
       setOverlay(e.key === 'F11' ? 'features' : 'config');
     };
     window.addEventListener('keydown', onCapture, true);
     return () => window.removeEventListener('keydown', onCapture, true);
   }, [dateOpen]);
-  const closeOverlay = () => { setOverlay(null); setTimeout(() => returnFocus.current?.focus(), 0); };
+  const closeOverlay = () => { setOverlay(null); setCheat(false); setTimeout(() => returnFocus.current?.focus(), 0); };
 
   // global keys wrap the screen handler
   useEffect(() => {
     const onDown = (e: KeyboardEvent) => {
-      if (dateOpen || overlay) return;
+      if (dateOpen || overlay || cheat || modalOpen) return;
       const target = e.target as HTMLElement;
       if (target?.tagName === 'INPUT') return;
       if (e.key === 'F2' && screens[screens.length - 1].id !== 'report') {
@@ -143,7 +158,23 @@ export function Shell() {
     };
     window.addEventListener('keydown', onDown);
     return () => window.removeEventListener('keydown', onDown);
-  }, [dateOpen, screens, overlay]);
+  }, [dateOpen, screens, overlay, cheat, modalOpen]);
+
+  // lesson validators read what the learner has opened
+  useEffect(() => {
+    const t = screens[screens.length - 1];
+    const d = t.data as Record<string, any> | undefined;
+    const v = useApp.getState().visit;
+    if (t.id === 'report' && d?.params) { v(`report:${d.params.id}`); if (d.params.mod) v(`report:mod:${d.params.mod}`); }
+    else if (t.id === 'company') v(`screen:company:${d?.action}`);
+    else if (t.id === 'masterForm') v(`screen:masterForm:${d?.kind}:${d?.mode}`);
+    else if (t.id === 'masterList') v(`screen:masterList:${d?.kind}:${d?.mode}`);
+    else if (t.id === 'voucherEntry') v(`screen:voucher:${d?.typeName}`);
+    else if (t.id === 'regList') v(`screen:regList:${d?.reg}`);
+    else if (t.id === 'action') v(`screen:action:${d?.action}`);
+    else if (t.id === 'preview') v('preview:report');
+    else v(`screen:${t.id}`);
+  }, [screens]);
 
   const buttons: ButtonDef[] = useMemo(() => {
     const base: ButtonDef[] = [
@@ -185,9 +216,12 @@ export function Shell() {
             <div>Current Date</div>
             <b>{weekday(currentDate)}, {formatDate(currentDate)}</b>
           </div>
+          <Coach />
         </div>
         <div className="centre">
-          {top.id === 'regList' ? <RegisterList reg={top.data!.reg as string} register={register} key={'rl' + top.data!.reg} />
+          {top.id === 'learn' ? <LearnScreen register={register} openCheatsheet={() => { returnFocus.current = document.activeElement as HTMLElement | null; useApp.getState().visit('overlay:cheatsheet'); setCheat(true); }} key="learn" />
+            : top.id === 'interviewStart' ? <InterviewStart v2={!!top.data?.v2} register={register} key={'iv' + String(top.data?.v2)} />
+            : top.id === 'regList' ? <RegisterList reg={top.data!.reg as string} register={register} key={'rl' + top.data!.reg} />
             : top.id === 'regForm' ? <RegisterForm reg={top.data!.reg as string} index={top.data!.index as number | undefined} register={register} key={'rf' + top.data!.reg + String(top.data!.index)} />
             : top.id === 'ask' ? <AskScreen mod={top.data!.mod as string} register={register} key={'ask' + top.data!.mod} />
             : top.id === 'action' ? <ActionScreen action={top.data!.action as string} register={register} key={'act' + top.data!.action} />
@@ -204,6 +238,9 @@ export function Shell() {
         <ButtonBar buttons={buttons} />
       </div>
       <StatusBar />
+      {cheat ? <Cheatsheet onClose={closeOverlay} /> : null}
+      <QuizDialog />
+      <InterviewResult />
       {overlay === 'features' ? (
         <ToggleDialog title="Company Features (F11)" onCancel={closeOverlay}
           items={[

@@ -38,5 +38,15 @@ export const ACTIONS: Record<string, Action> = {
     fields: [{ key: 'xml', label: 'Paste XML text', def: () => '', hint: '<LEDGER NAME="..." PARENT="..." OPENING="0"/>' }],
     run: (c, v) => `${E.importLedgersXml(c, v.xml)} ledger(s) imported`,
   },
+  reconcile: {
+    title: 'Mark Voucher Reconciled (bank date)',
+    fields: [{ key: 'chequeNo', label: 'Cheque no.', def: () => '' }, { key: 'bankDate', label: 'Bank statement date', def: (c) => c.fyEnd }],
+    run: (c, v) => {
+      const x = c.vouchers.find((y) => y.chequeNo === v.chequeNo && !y.cancelled);
+      if (!x) throw new Error(`No voucher with cheque no. ${v.chequeNo}`);
+      x.bankDate = date(c, v.bankDate);
+      return `Voucher ${x.type} ${x.number} reconciled`;
+    },
+  },
   vault: { title: 'Set Tally Vault Password', fields: [{ key: 'pw', label: 'New password (blank = none)', def: (c) => c.meta.vault ?? '' }], run: (c, v) => { c.meta.vault = v.pw || undefined; return v.pw ? 'Vault password set' : 'Vault password removed'; } },
 };

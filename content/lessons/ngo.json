@@ -1,0 +1,1698 @@
+[
+ {
+  "id": "N1",
+  "level": "ngo",
+  "company": "scdf",
+  "title": {
+   "en": "Fund accounting and inter-fund transfers",
+   "bn": "ফান্ড অ্যাকাউন্টিং ও আন্তঃফান্ড স্থানান্তর"
+  },
+  "goal": {
+   "en": "Move money between funds and report by fund.",
+   "bn": "ফান্ডের মধ্যে টাকা সরানো ও ফান্ডভিত্তিক রিপোর্ট।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Funds & Donors > Inter-fund Transfer: General Fund to Designated Fund - Emergency, 12,345.",
+     "bn": "Inter-fund Transfer: General Fund থেকে Designated Fund - Emergency ১২,৩৪৫।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "voucher",
+     "vtype": "Journal",
+     "ledgers": [
+      "General Fund",
+      "Designated Fund - Emergency"
+     ],
+     "amount": 1234500
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Fund-wise Statement.",
+     "bn": "Fund-wise Statement খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:funds.statement"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Fund Statement (Display).",
+     "bn": "Fund Statement খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:funds"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "run",
+    "action": "fundTransfer",
+    "v": {
+     "date": "31-3-2026",
+     "from": "General Fund",
+     "to": "Designated Fund - Emergency",
+     "amount": "12345"
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:funds.statement"
+   },
+   {
+    "op": "visit",
+    "key": "report:funds"
+   }
+  ],
+  "covers": [
+   "B1"
+  ]
+ },
+ {
+  "id": "N2",
+  "level": "ngo",
+  "company": "scdf",
+  "title": {
+   "en": "Donor management",
+   "bn": "দাতা ব্যবস্থাপনা"
+  },
+  "goal": {
+   "en": "Donor master, tagged receipts and statements.",
+   "bn": "দাতা মাস্টার, ট্যাগ করা রিসিপ্ট।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Add donor D900 \"Test Donor\".",
+     "bn": "দাতা D900 \"Test Donor\" যোগ।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "row",
+     "reg": "donors",
+     "where": {
+      "id": "D900"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Create cost centre \"Donor: Test Donor\" under Donors.",
+     "bn": "\"Donor: Test Donor\" কস্ট সেন্টার তৈরি।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "master",
+     "kind": "costCentre",
+     "name": "Donor: Test Donor",
+     "where": {
+      "category": "Donors"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Donation Receipt 3,333 tagged to that donor.",
+     "bn": "ঐ দাতার নামে ৩,৩৩৩ ডোনেশন রিসিপ্ট।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "voucher",
+     "vtype": "Donation Receipt",
+     "amount": 333300,
+     "centre": "Donor: Test Donor"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open the Donor Contribution Register.",
+     "bn": "Donor Contribution Register খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:donors.register"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "row",
+    "reg": "donors",
+    "row": {
+     "id": "D900",
+     "name": "Test Donor",
+     "type": "Individual"
+    }
+   },
+   {
+    "op": "master",
+    "kind": "costCentre",
+    "obj": {
+     "name": "Donor: Test Donor",
+     "category": "Donors"
+    }
+   },
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Donation Receipt",
+     "date": "2026-03-04",
+     "entries": [
+      {
+       "ledger": "Cash",
+       "amount": 333300
+      },
+      {
+       "ledger": "Local Donations",
+       "amount": -333300,
+       "costCentres": [
+        {
+         "costCentre": "Donor: Test Donor",
+         "amount": 333300
+        }
+       ]
+      }
+     ]
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:donors.register"
+   }
+  ],
+  "covers": [
+   "B2"
+  ]
+ },
+ {
+  "id": "N3",
+  "level": "ngo",
+  "company": "scdf",
+  "title": {
+   "en": "Grant lifecycle",
+   "bn": "অনুদানের জীবনচক্র"
+  },
+  "goal": {
+   "en": "Grant master, budget lines, tranche, donor report.",
+   "bn": "গ্র্যান্ট মাস্টার, বাজেট লাইন, কিস্তি, দাতা রিপোর্ট।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Add grant G9 in Grant Master.",
+     "bn": "Grant Master-এ G9 যোগ।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "row",
+     "reg": "grants",
+     "where": {
+      "id": "G9"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Add a budget line for G9.",
+     "bn": "G9-এর বাজেট লাইন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "row",
+     "reg": "grantBudget",
+     "where": {
+      "grant": "G9"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Receive tranche 22,222 into BRAC Education (Grant Receipt).",
+     "bn": "কিস্তি ২২,২২২ BRAC Education-এ (Grant Receipt)।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "voucher",
+     "vtype": "Grant Receipt",
+     "amount": 2222200
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Grant Register.",
+     "bn": "Grant Register খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:grants.register"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "row",
+    "reg": "grants",
+    "row": {
+     "id": "G9",
+     "name": "Pilot Grant",
+     "donor": "Pilot Donor",
+     "project": "Health Camp",
+     "amount": "100000.00",
+     "currency": "BDT",
+     "start": "2026-01-01",
+     "end": "2026-12-31",
+     "tranches": "2026-02-01:50000.00",
+     "status": "Active",
+     "incomeLedger": "Local Govt Health",
+     "fundLedger": "Local Govt Health Fund"
+    }
+   },
+   {
+    "op": "row",
+    "reg": "grantBudget",
+    "row": {
+     "grant": "G9",
+     "line": "Medicine",
+     "ledger": "Medical Camp",
+     "budget": "60000.00"
+    }
+   },
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Grant Receipt",
+     "date": "2026-03-06",
+     "entries": [
+      {
+       "ledger": "Islami Bank A/c",
+       "amount": 2222200
+      },
+      {
+       "ledger": "BRAC Education",
+       "amount": -2222200
+      }
+     ]
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:grants.register"
+   }
+  ],
+  "covers": [
+   "B3"
+  ]
+ },
+ {
+  "id": "N4",
+  "level": "ngo",
+  "company": "scdf",
+  "title": {
+   "en": "Foreign donation compliance (simulated)",
+   "bn": "বৈদেশিক অনুদান কমপ্লায়েন্স (সিমুলেটেড)"
+  },
+  "goal": {
+   "en": "Reference numbers and the foreign donation register.",
+   "bn": "রেফারেন্স নম্বর ও বৈদেশিক অনুদান রেজিস্টার।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Add grant G6 with FD-6 reference \"FD6-TEST\".",
+     "bn": "FD6-TEST রেফারেন্সসহ G6 যোগ।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "row",
+     "reg": "grants",
+     "where": {
+      "id": "G6",
+      "fd6": "FD6-TEST"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Book a foreign receipt 1,000 USD (FC Receipt Voucher).",
+     "bn": "১,০০০ USD ফরেন রিসিপ্ট।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "voucher",
+     "fxCurrency": "USD",
+     "fxAmount": 1000
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open the Foreign Donation Register.",
+     "bn": "Foreign Donation Register খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:grants.foreign"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "row",
+    "reg": "grants",
+    "row": {
+     "id": "G6",
+     "name": "Foreign Test",
+     "donor": "Test Foreign Donor",
+     "project": "Livelihood Support",
+     "amount": "50000.00",
+     "currency": "USD",
+     "start": "2026-01-01",
+     "end": "2026-12-31",
+     "approvalRef": "APPR-1",
+     "fd6": "FD6-TEST",
+     "fd7": "FD7-TEST",
+     "validTill": "2027-01-01",
+     "status": "Active",
+     "incomeLedger": "Embassy Livelihood Grant",
+     "fundLedger": "Embassy Livelihood Fund"
+    }
+   },
+   {
+    "op": "run",
+    "action": "fxReceipt",
+    "v": {
+     "date": "5-3-2026",
+     "bank": "Dutch-Bangla FC A/c",
+     "income": "Foreign Donations",
+     "amount": "1000",
+     "cur": "USD",
+     "rate": "122"
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:grants.foreign"
+   }
+  ],
+  "covers": [
+   "B4"
+  ]
+ },
+ {
+  "id": "N5",
+  "level": "ngo",
+  "company": "scdf",
+  "title": {
+   "en": "Project costing and burn rate",
+   "bn": "প্রকল্প কস্টিং ও বার্ন রেট"
+  },
+  "goal": {
+   "en": "Projects, overhead and cross reports.",
+   "bn": "প্রকল্প, ওভারহেড ও ক্রস রিপোর্ট।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Add project \"Solar Pilot\" (overhead 10%) in Project Master.",
+     "bn": "\"Solar Pilot\" প্রকল্প (ওভারহেড ১০%) যোগ।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "row",
+     "reg": "projects",
+     "where": {
+      "project": "Solar Pilot"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Project Costing for Health Camp.",
+     "bn": "Health Camp Project Costing খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:projects.cost"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Burn Rate.",
+     "bn": "Burn Rate খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:projects.burn"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Donor x Project Report.",
+     "bn": "Donor x Project Report খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:grants.cross"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "row",
+    "reg": "projects",
+    "row": {
+     "project": "Solar Pilot",
+     "overheadPct": "10",
+     "budget": "500000.00",
+     "start": "2026-01-01",
+     "end": "2026-12-31",
+     "status": "Active"
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:projects.cost"
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:projects.burn"
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:grants.cross"
+   }
+  ],
+  "covers": [
+   "B5"
+  ]
+ },
+ {
+  "id": "N6",
+  "level": "ngo",
+  "company": "scdf",
+  "title": {
+   "en": "Budget management and alerts",
+   "bn": "বাজেট ব্যবস্থাপনা ও সতর্কতা"
+  },
+  "goal": {
+   "en": "Revise a budget and watch alerts.",
+   "bn": "বাজেট সংশোধন ও সতর্কতা।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Add a revised budget row for Health Camp: 15,00,000, revision 3, status Revised.",
+     "bn": "Health Camp বাজেট: ১৫,০০,০০০, রিভিশন ৩।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "row",
+     "reg": "budgets",
+     "where": {
+      "key": "Health Camp",
+      "revision": "3",
+      "annual": "1500000.00"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Budget vs Actual and look for ALERT >90%.",
+     "bn": "Budget vs Actual খুলে ALERT >90% দেখুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:budgets.variance"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "row",
+    "reg": "budgets",
+    "row": {
+     "scope": "Project",
+     "key": "Health Camp",
+     "ledger": "",
+     "annual": "1500000.00",
+     "revision": "3",
+     "status": "Revised"
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:budgets.variance"
+   }
+  ],
+  "covers": [
+   "B6",
+   "B18"
+  ]
+ },
+ {
+  "id": "N7",
+  "level": "ngo",
+  "company": "scdf",
+  "title": {
+   "en": "Membership and subscriptions",
+   "bn": "সদস্যপদ ও চাঁদা"
+  },
+  "goal": {
+   "en": "Member master and arrears.",
+   "bn": "সদস্য মাস্টার ও বকেয়া।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Add member M900.",
+     "bn": "সদস্য M900 যোগ।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "row",
+     "reg": "members",
+     "where": {
+      "id": "M900"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Receipt Membership Fees 6,000 in Cash.",
+     "bn": "Membership Fees ৬,০০০ রিসিপ্ট।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "voucher",
+     "ledgers": [
+      "Membership Fees"
+     ],
+     "amount": 600000
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Subscription Status.",
+     "bn": "Subscription Status খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:members.status"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "row",
+    "reg": "members",
+    "row": {
+     "id": "M900",
+     "name": "New Member",
+     "category": "General",
+     "joined": "2026-01-01",
+     "subscription": "1200.00",
+     "paidUpto": "2026-12-31",
+     "phone": "017"
+    }
+   },
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Receipt",
+     "date": "2026-03-08",
+     "entries": [
+      {
+       "ledger": "Cash",
+       "amount": 600000
+      },
+      {
+       "ledger": "Membership Fees",
+       "amount": -600000
+      }
+     ]
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:members.status"
+   }
+  ],
+  "covers": [
+   "B7"
+  ]
+ },
+ {
+  "id": "N8",
+  "level": "ngo",
+  "company": "scdf",
+  "title": {
+   "en": "Beneficiary distribution",
+   "bn": "উপকারভোগী বিতরণ"
+  },
+  "goal": {
+   "en": "Register beneficiaries and distributions.",
+   "bn": "উপকারভোগী ও বিতরণ নিবন্ধন।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Add beneficiary B9999.",
+     "bn": "উপকারভোগী B9999 যোগ।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "row",
+     "reg": "beneficiaries",
+     "where": {
+      "id": "B9999"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Add distribution DS99.",
+     "bn": "বিতরণ DS99 যোগ।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "row",
+     "reg": "distributions",
+     "where": {
+      "id": "DS99"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Beneficiaries per Project and Distribution by Camp.",
+     "bn": "Beneficiaries per Project ও Distribution by Camp খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "all",
+     "checks": [
+      {
+       "t": "visited",
+       "key": "report:mod:ben.count"
+      },
+      {
+       "t": "visited",
+       "key": "report:mod:ben.distribution"
+      }
+     ]
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "row",
+    "reg": "beneficiaries",
+    "row": {
+     "id": "B9999",
+     "name": "Test Beneficiary",
+     "village": "Jaflong",
+     "camp": "Jaflong Camp",
+     "programme": "Safe water",
+     "project": "WASH Jaflong"
+    }
+   },
+   {
+    "op": "row",
+    "reg": "distributions",
+    "row": {
+     "id": "DS99",
+     "date": "2026-03-01",
+     "camp": "Jaflong Camp",
+     "item": "Water Filter",
+     "qty": "10",
+     "beneficiaries": "10",
+     "project": "WASH Jaflong"
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:ben.count"
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:ben.distribution"
+   }
+  ],
+  "covers": [
+   "B8"
+  ]
+ },
+ {
+  "id": "N9",
+  "level": "ngo",
+  "company": "scdf",
+  "title": {
+   "en": "Procurement chain and three-way match",
+   "bn": "ক্রয় প্রক্রিয়া ও থ্রি-ওয়ে ম্যাচ"
+  },
+  "goal": {
+   "en": "Requisition to invoice; spot mismatches.",
+   "bn": "রিকুইজিশন থেকে ইনভয়েস; অমিল ধরুন।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Add requisition REQ99 with PO-199.",
+     "bn": "REQ99 (PO-199) যোগ।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "row",
+     "reg": "procurement",
+     "where": {
+      "id": "REQ99",
+      "poNo": "PO-199"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Three-way Match.",
+     "bn": "Three-way Match খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:proc.match"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "row",
+    "reg": "procurement",
+    "row": {
+     "id": "REQ99",
+     "item": "Test item",
+     "project": "Health Camp",
+     "supplier": "Rahim Traders",
+     "quotes": "Q1",
+     "poNo": "PO-199",
+     "poQty": "10",
+     "poAmount": "1000.00",
+     "grnQty": "10",
+     "invQty": "10",
+     "invAmount": "1000.00",
+     "status": "Invoiced",
+     "approval": "Approved"
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:proc.match"
+   }
+  ],
+  "covers": [
+   "B9"
+  ]
+ },
+ {
+  "id": "N10",
+  "level": "ngo",
+  "company": "scdf",
+  "title": {
+   "en": "Fixed asset register and disposal",
+   "bn": "স্থায়ী সম্পদ রেজিস্টার ও বিক্রয়"
+  },
+  "goal": {
+   "en": "Dispose an asset and verify the register.",
+   "bn": "সম্পদ বিক্রয় ও রেজিস্টার যাচাই।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Dispose asset FA06 for 3,000 (Fixed Assets > Dispose Asset).",
+     "bn": "FA06 ৩,০০০ টাকায় বিক্রয় (Dispose Asset)।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "row",
+     "reg": "assets",
+     "where": {
+      "id": "FA06",
+      "status": "Disposed"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Schedule of Fixed Assets and Physical Verification.",
+     "bn": "Schedule ও Physical Verification খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "all",
+     "checks": [
+      {
+       "t": "visited",
+       "key": "report:mod:assets.schedule"
+      },
+      {
+       "t": "visited",
+       "key": "report:mod:assets.verify"
+      }
+     ]
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "run",
+    "action": "disposeAsset",
+    "v": {
+     "id": "FA06",
+     "date": "31-3-2026",
+     "proceeds": "3000",
+     "bank": "Islami Bank A/c"
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:assets.schedule"
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:assets.verify"
+   }
+  ],
+  "covers": [
+   "B10"
+  ]
+ },
+ {
+  "id": "N11",
+  "level": "ngo",
+  "company": "scdf",
+  "title": {
+   "en": "NGO payroll: split, volunteers, consultants",
+   "bn": "এনজিও পেরোল"
+  },
+  "goal": {
+   "en": "Project-split salaries and TDS on consultants.",
+   "bn": "প্রকল্পভিত্তিক বেতন ও পরামর্শকের টিডিএস।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Add consultant C9.",
+     "bn": "পরামর্শক C9 যোগ।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "row",
+     "reg": "employees",
+     "where": {
+      "id": "C9",
+      "type": "Consultant"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Add volunteer V9.",
+     "bn": "স্বেচ্ছাসেবক V9 যোগ।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "row",
+     "reg": "employees",
+     "where": {
+      "id": "V9",
+      "type": "Volunteer"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Payroll Register and Project-wise Payroll Cost.",
+     "bn": "Payroll Register ও Project-wise Cost খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "all",
+     "checks": [
+      {
+       "t": "visited",
+       "key": "report:mod:payroll.register"
+      },
+      {
+       "t": "visited",
+       "key": "report:mod:payroll.project"
+      }
+     ]
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "row",
+    "reg": "employees",
+    "row": {
+     "id": "C9",
+     "name": "Test Consultant",
+     "designation": "Advisor",
+     "type": "Consultant",
+     "basic": "30000.00",
+     "allowance": "0.00",
+     "pfPct": "0",
+     "advance": "0.00",
+     "split": "HEALTH: Medical Camps:60;ADMIN: General Admin:40",
+     "joined": "2026-01-01"
+    }
+   },
+   {
+    "op": "row",
+    "reg": "employees",
+    "row": {
+     "id": "V9",
+     "name": "Test Volunteer",
+     "designation": "Volunteer",
+     "type": "Volunteer",
+     "basic": "3000.00",
+     "allowance": "0.00",
+     "pfPct": "0",
+     "advance": "0.00",
+     "split": "WASH: Hygiene Training:100",
+     "joined": "2026-01-01"
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:payroll.register"
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:payroll.project"
+   }
+  ],
+  "covers": [
+   "B11",
+   "A11"
+  ]
+ },
+ {
+  "id": "N12",
+  "level": "ngo",
+  "company": "scdf",
+  "title": {
+   "en": "Petty cash and imprest",
+   "bn": "পেটি ক্যাশ ও ইমপ্রেস্ট"
+  },
+  "goal": {
+   "en": "Replenish an imprest to its limit.",
+   "bn": "ইমপ্রেস্ট সীমা পর্যন্ত পূরণ।"
+  },
+  "setup": [
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Petty Cash Payment",
+     "date": "2026-03-29",
+     "entries": [
+      {
+       "ledger": "Stationery",
+       "amount": 500000
+      },
+      {
+       "ledger": "Petty Cash - Head Office",
+       "amount": -500000
+      }
+     ],
+     "narration": "N12 spend"
+    }
+   }
+  ],
+  "steps": [
+   {
+    "instruction": {
+     "en": "Open the Cash Count Sheet.",
+     "bn": "Cash Count Sheet খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:petty.count"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Replenish imprest IM1 (Petty Cash > Replenish Imprest).",
+     "bn": "IM1 পূরণ করুন (Replenish Imprest)।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "voucher",
+     "vtype": "Contra",
+     "narr": "Replenish imprest Head Office"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "visit",
+    "key": "report:mod:petty.count"
+   },
+   {
+    "op": "run",
+    "action": "replenish",
+    "v": {
+     "id": "IM1",
+     "date": "31-3-2026",
+     "bank": "Islami Bank A/c"
+    }
+   }
+  ],
+  "covers": [
+   "B12"
+  ]
+ },
+ {
+  "id": "N13",
+  "level": "ngo",
+  "company": "scdf",
+  "title": {
+   "en": "Fundraising: pledges and campaign ROI",
+   "bn": "তহবিল সংগ্রহ: প্রতিশ্রুতি ও ROI"
+  },
+  "goal": {
+   "en": "Pledges versus received.",
+   "bn": "প্রতিশ্রুতি বনাম প্রাপ্তি।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Add pledge PL99.",
+     "bn": "প্রতিশ্রুতি PL99 যোগ।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "row",
+     "reg": "pledges",
+     "where": {
+      "id": "PL99"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Pledges vs Received and Campaign ROI.",
+     "bn": "Pledges vs Received ও Campaign ROI খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "all",
+     "checks": [
+      {
+       "t": "visited",
+       "key": "report:mod:pledges.status"
+      },
+      {
+       "t": "visited",
+       "key": "report:mod:campaign.roi"
+      }
+     ]
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "row",
+    "reg": "pledges",
+    "row": {
+     "id": "PL99",
+     "campaign": "Winter Warmth 2025",
+     "donor": "Test Donor",
+     "amount": "20000.00",
+     "due": "2026-02-01",
+     "received": "0.00"
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:pledges.status"
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:campaign.roi"
+   }
+  ],
+  "covers": [
+   "B13"
+  ]
+ },
+ {
+  "id": "N14",
+  "level": "ngo",
+  "company": "scdf",
+  "title": {
+   "en": "Treasury: FDR interest accrual",
+   "bn": "ট্রেজারি: এফডিআর সুদ"
+  },
+  "goal": {
+   "en": "Accrue interest and TDS on FDRs.",
+   "bn": "এফডিআর সুদ ও টিডিএস।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Treasury & Banking > Post FDR Accrual up to 31-3-2026.",
+     "bn": "Post FDR Accrual (৩১-৩-২০২৬)।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "voucher",
+     "narr": "FDR interest accrual 2026-03-31"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Bank & Treasury Allocation.",
+     "bn": "Bank Allocation খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:bank.allocation"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "run",
+    "action": "fdrAccrual",
+    "v": {
+     "date": "31-3-2026"
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:bank.allocation"
+   }
+  ],
+  "covers": [
+   "B14"
+  ]
+ },
+ {
+  "id": "N15",
+  "level": "ngo",
+  "company": "scdf",
+  "title": {
+   "en": "Sub-grants to partner organisations",
+   "bn": "সহযোগী সংস্থাকে সাব-গ্র্যান্ট"
+  },
+  "goal": {
+   "en": "Partner register and SOE.",
+   "bn": "পার্টনার রেজিস্টার ও এসওই।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Add partner P2.",
+     "bn": "পার্টনার P2 যোগ।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "row",
+     "reg": "partners",
+     "where": {
+      "id": "P2"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open the Statement of Expenditure.",
+     "bn": "Statement of Expenditure খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:sub.statement"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "row",
+    "reg": "partners",
+    "row": {
+     "id": "P2",
+     "name": "Test Partner",
+     "grant": "G5",
+     "tranche": "100000.00",
+     "utilised": "40000.00",
+     "soeDue": "2026-05-01",
+     "status": "Active"
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:sub.statement"
+   }
+  ],
+  "covers": [
+   "B15"
+  ]
+ },
+ {
+  "id": "N16",
+  "level": "ngo",
+  "company": "scdf",
+  "title": {
+   "en": "Statutory dues: VAT, TDS and challans",
+   "bn": "স্ট্যাটিউটরি: ভ্যাট, টিডিএস ও চালান"
+  },
+  "goal": {
+   "en": "Track dues and deposit challans.",
+   "bn": "বকেয়া ট্র্যাক ও চালান জমা।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Create ledger \"TDS on Rent\" under Duties & Taxes, type TDS.",
+     "bn": "\"TDS on Rent\" লেজার (TDS)।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "master",
+     "kind": "ledger",
+     "name": "TDS on Rent",
+     "where": {
+      "taxType": "TDS"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open VAT Summary and TDS Payable & Challans.",
+     "bn": "VAT Summary ও TDS Payable খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "all",
+     "checks": [
+      {
+       "t": "visited",
+       "key": "report:vat"
+      },
+      {
+       "t": "visited",
+       "key": "report:tds"
+      }
+     ]
+    }
+   },
+   {
+    "instruction": {
+     "en": "Deposit challan: Payment Dr TDS on Rent 4,444.",
+     "bn": "চালান: TDS on Rent ৪,৪৪৪।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "voucher",
+     "vtype": "Payment",
+     "ledgers": [
+      "TDS on Rent"
+     ],
+     "amount": 444400
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "master",
+    "kind": "ledger",
+    "obj": {
+     "name": "TDS on Rent",
+     "group": "Duties & Taxes",
+     "opening": 0,
+     "taxType": "TDS",
+     "taxRate": 500
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:vat"
+   },
+   {
+    "op": "visit",
+    "key": "report:tds"
+   },
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Payment",
+     "date": "2026-03-18",
+     "entries": [
+      {
+       "ledger": "TDS on Rent",
+       "amount": 444400
+      },
+      {
+       "ledger": "Islami Bank A/c",
+       "amount": -444400
+      }
+     ]
+    }
+   }
+  ],
+  "covers": [
+   "A12"
+  ]
+ },
+ {
+  "id": "N17",
+  "level": "ngo",
+  "company": "scdf",
+  "title": {
+   "en": "Final reporting pack",
+   "bn": "চূড়ান্ত রিপোর্টিং প্যাক"
+  },
+  "goal": {
+   "en": "Schedules, utilisation certificate, statistics and auditor pack.",
+   "bn": "শিডিউল, ইউটিলাইজেশন সার্টিফিকেট, পরিসংখ্যান ও অডিটর প্যাক।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Open Notes to Accounts.",
+     "bn": "Notes to Accounts খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:pack.notes"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open the Utilisation Certificate (G2).",
+     "bn": "Utilisation Certificate (G2) খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:pack.uc"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Management Statistics.",
+     "bn": "Management Statistics খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:pack.dashboard"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Run Auditor Pack (PDF).",
+     "bn": "Auditor Pack (PDF) চালান।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "fn:auditorPack"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "visit",
+    "key": "report:mod:pack.notes"
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:pack.uc"
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:pack.dashboard"
+   },
+   {
+    "op": "visit",
+    "key": "fn:auditorPack"
+   }
+  ],
+  "covers": [
+   "B16"
+  ]
+ },
+ {
+  "id": "N18",
+  "level": "ngo",
+  "company": "scdf",
+  "title": {
+   "en": "Year-end and audit readiness",
+   "bn": "বছরশেষ ও অডিট প্রস্তুতি"
+  },
+  "goal": {
+   "en": "Work through the checklist.",
+   "bn": "চেকলিস্ট ধরে এগোন।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Open the Year-end Checklist.",
+     "bn": "Year-end Checklist খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:audit.yearend"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Audit Exceptions.",
+     "bn": "Audit Exceptions খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:audit.exceptions"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Journal: Dr Audit Fee / Cr Outstanding Audit Fee 5,432 narration \"Year-end accrual N18\".",
+     "bn": "জার্নাল: Audit Fee / Outstanding Audit Fee ৫,৪৩২ \"Year-end accrual N18\"।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "voucher",
+     "vtype": "Journal",
+     "narr": "Year-end accrual N18",
+     "amount": 543200
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "visit",
+    "key": "report:mod:audit.yearend"
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:audit.exceptions"
+   },
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Journal",
+     "date": "2026-03-31",
+     "entries": [
+      {
+       "ledger": "Audit Fee",
+       "amount": 543200
+      },
+      {
+       "ledger": "Outstanding Audit Fee",
+       "amount": -543200
+      }
+     ],
+     "narration": "Year-end accrual N18"
+    }
+   }
+  ],
+  "covers": [
+   "B17",
+   "A9"
+  ]
+ }
+]

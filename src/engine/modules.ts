@@ -65,7 +65,7 @@ export function payrollCalc(c: Company, month: string): { slips: Slip[]; entries
       employerPf = pf;
       adv = Math.min(Math.max(advBal, 0), Math.round(money(e, 'advance') / 12));
       advBal -= adv;
-      addDr(c.features.costCentres ? 'Salaries' : 'Salaries', gross, split);
+      addDr('Salary Expense', gross, split);
       addDr('Employer PF Contribution', employerPf, split);
     } else if (e.type === 'Volunteer') addDr('Volunteer Honorarium', gross, split);
     else { tds = Math.round(gross / 10); addDr('Consultancy Fees', gross, split); }
@@ -110,7 +110,7 @@ export function payrollRegister(c: Company, month: string): Tab {
 /** Salary cost by cost centre (project payroll cost) from posted vouchers. */
 export function projectPayrollCost(c: Company, p: Period): Tab {
   const m = new Map<string, Paisa>();
-  const led = ['Salaries', 'Employer PF Contribution', 'Volunteer Honorarium', 'Consultancy Fees'];
+  const led = ['Salary Expense', 'Employer PF Contribution', 'Volunteer Honorarium', 'Consultancy Fees'];
   for (const v of postedVouchers(c, p)) for (const e of v.entries) if (led.includes(e.ledger)) for (const a of e.costCentres ?? []) m.set(a.costCentre, (m.get(a.costCentre) ?? 0) + a.amount);
   return { title: 'Project-wise Payroll Cost', subtitle: `${p.from} to ${p.to}`, columns: ['Cost Centre', 'Payroll cost'], kinds: ['t', 'a'], rows: [...m].sort((a, b) => b[1] - a[1]), total: true, drill: 'centre' };
 }

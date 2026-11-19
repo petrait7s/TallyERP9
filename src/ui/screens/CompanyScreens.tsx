@@ -8,6 +8,7 @@ import { formatDate, fyEndFor, nextDay, parseTallyDate } from '../dates';
 import type { KeyHandler } from '../keys';
 import { getAdapter, loadCompanyFile, saveCompany, uid, type CompanyMeta } from '../persist';
 import { flushSave, useApp } from '../store';
+import { SANDBOX_IDS, useLearn } from '../learn/store';
 
 type Register = (h: KeyHandler | null) => void;
 
@@ -32,6 +33,7 @@ function Message(props: { title: string; lines: string[]; register: Register }) 
 }
 
 export async function switchCompany(id: string, password?: string): Promise<string | null> {
+  if (SANDBOX_IDS.includes(useApp.getState().companyId)) return 'Finish or exit the lesson first (Learning Centre > Free Practice)';
   await flushSave();
   const c = await loadCompanyFile(id);
   if (!c) return 'Company file not found';
@@ -103,6 +105,7 @@ function CompanyCreate(props: { register: Register }) {
         if (!start) return 'Invalid date';
         if (!v.currency.trim()) return 'Currency required';
         const c = createCompany(v.name.trim(), start, fyEndFor(start), v.currency.trim().toUpperCase(), allFeatures(v.all === 'Yes'));
+        if (SANDBOX_IDS.includes(useApp.getState().companyId)) { useLearn.getState().addCompany(c.name); setHint(`Company "${c.name}" created (practice only)`); pop(); return null; }
         const id = uid();
         await saveCompany(id, c);
         const e = await switchCompany(id);
@@ -159,7 +162,8 @@ function CompanySplit(props: { register: Register }) {
         if (!s) return 'Invalid date';
         if (s <= company.fyEnd) return 'New year must begin after the current year ends';
         const next = carryForward(company, v.name.trim(), s, fyEndFor(s));
-        await saveCompany(uid(), next);
+        if (SANDBOX_IDS.includes(useApp.getState().companyId)) useLearn.getState().addCompany(next.name);
+        else await saveCompany(uid(), next);
         pop();
         push({ id: 'company', title: 'Split done', data: { action: 'message', lines: [`Created "${next.name}" (${formatDate(next.fyStart)} to ${formatDate(next.fyEnd)})`, 'Closing balances, bills and masters were carried forward.', 'Open it from F1: Select Cmp.'] } });
         return null;

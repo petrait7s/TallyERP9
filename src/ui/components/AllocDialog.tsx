@@ -42,7 +42,7 @@ export function AllocDialog({ kind, company, ledger, total, sign, excludeVoucher
   const next = () => {
     const row = rows[cur.r];
     if (colName === 'a' && !row.a) {
-      if (!cur.r) { setError(kind === 'cost' ? 'Select a cost centre' : 'Select a method'); return; }
+      if (!cur.r) { onDone(null); return; } // Enter on an empty first line skips the allocation
       return;
     }
     if (colName === 'amt') {
@@ -132,7 +132,7 @@ export function AllocDialog({ kind, company, ledger, total, sign, excludeVoucher
           </tbody>
         </table>
         {error ? <div className="form-msg err">{error}</div> : null}
-        <div className="typed">Enter: next &nbsp; Esc: skip</div>
+        <div className="typed">Enter: next (empty first line or Esc: skip)</div>
       </div>
     </div>
   );

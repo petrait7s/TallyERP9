@@ -1,0 +1,638 @@
+[
+ {
+  "id": "A1",
+  "level": "advanced",
+  "company": "scdf",
+  "title": {
+   "en": "Foreign grant with exchange gain/loss",
+   "bn": "বৈদেশিক অনুদান ও বিনিময় লাভ/ক্ষতি"
+  },
+  "goal": {
+   "en": "Book a USD receipt at a rate.",
+   "bn": "ডলার রিসিপ্ট রেটসহ এন্ট্রি।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "NGO Management > Grants > FC Receipt Voucher: 2,500 USD at 123.",
+     "bn": "FC Receipt Voucher: ২,৫০০ USD @ ১২৩।"
+    },
+    "hint": {
+     "en": "Try: Grants > FC Receipt Voucher",
+     "bn": "চেষ্টা করুন: Grants > FC Receipt Voucher"
+    },
+    "keys": "Grants > FC Receipt Voucher",
+    "check": {
+     "t": "voucher",
+     "fxCurrency": "USD",
+     "fxAmount": 2500
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Foreign Currency Receipts.",
+     "bn": "FC Receipts খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:grants.fx"
+    }
+   }
+  ],
+  "quiz": [
+   {
+    "q": {
+     "en": "Exchange gain arises when...",
+     "bn": "বিনিময় লাভ হয় যখন..."
+    },
+    "options": [
+     "the foreign currency is worth more in BDT than when booked",
+     "the donor sends less",
+     "the bank charges fees",
+     "the budget is exceeded"
+    ],
+    "answer": 0
+   }
+  ],
+  "solution": [
+   {
+    "op": "run",
+    "action": "fxReceipt",
+    "v": {
+     "date": "10-10-2025",
+     "bank": "Dutch-Bangla FC A/c",
+     "income": "Foreign Donations",
+     "amount": "2500",
+     "cur": "USD",
+     "rate": "123"
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:grants.fx"
+   }
+  ],
+  "covers": [
+   "B4"
+  ]
+ },
+ {
+  "id": "A2",
+  "level": "advanced",
+  "company": "scdf",
+  "title": {
+   "en": "Fixed assets, depreciation and capital fund",
+   "bn": "স্থায়ী সম্পদ, অবচয় ও মূলধন তহবিল"
+  },
+  "goal": {
+   "en": "Add an asset and review the schedule.",
+   "bn": "সম্পদ যোগ করুন ও শিডিউল দেখুন।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Add asset FA90 \"Wheelchair\" in the Asset Register.",
+     "bn": "Asset Register-এ FA90 \"Wheelchair\" যোগ করুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "row",
+     "reg": "assets",
+     "where": {
+      "id": "FA90"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Payment: Furniture & Fixtures Dr 33,333 / Islami Bank A/c Cr.",
+     "bn": "পেমেন্ট: Furniture & Fixtures ৩৩,৩৩৩।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "voucher",
+     "vtype": "Payment",
+     "ledgers": [
+      "Furniture & Fixtures"
+     ],
+     "amount": 3333300
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Schedule of Fixed Assets.",
+     "bn": "Schedule of Fixed Assets খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:assets.schedule"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "row",
+    "reg": "assets",
+    "row": {
+     "id": "FA90",
+     "name": "Wheelchair",
+     "ledger": "Furniture & Fixtures",
+     "funding": "Own",
+     "cost": "33333.00",
+     "date": "2026-03-01",
+     "rate": "10",
+     "method": "SLM",
+     "accDep": "0.00",
+     "status": "In use",
+     "location": "Head Office",
+     "verified": "Yes"
+    }
+   },
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Payment",
+     "date": "2026-03-01",
+     "entries": [
+      {
+       "ledger": "Furniture & Fixtures",
+       "amount": 3333300
+      },
+      {
+       "ledger": "Islami Bank A/c",
+       "amount": -3333300
+      }
+     ]
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:assets.schedule"
+   }
+  ],
+  "covers": [
+   "B10"
+  ]
+ },
+ {
+  "id": "A3",
+  "level": "advanced",
+  "company": "scdf",
+  "title": {
+   "en": "VAT and TDS basics (simulated)",
+   "bn": "ভ্যাট ও টিডিএস (সিমুলেটেড)"
+  },
+  "goal": {
+   "en": "Flag tax ledgers and read the statutory reports.",
+   "bn": "কর লেজার ও রিপোর্ট দেখুন।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Create ledger \"VAT on Fees\" under Duties & Taxes, type VAT, rate 15.",
+     "bn": "\"VAT on Fees\" লেজার তৈরি, ধরন VAT, হার ১৫।"
+    },
+    "hint": {
+     "en": "Try: Create > Ledger (F11: statutory on)",
+     "bn": "চেষ্টা করুন: Create > Ledger (F11: statutory on)"
+    },
+    "keys": "Create > Ledger (F11: statutory on)",
+    "check": {
+     "t": "master",
+     "kind": "ledger",
+     "name": "VAT on Fees",
+     "where": {
+      "taxType": "VAT"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Display > Statutory Reports > VAT Summary.",
+     "bn": "VAT Summary খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:vat"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open TDS Payable & Challans.",
+     "bn": "TDS Payable & Challans খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:tds"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Deposit TDS: Payment Dr TDS Payable 5,555 from Islami Bank A/c.",
+     "bn": "TDS জমা: TDS Payable ৫,৫৫৫।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "voucher",
+     "vtype": "Payment",
+     "ledgers": [
+      "TDS Payable"
+     ],
+     "amount": 555500
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "master",
+    "kind": "ledger",
+    "obj": {
+     "name": "VAT on Fees",
+     "group": "Duties & Taxes",
+     "opening": 0,
+     "taxType": "VAT",
+     "taxRate": 1500
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:vat"
+   },
+   {
+    "op": "visit",
+    "key": "report:tds"
+   },
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Payment",
+     "date": "2026-03-20",
+     "entries": [
+      {
+       "ledger": "TDS Payable",
+       "amount": 555500
+      },
+      {
+       "ledger": "Islami Bank A/c",
+       "amount": -555500
+      }
+     ]
+    }
+   }
+  ],
+  "covers": [
+   "A12"
+  ]
+ },
+ {
+  "id": "A4",
+  "level": "advanced",
+  "company": "scdf",
+  "title": {
+   "en": "Budgets and variance",
+   "bn": "বাজেট ও ভ্যারিয়েন্স"
+  },
+  "goal": {
+   "en": "Create a budget and read the variance report.",
+   "bn": "বাজেট তৈরি ও ভ্যারিয়েন্স দেখুন।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Add a Project budget for \"Health Camp\": annual 12,34,567, revision 2, status Revised.",
+     "bn": "\"Health Camp\" প্রকল্প বাজেট: ১২,৩৪,৫৬৭, রিভিশন ২, Revised।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "row",
+     "reg": "budgets",
+     "where": {
+      "key": "Health Camp",
+      "annual": "1234567.00"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Budget vs Actual.",
+     "bn": "Budget vs Actual খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:budgets.variance"
+    }
+   }
+  ],
+  "quiz": [
+   {
+    "q": {
+     "en": "A budget alert is raised when usage exceeds:",
+     "bn": "বাজেট সতর্কতা কখন?"
+    },
+    "options": [
+     "90%",
+     "10%",
+     "50%",
+     "0%"
+    ],
+    "answer": 0
+   }
+  ],
+  "solution": [
+   {
+    "op": "row",
+    "reg": "budgets",
+    "row": {
+     "scope": "Project",
+     "key": "Health Camp",
+     "ledger": "",
+     "annual": "1234567.00",
+     "revision": "2",
+     "status": "Revised"
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:budgets.variance"
+   }
+  ],
+  "covers": [
+   "A7",
+   "B6"
+  ]
+ },
+ {
+  "id": "A5",
+  "level": "advanced",
+  "company": "scdf",
+  "title": {
+   "en": "Year-end closing and new financial year",
+   "bn": "বছরশেষ ও নতুন আর্থিক বছর"
+  },
+  "goal": {
+   "en": "Carry balances forward into a new company.",
+   "bn": "নতুন কোম্পানিতে ব্যালান্স ক্যারি-ফরোয়ার্ড।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "F3 > Split Company Data: accept the suggested name (2026-27).",
+     "bn": "F3 > Split Company Data: প্রস্তাবিত নাম রাখুন।"
+    },
+    "hint": {
+     "en": "Try: F3 > Split Company Data",
+     "bn": "চেষ্টা করুন: F3 > Split Company Data"
+    },
+    "keys": "F3 > Split Company Data",
+    "check": {
+     "t": "cmpExists",
+     "name": "Sylhet Community Development Foundation (2026-27)"
+    }
+   }
+  ],
+  "quiz": [
+   {
+    "q": {
+     "en": "On carry-forward, the surplus moves to:",
+     "bn": "ক্যারি-ফরোয়ার্ডে উদ্বৃত্ত যায়:"
+    },
+    "options": [
+     "Profit & Loss / fund opening balance",
+     "Cash",
+     "Creditors",
+     "Fixed assets"
+    ],
+    "answer": 0
+   }
+  ],
+  "solution": [
+   {
+    "op": "cmp",
+    "name": "Sylhet Community Development Foundation (2026-27)"
+   }
+  ],
+  "covers": [
+   "A1"
+  ]
+ },
+ {
+  "id": "A6",
+  "level": "advanced",
+  "company": "scdf",
+  "title": {
+   "en": "Backup, restore, data repair and edit log",
+   "bn": "ব্যাকআপ, রিস্টোর, ডেটা রিপেয়ার ও এডিট লগ"
+  },
+  "goal": {
+   "en": "Protect and verify your data.",
+   "bn": "ডেটা সুরক্ষিত ও যাচাই করুন।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "F3 > Backup.",
+     "bn": "F3 > Backup।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "screen:company:backup"
+    }
+   },
+   {
+    "instruction": {
+     "en": "F3 > Data Repair.",
+     "bn": "F3 > Data Repair।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "screen:company:repair"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Audit & Compliance > Edit Log.",
+     "bn": "Edit Log খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:mod:audit.editlog"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "visit",
+    "key": "screen:company:backup"
+   },
+   {
+    "op": "visit",
+    "key": "screen:company:repair"
+   },
+   {
+    "op": "visit",
+    "key": "report:mod:audit.editlog"
+   }
+  ],
+  "covers": [
+   "A1",
+   "A9"
+  ]
+ },
+ {
+  "id": "A7",
+  "level": "advanced",
+  "company": "scdf",
+  "title": {
+   "en": "Ratios, funds flow and the auditor pack",
+   "bn": "রেশিও, ফান্ড ফ্লো ও অডিটর প্যাক"
+  },
+  "goal": {
+   "en": "Prepare statements for the auditor.",
+   "bn": "অডিটরের জন্য বিবরণী প্রস্তুত করুন।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Open Ratio Analysis.",
+     "bn": "Ratio Analysis খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:ratio"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open Display > Statements of Accounts > Fund Statement.",
+     "bn": "Fund Statement খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "report:funds"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Reporting Pack > Auditor Pack (PDF).",
+     "bn": "Reporting Pack > Auditor Pack (PDF)।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "fn:auditorPack"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "visit",
+    "key": "report:ratio"
+   },
+   {
+    "op": "visit",
+    "key": "report:funds"
+   },
+   {
+    "op": "visit",
+    "key": "fn:auditorPack"
+   }
+  ],
+  "covers": [
+   "A8",
+   "A10"
+  ]
+ },
+ {
+  "id": "A8",
+  "level": "advanced",
+  "company": "scdf",
+  "title": {
+   "en": "Interview Simulator: 30 tasks + 50 MCQ",
+   "bn": "ইন্টারভিউ সিমুলেটর: ৩০ টাস্ক + ৫০ MCQ"
+  },
+  "goal": {
+   "en": "Take the timed practical test and get a certificate.",
+   "bn": "সময়সীমাসহ পরীক্ষা দিন ও সার্টিফিকেট নিন।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Learning Centre > Interview Simulator: finish and pass (70%).",
+     "bn": "Learning Centre > Interview Simulator সম্পন্ন করুন (৭০%)।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "interview:passed"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "visit",
+    "key": "interview:passed"
+   }
+  ],
+  "covers": [
+   "A8"
+  ]
+ }
+]

@@ -1,0 +1,806 @@
+[
+ {
+  "id": "B1",
+  "level": "beginner",
+  "company": "tea",
+  "title": {
+   "en": "Accounting basics: Dr/Cr and the golden rules",
+   "bn": "হিসাবের মূল কথা: ডেবিট/ক্রেডিট ও সোনালী নিয়ম"
+  },
+  "goal": {
+   "en": "Understand Dr/Cr, Personal / Real / Nominal accounts and check that a Trial Balance agrees.",
+   "bn": "ডেবিট/ক্রেডিট, ব্যক্তিগত/বাস্তব/নামিক হিসাব বুঝুন এবং ট্রায়াল ব্যালান্স মিলান।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Open Gateway > Display > Trial Balance. Total Debit must equal Total Credit.",
+     "bn": "Gateway > Display > Trial Balance খুলুন। মোট ডেবিট ও ক্রেডিট সমান হতে হবে।"
+    },
+    "hint": {
+     "en": "Try: Display > Trial Balance",
+     "bn": "চেষ্টা করুন: Display > Trial Balance"
+    },
+    "keys": "Display > Trial Balance",
+    "check": {
+     "t": "visited",
+     "key": "report:tb"
+    }
+   }
+  ],
+  "quiz": [
+   {
+    "q": {
+     "en": "Rule for a PERSONAL account:",
+     "bn": "ব্যক্তিগত হিসাবের নিয়ম:"
+    },
+    "options": [
+     "Debit the receiver, Credit the giver",
+     "Debit what comes in, Credit what goes out",
+     "Debit expenses and losses, Credit incomes and gains",
+     "Credit the receiver"
+    ],
+    "answer": 0
+   },
+   {
+    "q": {
+     "en": "Rule for a REAL account:",
+     "bn": "বাস্তব হিসাবের নিয়ম:"
+    },
+    "options": [
+     "Debit what comes in, Credit what goes out",
+     "Debit the giver",
+     "Debit incomes",
+     "Credit assets"
+    ],
+    "answer": 0
+   },
+   {
+    "q": {
+     "en": "Rule for a NOMINAL account:",
+     "bn": "নামিক হিসাবের নিয়ম:"
+    },
+    "options": [
+     "Debit all expenses and losses, Credit all incomes and gains",
+     "Debit the giver",
+     "Credit expenses",
+     "Debit incomes"
+    ],
+    "answer": 0
+   },
+   {
+    "q": {
+     "en": "An NGO receives a donation in cash. Which entry is correct?",
+     "bn": "নগদ অনুদান পেলে সঠিক এন্ট্রি:"
+    },
+    "options": [
+     "Dr Cash, Cr Donations",
+     "Dr Donations, Cr Cash",
+     "Dr Cash, Cr Capital Fund",
+     "Dr Donations, Cr Bank"
+    ],
+    "answer": 0
+   }
+  ],
+  "solution": [
+   {
+    "op": "visit",
+    "key": "report:tb"
+   }
+  ],
+  "covers": [
+   "A8"
+  ]
+ },
+ {
+  "id": "B2",
+  "level": "beginner",
+  "company": "tea",
+  "title": {
+   "en": "Navigation: Gateway, keys, date and company",
+   "bn": "নেভিগেশন: গেটওয়ে, কী, তারিখ ও কোম্পানি"
+  },
+  "goal": {
+   "en": "Move around with Enter, Esc and the F-keys.",
+   "bn": "Enter, Esc ও F-কী দিয়ে চলাফেরা শিখুন।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Press F2 to open the date dialog (then Esc).",
+     "bn": "F2 চেপে তারিখের ডায়ালগ খুলুন (পরে Esc)।"
+    },
+    "hint": {
+     "en": "Try: F2",
+     "bn": "চেষ্টা করুন: F2"
+    },
+    "keys": "F2",
+    "check": {
+     "t": "visited",
+     "key": "key:F2"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Press F11 to see the Features list (then Esc).",
+     "bn": "F11 চেপে ফিচার তালিকা দেখুন (পরে Esc)।"
+    },
+    "hint": {
+     "en": "Try: F11",
+     "bn": "চেষ্টা করুন: F11"
+    },
+    "keys": "F11",
+    "check": {
+     "t": "visited",
+     "key": "overlay:features"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Press F1 to open the list of companies (then Esc).",
+     "bn": "F1 চেপে কোম্পানির তালিকা দেখুন (পরে Esc)।"
+    },
+    "hint": {
+     "en": "Try: F1",
+     "bn": "চেষ্টা করুন: F1"
+    },
+    "keys": "F1",
+    "check": {
+     "t": "visited",
+     "key": "screen:company:select"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Press Ctrl+/ for the shortcut cheat sheet (then Esc).",
+     "bn": "Ctrl+/ চেপে শর্টকাট শিট দেখুন (পরে Esc)।"
+    },
+    "hint": {
+     "en": "Try: Ctrl+/",
+     "bn": "চেষ্টা করুন: Ctrl+/"
+    },
+    "keys": "Ctrl+/",
+    "check": {
+     "t": "visited",
+     "key": "overlay:cheatsheet"
+    }
+   }
+  ],
+  "quiz": [
+   {
+    "q": {
+     "en": "Which key goes back one screen?",
+     "bn": "কোন কী এক ধাপ পেছনে যায়?"
+    },
+    "options": [
+     "Esc",
+     "Enter",
+     "F2",
+     "Ctrl+A"
+    ],
+    "answer": 0
+   },
+   {
+    "q": {
+     "en": "Which key accepts a form?",
+     "bn": "ফর্ম গ্রহণ করে কোন কী?"
+    },
+    "options": [
+     "Ctrl+A",
+     "Esc",
+     "F2",
+     "Alt+D"
+    ],
+    "answer": 0
+   }
+  ],
+  "solution": [
+   {
+    "op": "visit",
+    "key": "key:F2"
+   },
+   {
+    "op": "visit",
+    "key": "overlay:features"
+   },
+   {
+    "op": "visit",
+    "key": "screen:company:select"
+   },
+   {
+    "op": "visit",
+    "key": "overlay:cheatsheet"
+   }
+  ],
+  "covers": [
+   "A1"
+  ]
+ },
+ {
+  "id": "B3",
+  "level": "beginner",
+  "company": "blank",
+  "title": {
+   "en": "Create an NGO company",
+   "bn": "এনজিও কোম্পানি তৈরি"
+  },
+  "goal": {
+   "en": "Create a company with its financial year and currency.",
+   "bn": "আর্থিক বছর ও মুদ্রাসহ কোম্পানি তৈরি করুন।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Press F3 > Create Company. Name it \"Green Hope Foundation\", FY from 1-Apr-2025, currency BDT. Ctrl+A to accept.",
+     "bn": "F3 > Create Company। নাম \"Green Hope Foundation\", বছর ১-এপ্রিল-২০২৫, মুদ্রা BDT। Ctrl+A দিন।"
+    },
+    "hint": {
+     "en": "Try: F3 > Create Company",
+     "bn": "চেষ্টা করুন: F3 > Create Company"
+    },
+    "keys": "F3 > Create Company",
+    "check": {
+     "t": "cmpExists",
+     "name": "Green Hope Foundation"
+    }
+   }
+  ],
+  "quiz": [
+   {
+    "q": {
+     "en": "A financial year in Bangladesh NGOs usually starts on:",
+     "bn": "বাংলাদেশের এনজিওর আর্থিক বছর সাধারণত শুরু:"
+    },
+    "options": [
+     "1 July or 1 April (configurable)",
+     "1 January only",
+     "1 December",
+     "15 August"
+    ],
+    "answer": 0
+   }
+  ],
+  "solution": [
+   {
+    "op": "cmp",
+    "name": "Green Hope Foundation"
+   }
+  ],
+  "covers": [
+   "A1"
+  ]
+ },
+ {
+  "id": "B4",
+  "level": "beginner",
+  "company": "blank",
+  "title": {
+   "en": "Groups and ledgers, and Alt+C on the fly",
+   "bn": "গ্রুপ, লেজার এবং Alt+C"
+  },
+  "goal": {
+   "en": "Create a group, a ledger, and create one while entering another master.",
+   "bn": "গ্রুপ ও লেজার তৈরি করুন; অন্য মাস্টার তৈরির সময় Alt+C ব্যবহার করুন।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Create a group \"Zakat Funds\" under \"Restricted Funds\".",
+     "bn": "\"Restricted Funds\"-এর অধীনে \"Zakat Funds\" গ্রুপ তৈরি করুন।"
+    },
+    "hint": {
+     "en": "Try: Masters > Create > Accounting Masters > Group",
+     "bn": "চেষ্টা করুন: Masters > Create > Accounting Masters > Group"
+    },
+    "keys": "Masters > Create > Accounting Masters > Group",
+    "check": {
+     "t": "master",
+     "kind": "group",
+     "name": "Zakat Funds",
+     "where": {
+      "parent": "Restricted Funds"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Create ledger \"Zakat Collection\" under \"Donations\". While choosing \"Under\", you may press Alt+C to create a group on the fly.",
+     "bn": "\"Zakat Collection\" লেজার \"Donations\"-এর অধীনে তৈরি করুন। \"Under\" বাছাইয়ের সময় Alt+C দিয়ে গ্রুপ তৈরি করা যায়।"
+    },
+    "hint": {
+     "en": "Try: Create > Ledger",
+     "bn": "চেষ্টা করুন: Create > Ledger"
+    },
+    "keys": "Create > Ledger",
+    "check": {
+     "t": "master",
+     "kind": "ledger",
+     "name": "Zakat Collection",
+     "where": {
+      "group": "Donations"
+     }
+    }
+   },
+   {
+    "instruction": {
+     "en": "Press Alt+C once in any selection field to see on-the-fly creation.",
+     "bn": "যেকোনো সিলেকশন ফিল্ডে একবার Alt+C চাপুন।"
+    },
+    "hint": {
+     "en": "Try: Alt+C",
+     "bn": "চেষ্টা করুন: Alt+C"
+    },
+    "keys": "Alt+C",
+    "check": {
+     "t": "visited",
+     "key": "key:Alt+C"
+    }
+   }
+  ],
+  "quiz": [
+   {
+    "q": {
+     "en": "Which group holds donation income?",
+     "bn": "অনুদানের আয় কোন গ্রুপে থাকে?"
+    },
+    "options": [
+     "Donations",
+     "Sundry Debtors",
+     "Fixed Assets",
+     "Bank Accounts"
+    ],
+    "answer": 0
+   }
+  ],
+  "solution": [
+   {
+    "op": "master",
+    "kind": "group",
+    "obj": {
+     "name": "Zakat Funds",
+     "parent": "Restricted Funds",
+     "nature": "liability"
+    }
+   },
+   {
+    "op": "master",
+    "kind": "ledger",
+    "obj": {
+     "name": "Zakat Collection",
+     "group": "Donations",
+     "opening": 0
+    }
+   },
+   {
+    "op": "visit",
+    "key": "key:Alt+C"
+   }
+  ],
+  "covers": [
+   "A2"
+  ]
+ },
+ {
+  "id": "B5",
+  "level": "beginner",
+  "company": "scdf",
+  "title": {
+   "en": "First vouchers: Receipt, Payment, Contra",
+   "bn": "প্রথম ভাউচার: রিসিপ্ট, পেমেন্ট, কন্ট্রা"
+  },
+  "goal": {
+   "en": "Record a donation, an expense and a cash deposit.",
+   "bn": "অনুদান, খরচ ও নগদ জমা এন্ট্রি করুন।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "F6 Receipt: Cash Dr / Local Donations Cr, amount 7,777.",
+     "bn": "F6 রিসিপ্ট: Cash ডেবিট / Local Donations ক্রেডিট, ৭,৭৭৭ টাকা।"
+    },
+    "hint": {
+     "en": "Try: F6",
+     "bn": "চেষ্টা করুন: F6"
+    },
+    "keys": "F6",
+    "check": {
+     "t": "voucher",
+     "vtype": "Receipt",
+     "ledgers": [
+      "Cash",
+      "Local Donations"
+     ],
+     "amount": 777700
+    }
+   },
+   {
+    "instruction": {
+     "en": "F5 Payment: pay Rent 12,345 from Cash.",
+     "bn": "F5 পেমেন্ট: নগদ থেকে Rent ১২,৩৪৫ টাকা।"
+    },
+    "hint": {
+     "en": "Try: F5",
+     "bn": "চেষ্টা করুন: F5"
+    },
+    "keys": "F5",
+    "check": {
+     "t": "voucher",
+     "vtype": "Payment",
+     "ledgers": [
+      "Cash",
+      "Rent"
+     ],
+     "amount": 1234500
+    }
+   },
+   {
+    "instruction": {
+     "en": "F4 Contra: deposit 4,321 from Cash into Islami Bank A/c.",
+     "bn": "F4 কন্ট্রা: Cash থেকে Islami Bank A/c-তে ৪,৩২১ জমা।"
+    },
+    "hint": {
+     "en": "Try: F4",
+     "bn": "চেষ্টা করুন: F4"
+    },
+    "keys": "F4",
+    "check": {
+     "t": "voucher",
+     "vtype": "Contra",
+     "ledgers": [
+      "Cash",
+      "Islami Bank A/c"
+     ],
+     "amount": 432100
+    }
+   }
+  ],
+  "quiz": [
+   {
+    "q": {
+     "en": "A Contra voucher moves money between:",
+     "bn": "কন্ট্রা ভাউচার কোথায় টাকা সরায়?"
+    },
+    "options": [
+     "Cash and Bank",
+     "Debtor and Creditor",
+     "Income and Expense",
+     "Capital and Fund"
+    ],
+    "answer": 0
+   },
+   {
+    "q": {
+     "en": "Which key opens the Payment voucher?",
+     "bn": "পেমেন্ট ভাউচার খোলে:"
+    },
+    "options": [
+     "F5",
+     "F6",
+     "F7",
+     "F4"
+    ],
+    "answer": 0
+   }
+  ],
+  "solution": [
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Receipt",
+     "date": "2025-04-10",
+     "entries": [
+      {
+       "ledger": "Cash",
+       "amount": 777700
+      },
+      {
+       "ledger": "Local Donations",
+       "amount": -777700
+      }
+     ]
+    }
+   },
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Payment",
+     "date": "2025-04-11",
+     "entries": [
+      {
+       "ledger": "Rent",
+       "amount": 1234500
+      },
+      {
+       "ledger": "Cash",
+       "amount": -1234500
+      }
+     ]
+    }
+   },
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Contra",
+     "date": "2025-04-12",
+     "entries": [
+      {
+       "ledger": "Islami Bank A/c",
+       "amount": 432100
+      },
+      {
+       "ledger": "Cash",
+       "amount": -432100
+      }
+     ]
+    }
+   }
+  ],
+  "covers": [
+   "A3"
+  ]
+ },
+ {
+  "id": "B6",
+  "level": "beginner",
+  "company": "scdf",
+  "title": {
+   "en": "Day Book, Ledger and Trial Balance drill-down",
+   "bn": "ডে বুক, লেজার ও ট্রায়াল ব্যালান্স ড্রিল-ডাউন"
+  },
+  "goal": {
+   "en": "Drill from totals down to the voucher.",
+   "bn": "মোট থেকে ভাউচার পর্যন্ত ড্রিল-ডাউন করুন।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Open Display > Day Book.",
+     "bn": "Display > Day Book খুলুন।"
+    },
+    "hint": {
+     "en": "Try: Display > Day Book",
+     "bn": "চেষ্টা করুন: Display > Day Book"
+    },
+    "keys": "Display > Day Book",
+    "check": {
+     "t": "visited",
+     "key": "report:daybook"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open an Account Books > Ledger (pick any ledger).",
+     "bn": "Account Books > Ledger খুলুন।"
+    },
+    "hint": {
+     "en": "Try: Display > Account Books > Ledger",
+     "bn": "চেষ্টা করুন: Display > Account Books > Ledger"
+    },
+    "keys": "Display > Account Books > Ledger",
+    "check": {
+     "t": "visited",
+     "key": "report:ledger"
+    }
+   },
+   {
+    "instruction": {
+     "en": "Open the Trial Balance and press Enter on a group.",
+     "bn": "Trial Balance খুলে একটি গ্রুপে Enter দিন।"
+    },
+    "hint": {
+     "en": "Try: Trial Balance > Enter",
+     "bn": "চেষ্টা করুন: Trial Balance > Enter"
+    },
+    "keys": "Trial Balance > Enter",
+    "check": {
+     "t": "visited",
+     "key": "report:group"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "visit",
+    "key": "report:daybook"
+   },
+   {
+    "op": "visit",
+    "key": "report:ledger"
+   },
+   {
+    "op": "visit",
+    "key": "report:group"
+   }
+  ],
+  "covers": [
+   "A8"
+  ]
+ },
+ {
+  "id": "B7",
+  "level": "beginner",
+  "company": "scdf",
+  "title": {
+   "en": "Alter, delete, cancel and duplicate vouchers",
+   "bn": "ভাউচার সংশোধন, মুছা, বাতিল ও ডুপ্লিকেট"
+  },
+  "goal": {
+   "en": "Fix mistakes the Tally way.",
+   "bn": "ভুল ঠিক করুন টালির নিয়মে।"
+  },
+  "setup": [
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Payment",
+     "date": "2025-05-02",
+     "entries": [
+      {
+       "ledger": "Stationery",
+       "amount": 111100
+      },
+      {
+       "ledger": "Cash",
+       "amount": -111100
+      }
+     ],
+     "narration": "B7 alter me"
+    }
+   },
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Payment",
+     "date": "2025-05-03",
+     "entries": [
+      {
+       "ledger": "Stationery",
+       "amount": 22200
+      },
+      {
+       "ledger": "Cash",
+       "amount": -22200
+      }
+     ],
+     "narration": "B7 cancel me"
+    }
+   },
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Payment",
+     "date": "2025-05-04",
+     "entries": [
+      {
+       "ledger": "Stationery",
+       "amount": 33300
+      },
+      {
+       "ledger": "Cash",
+       "amount": -33300
+      }
+     ],
+     "narration": "B7 delete me"
+    }
+   }
+  ],
+  "steps": [
+   {
+    "instruction": {
+     "en": "In the Day Book open voucher \"B7 alter me\" and change the amount to 1,500.",
+     "bn": "Day Book থেকে \"B7 alter me\" ভাউচার খুলে পরিমাণ ১,৫০০ করুন।"
+    },
+    "hint": {
+     "en": "Try: Day Book > Enter",
+     "bn": "চেষ্টা করুন: Day Book > Enter"
+    },
+    "keys": "Day Book > Enter",
+    "check": {
+     "t": "voucher",
+     "narr": "B7 alter me",
+     "amount": 150000
+    }
+   },
+   {
+    "instruction": {
+     "en": "Duplicate it with Alt+2 so there are two vouchers.",
+     "bn": "Alt+2 দিয়ে ডুপ্লিকেট করুন, দুইটি ভাউচার থাকবে।"
+    },
+    "hint": {
+     "en": "Try: Alt+2",
+     "bn": "চেষ্টা করুন: Alt+2"
+    },
+    "keys": "Alt+2",
+    "check": {
+     "t": "voucher",
+     "narr": "B7 alter me",
+     "min": 2
+    }
+   },
+   {
+    "instruction": {
+     "en": "Cancel voucher \"B7 cancel me\" (Alt+X).",
+     "bn": "\"B7 cancel me\" বাতিল করুন (Alt+X)।"
+    },
+    "hint": {
+     "en": "Try: Alt+X",
+     "bn": "চেষ্টা করুন: Alt+X"
+    },
+    "keys": "Alt+X",
+    "check": {
+     "t": "voucher",
+     "narr": "B7 cancel me",
+     "cancelled": true
+    }
+   },
+   {
+    "instruction": {
+     "en": "Delete voucher \"B7 delete me\" (open it, Alt+D).",
+     "bn": "\"B7 delete me\" মুছুন (খুলে Alt+D)।"
+    },
+    "hint": {
+     "en": "Try: Alt+D",
+     "bn": "চেষ্টা করুন: Alt+D"
+    },
+    "keys": "Alt+D",
+    "check": {
+     "t": "all",
+     "checks": [
+      {
+       "t": "not",
+       "check": {
+        "t": "voucher",
+        "narr": "B7 delete me"
+       }
+      },
+      {
+       "t": "not",
+       "check": {
+        "t": "voucher",
+        "narr": "B7 delete me",
+        "cancelled": true
+       }
+      }
+     ]
+    }
+   }
+  ],
+  "quiz": [
+   {
+    "q": {
+     "en": "A cancelled voucher...",
+     "bn": "বাতিল ভাউচার..."
+    },
+    "options": [
+     "stays in the Day Book but has no effect on accounts",
+     "disappears completely",
+     "doubles the amount",
+     "moves to the next year"
+    ],
+    "answer": 0
+   }
+  ],
+  "solution": [
+   {
+    "op": "alterVoucher",
+    "narr": "B7 alter me",
+    "amount": 150000
+   },
+   {
+    "op": "duplicateVoucher",
+    "narr": "B7 alter me"
+   },
+   {
+    "op": "cancelVoucher",
+    "narr": "B7 cancel me"
+   },
+   {
+    "op": "deleteVoucher",
+    "narr": "B7 delete me"
+   }
+  ],
+  "covers": [
+   "A3"
+  ]
+ }
+]

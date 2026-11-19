@@ -21,7 +21,7 @@ export function PickInput(p: Props) {
   useEffect(() => { if (!p.active) { setQuery(''); setHi(0); } }, [p.active]);
   if (p.queryRef && p.active) p.queryRef.current = query;
   const q = query.toLowerCase();
-  const opts = q ? p.options.filter((o) => o.toLowerCase().includes(q)) : p.options;
+  const opts = q ? [...p.options.filter((o) => o.toLowerCase().startsWith(q)), ...p.options.filter((o) => !o.toLowerCase().startsWith(q) && o.toLowerCase().includes(q))] : p.options;
 
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (p.readOnly || e.ctrlKey || e.altKey) return;

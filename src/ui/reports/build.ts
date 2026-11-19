@@ -5,6 +5,8 @@ import {
 } from '../../engine';
 import { formatDate } from '../dates';
 import { buildModule } from './modules';
+import { COVERAGE, LESSONS } from '../learn/content';
+import { loadProgress } from '../learn/progress';
 import type { BuildOpts, ReportModel, ReportParams, Row } from './types';
 
 const amt = (p: Paisa) => (p === 0 ? '' : formatAmount(p));
@@ -208,6 +210,7 @@ export function buildReport(c: Company, params: ReportParams, period: Period, op
       return { title: 'Ratio Analysis', subtitle: `as at ${formatDate(period.to)}`, layout: 'single', columns: ['Particulars', 'Value'], numericFrom: 1, rows, canDetail: false, canVertical: false };
     }
     case 'mod': return buildModule(c, params.mod!, params.arg ?? '', period);
+    case 'coverage': return buildCoverage();
     case 'register': return buildRegisterView(c, params.reg!);
     case 'vat': {
       const v = vatSummary(c, period);
@@ -247,4 +250,15 @@ function buildRegisterView(c: Company, id: string): ReportModel {
   const def = regDef(id);
   const rowsx: Row[] = rows(c, id).map((r) => ({ cells: def.fields.map((f) => (f.type === 'amount' && r[f.key] ? formatAmount(toPaisa(r[f.key])) : f.type === 'date' && r[f.key] ? formatDate(r[f.key]) : r[f.key] ?? '')) }));
   return { title: def.title, subtitle: `${rowsx.length} record(s)`, layout: 'single', columns: def.fields.map((f) => f.label), rows: rowsx, numericFrom: 99, canDetail: false, canVertical: false };
+}
+
+function buildCoverage(): ReportModel {
+  const p = loadProgress();
+  const done = (id: string) => !!p.lessons[id]?.done;
+  const rowsx: Row[] = Object.entries(COVERAGE).map(([k, v]) => {
+    const total = v.lessons.length, d = v.lessons.filter(done).length;
+    return { cells: [k, v.title, v.screen, v.lessons.join(', '), total ? `${Math.round((d / total) * 100)}%` : '0%'] };
+  });
+  const pct = Math.round((Object.values(COVERAGE).filter((v) => v.lessons.some(done)).length / Object.keys(COVERAGE).length) * 100);
+  return { title: 'Coverage Map', subtitle: `${LESSONS.length} lessons | catalog items with a completed lesson: ${pct}%`, layout: 'single', columns: ['Item', 'Feature', 'Screen', 'Lessons', 'Done'], rows: rowsx, numericFrom: 4, canDetail: false, canVertical: false };
 }

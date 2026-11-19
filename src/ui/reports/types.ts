@@ -1,6 +1,6 @@
 export type ReportId =
   | 'bs' | 'ie' | 'rp' | 'tb' | 'daybook' | 'ledger' | 'group' | 'cashbank'
-  | 'outstanding' | 'stock' | 'centres' | 'centre' | 'ratio' | 'funds' | 'vat' | 'tds' | 'mod' | 'register';
+  | 'outstanding' | 'stock' | 'centres' | 'centre' | 'ratio' | 'funds' | 'vat' | 'tds' | 'mod' | 'register' | 'coverage';
 
 export interface ReportParams {
   id: ReportId;

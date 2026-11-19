@@ -56,6 +56,9 @@ export function demoCompany(): Company {
   return c;
 }
 
+/** visited keys change often (every keypress); listeners are notified without a React state update. */
+export const visitListeners: (() => void)[] = [];
+
 export const useApp = create<AppState>((set, get) => ({
   company: demoCompany(),
   companyId: 'demo',
@@ -69,7 +72,7 @@ export const useApp = create<AppState>((set, get) => ({
   setUser: (user) => set({ user }),
   can: (a) => roleCan(get().user.role, a),
   visited: new Set<string>(),
-  visit: (k) => { if (!get().visited.has(k)) { const v = new Set(get().visited); v.add(k); set({ visited: v }); } },
+  visit: (k) => { const v = get().visited; if (!v.has(k)) { v.add(k); visitListeners.forEach((f) => f()); } },
   extraButtons: [],
   mutate: (fn) => {
     const copy = structuredClone(get().company);
@@ -107,6 +110,7 @@ export async function flushSave(): Promise<void> {
 useApp.subscribe((s, prev) => {
   if (s.company === prev.company) return;
   if (s.companyId !== prev.companyId) return; // switching: already saved by caller
+  if (s.companyId === 'lesson' || s.companyId === 'interview') return; // sandboxes are never saved
   pending = { id: s.companyId, company: s.company };
   if (timer) clearTimeout(timer);
   timer = setTimeout(() => { void flushSave(); }, 400);

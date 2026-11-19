@@ -72,7 +72,7 @@ describe('payroll', () => {
     expect(slips).toHaveLength(35);
     expect(entries.reduce((s, e) => s + e.amount, 0)).toBe(0);
     expect(slips.filter((s) => s.type === 'Consultant').every((s) => s.tds === Math.round(s.gross / 10))).toBe(true);
-    const sal = entries.find((e) => e.ledger === 'Salaries')!;
+    const sal = entries.find((e) => e.ledger === 'Salary Expense')!;
     expect(sal.costCentres!.reduce((s, a) => s + a.amount, 0)).toBe(sal.amount);
     expect(() => E.postPayroll(c, '2026-03')).toThrow(/already posted/);
   });

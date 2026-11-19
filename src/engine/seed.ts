@@ -71,7 +71,7 @@ function ledgerList(): L[] {
     ['Rotary Water Grant', 'Grants Received'], ['Embassy Livelihood Grant', 'Grants Received'],
     ['Bank Interest', 'Indirect Incomes'], ['Interest on FDR', 'Indirect Incomes'], ['Exchange Gain/Loss', 'Indirect Incomes'],
     ['Depreciation Recovered from Capital Reserve', 'Indirect Incomes'], ['Loss/Gain on Disposal', 'Indirect Incomes'],
-    ['Salaries', 'Salaries', 0, exp], ['Employer PF Contribution', 'Salaries', 0, exp], ['Consultancy Fees', 'Programme Expenses', 0, exp], ['Volunteer Honorarium', 'Programme Expenses', 0, exp],
+    ['Salary Expense', 'Salaries', 0, exp], ['Employer PF Contribution', 'Salaries', 0, exp], ['Consultancy Fees', 'Programme Expenses', 0, exp], ['Volunteer Honorarium', 'Programme Expenses', 0, exp],
     ['Water Pumps', 'Programme Expenses', 0, exp], ['Training', 'Programme Expenses', 0, exp], ['Medical Camp', 'Programme Expenses', 0, exp],
     ['Relief Materials', 'Programme Expenses', 0, exp], ['Transport', 'Programme Expenses', 0, exp], ['Campaign Costs', 'Fundraising Expenses', 0, exp],
     ['Rent', 'Admin Expenses', 0, exp], ['Electricity', 'Admin Expenses', 0, exp], ['Internet', 'Admin Expenses', 0, exp], ['Audit Fee', 'Admin Expenses', 0, exp],
@@ -162,11 +162,11 @@ export function generateScdf(): Company {
     validTill: g.approval ? (i === 4 ? '2025-12-31' : '2027-03-31') : '', status: g.status, incomeLedger: g.income, fundLedger: g.fund, partner: g.id === 'G5' ? 'Surma Women Federation' : '',
   }));
   const bl: Record<string, [string, string, number][]> = {
-    G1: [['Tube-wells and pumps', 'Water Pumps', 1800000], ['Hygiene training', 'Training', 600000], ['Transport', 'Transport', 400000], ['Staff salaries', 'Salaries', 1500000]],
-    G2: [['Training', 'Training', 900000], ['Stationery & books', 'Stationery', 500000], ['Transport', 'Transport', 300000], ['Staff salaries', 'Salaries', 1400000]],
-    G3: [['Medical camps', 'Medical Camp', 700000], ['Training', 'Training', 250000], ['Staff salaries', 'Salaries', 600000]],
+    G1: [['Tube-wells and pumps', 'Water Pumps', 1800000], ['Hygiene training', 'Training', 600000], ['Transport', 'Transport', 400000], ['Staff salaries', 'Salary Expense', 1500000]],
+    G2: [['Training', 'Training', 900000], ['Stationery & books', 'Stationery', 500000], ['Transport', 'Transport', 300000], ['Staff salaries', 'Salary Expense', 1400000]],
+    G3: [['Medical camps', 'Medical Camp', 700000], ['Training', 'Training', 250000], ['Staff salaries', 'Salary Expense', 600000]],
     G4: [['Relief materials', 'Relief Materials', 300000], ['Transport', 'Transport', 80000]],
-    G5: [['Skills training', 'Training', 600000], ['Transport', 'Transport', 200000], ['Staff salaries', 'Salaries', 400000]],
+    G5: [['Skills training', 'Training', 600000], ['Transport', 'Transport', 200000], ['Staff salaries', 'Salary Expense', 400000]],
   };
   for (const [g, lines] of Object.entries(bl)) for (const [line, ledger, b] of lines) addRow(c, 'grantBudget', { grant: g, line, ledger, budget: fmtMoney(P(b)) });
   for (const p of PROJECTS.filter((x) => x.budget)) addRow(c, 'projects', { project: p.name, overheadPct: String(p.overhead), budget: fmtMoney(P(p.budget)), start: '2025-04-01', end: '2026-03-31', status: 'Active' });
@@ -432,7 +432,7 @@ export function generateScdf(): Company {
   }
   // budgets from actuals (some tight to trigger >90% alerts)
   const factors = [1.05, 1.3, 1.08, 1.2, 1.04, 1.5, 1.1, 1.25];
-  ['Salaries', 'Rent', 'Electricity', 'Internet', 'Audit Fee', 'Stationery', 'Transport', 'Training'].forEach((led, i) => {
+  ['Salary Expense', 'Rent', 'Electricity', 'Internet', 'Audit Fee', 'Stationery', 'Transport', 'Training'].forEach((led, i) => {
     const m = ledgerBalance(c, led);
     addRow(c, 'budgets', { scope: 'Organisation', key: 'SCDF', ledger: led, annual: fmtMoney(Math.max(P(1000), Math.round(m * factors[i]))), revision: i === 2 ? '2' : '1', status: i === 2 ? 'Revised' : i < 6 ? 'Approved' : 'Draft' });
   });

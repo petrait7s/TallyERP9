@@ -1,0 +1,613 @@
+[
+ {
+  "id": "X1",
+  "level": "capstone",
+  "company": "blank",
+  "title": {
+   "en": "Capstone: run a full NGO year",
+   "bn": "ক্যাপস্টোন: পুরো এনজিও বছর পরিচালনা"
+  },
+  "goal": {
+   "en": "Set up, fund, spend, pay staff and report - with scored checkpoints.",
+   "bn": "সেটআপ, তহবিল, ব্যয়, বেতন ও রিপোর্ট - স্কোরসহ চেকপয়েন্ট।"
+  },
+  "setup": [],
+  "steps": [
+   {
+    "instruction": {
+     "en": "Checkpoint 1: create the ledgers Operating Bank, Local Donations, Grant Income, Salary Expense, Salary Payable, PF Payable, Employer PF Contribution, Staff Advances, TDS Payable, Consultancy Fees, Volunteer Honorarium, Rent (groups as usual).",
+     "bn": "চেকপয়েন্ট ১: ১২টি লেজার তৈরি করুন (Operating Bank, Local Donations, Grant Income, Salary Expense, Salary Payable, PF Payable, Employer PF Contribution, Staff Advances, TDS Payable, Consultancy Fees, Volunteer Honorarium, Rent)।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "all",
+     "checks": [
+      {
+       "t": "master",
+       "kind": "ledger",
+       "name": "Operating Bank",
+       "where": {
+        "group": "Bank Accounts"
+       }
+      },
+      {
+       "t": "master",
+       "kind": "ledger",
+       "name": "Local Donations",
+       "where": {
+        "group": "Donations"
+       }
+      },
+      {
+       "t": "master",
+       "kind": "ledger",
+       "name": "Grant Income",
+       "where": {
+        "group": "Grants Received"
+       }
+      },
+      {
+       "t": "master",
+       "kind": "ledger",
+       "name": "Salary Expense",
+       "where": {
+        "group": "Salaries"
+       }
+      },
+      {
+       "t": "master",
+       "kind": "ledger",
+       "name": "Salary Payable",
+       "where": {
+        "group": "Provisions"
+       }
+      },
+      {
+       "t": "master",
+       "kind": "ledger",
+       "name": "PF Payable",
+       "where": {
+        "group": "Provisions"
+       }
+      },
+      {
+       "t": "master",
+       "kind": "ledger",
+       "name": "Employer PF Contribution",
+       "where": {
+        "group": "Salaries"
+       }
+      },
+      {
+       "t": "master",
+       "kind": "ledger",
+       "name": "Staff Advances",
+       "where": {
+        "group": "Loans & Advances (Asset)"
+       }
+      },
+      {
+       "t": "master",
+       "kind": "ledger",
+       "name": "TDS Payable",
+       "where": {
+        "group": "Duties & Taxes"
+       }
+      },
+      {
+       "t": "master",
+       "kind": "ledger",
+       "name": "Consultancy Fees",
+       "where": {
+        "group": "Programme Expenses"
+       }
+      },
+      {
+       "t": "master",
+       "kind": "ledger",
+       "name": "Volunteer Honorarium",
+       "where": {
+        "group": "Programme Expenses"
+       }
+      },
+      {
+       "t": "master",
+       "kind": "ledger",
+       "name": "Rent",
+       "where": {
+        "group": "Admin Expenses"
+       }
+      }
+     ]
+    }
+   },
+   {
+    "instruction": {
+     "en": "Checkpoint 2: cost category \"Projects\" and cost centre \"Clean Water: Wells\".",
+     "bn": "চেকপয়েন্ট ২: \"Projects\" ক্যাটাগরি ও \"Clean Water: Wells\" কস্ট সেন্টার।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "all",
+     "checks": [
+      {
+       "t": "master",
+       "kind": "costCategory",
+       "name": "Projects"
+      },
+      {
+       "t": "master",
+       "kind": "costCentre",
+       "name": "Clean Water: Wells",
+       "where": {
+        "category": "Projects"
+       }
+      }
+     ]
+    }
+   },
+   {
+    "instruction": {
+     "en": "Checkpoint 3: receive donations of 2,00,000 and a grant of 5,00,000 into Operating Bank.",
+     "bn": "চেকপয়েন্ট ৩: ২,০০,০০০ অনুদান ও ৫,০০,০০০ গ্র্যান্ট Operating Bank-এ গ্রহণ।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "all",
+     "checks": [
+      {
+       "t": "voucher",
+       "ledgers": [
+        "Local Donations"
+       ],
+       "amount": 20000000
+      },
+      {
+       "t": "voucher",
+       "ledgers": [
+        "Grant Income"
+       ],
+       "amount": 50000000
+      }
+     ]
+    }
+   },
+   {
+    "instruction": {
+     "en": "Checkpoint 4: pay Rent 15,000 and project work (Consultancy Fees) 30,000 allocated to the cost centre.",
+     "bn": "চেকপয়েন্ট ৪: Rent ১৫,০০০ ও প্রকল্প কাজ (Consultancy Fees) ৩০,০০০ কস্ট সেন্টারসহ।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "all",
+     "checks": [
+      {
+       "t": "voucher",
+       "ledgers": [
+        "Rent"
+       ],
+       "amount": 1500000
+      },
+      {
+       "t": "voucher",
+       "ledgers": [
+        "Consultancy Fees"
+       ],
+       "amount": 3000000,
+       "centre": "Clean Water: Wells"
+      }
+     ]
+    }
+   },
+   {
+    "instruction": {
+     "en": "Checkpoint 5: add employee E1 (split to the cost centre) and post payroll for 2025-04.",
+     "bn": "চেকপয়েন্ট ৫: কর্মী E1 যোগ ও ২০২৫-০৪ পেরোল পোস্ট।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "all",
+     "checks": [
+      {
+       "t": "row",
+       "reg": "employees",
+       "where": {
+        "id": "E1"
+       }
+      },
+      {
+       "t": "voucher",
+       "narr": "Payroll 2025-04"
+      }
+     ]
+    }
+   },
+   {
+    "instruction": {
+     "en": "Checkpoint 6: open Balance Sheet, I&E, R&P and Trial Balance.",
+     "bn": "চেকপয়েন্ট ৬: BS, I&E, R&P, TB খুলুন।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "all",
+     "checks": [
+      {
+       "t": "visited",
+       "key": "report:bs"
+      },
+      {
+       "t": "visited",
+       "key": "report:ie"
+      },
+      {
+       "t": "visited",
+       "key": "report:rp"
+      },
+      {
+       "t": "visited",
+       "key": "report:tb"
+      }
+     ]
+    }
+   },
+   {
+    "instruction": {
+     "en": "Checkpoint 7: books balance and the year shows a surplus.",
+     "bn": "চেকপয়েন্ট ৭: হিসাব মিলছে এবং উদ্বৃত্ত আছে।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "all",
+     "checks": [
+      {
+       "t": "metric",
+       "name": "tbBalanced"
+      },
+      {
+       "t": "metric",
+       "name": "surplus"
+      }
+     ]
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "master",
+    "kind": "ledger",
+    "obj": {
+     "name": "Operating Bank",
+     "group": "Bank Accounts",
+     "opening": 0
+    }
+   },
+   {
+    "op": "master",
+    "kind": "ledger",
+    "obj": {
+     "name": "Local Donations",
+     "group": "Donations",
+     "opening": 0
+    }
+   },
+   {
+    "op": "master",
+    "kind": "ledger",
+    "obj": {
+     "name": "Grant Income",
+     "group": "Grants Received",
+     "opening": 0
+    }
+   },
+   {
+    "op": "master",
+    "kind": "ledger",
+    "obj": {
+     "name": "Salary Expense",
+     "group": "Salaries",
+     "opening": 0
+    }
+   },
+   {
+    "op": "master",
+    "kind": "ledger",
+    "obj": {
+     "name": "Salary Payable",
+     "group": "Provisions",
+     "opening": 0
+    }
+   },
+   {
+    "op": "master",
+    "kind": "ledger",
+    "obj": {
+     "name": "PF Payable",
+     "group": "Provisions",
+     "opening": 0
+    }
+   },
+   {
+    "op": "master",
+    "kind": "ledger",
+    "obj": {
+     "name": "Employer PF Contribution",
+     "group": "Salaries",
+     "opening": 0
+    }
+   },
+   {
+    "op": "master",
+    "kind": "ledger",
+    "obj": {
+     "name": "Staff Advances",
+     "group": "Loans & Advances (Asset)",
+     "opening": 0
+    }
+   },
+   {
+    "op": "master",
+    "kind": "ledger",
+    "obj": {
+     "name": "TDS Payable",
+     "group": "Duties & Taxes",
+     "opening": 0
+    }
+   },
+   {
+    "op": "master",
+    "kind": "ledger",
+    "obj": {
+     "name": "Consultancy Fees",
+     "group": "Programme Expenses",
+     "opening": 0
+    }
+   },
+   {
+    "op": "master",
+    "kind": "ledger",
+    "obj": {
+     "name": "Volunteer Honorarium",
+     "group": "Programme Expenses",
+     "opening": 0
+    }
+   },
+   {
+    "op": "master",
+    "kind": "ledger",
+    "obj": {
+     "name": "Rent",
+     "group": "Admin Expenses",
+     "opening": 0
+    }
+   },
+   {
+    "op": "master",
+    "kind": "costCategory",
+    "obj": {
+     "name": "Projects"
+    }
+   },
+   {
+    "op": "master",
+    "kind": "costCentre",
+    "obj": {
+     "name": "Clean Water: Wells",
+     "category": "Projects"
+    }
+   },
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Receipt",
+     "date": "2025-04-05",
+     "entries": [
+      {
+       "ledger": "Operating Bank",
+       "amount": 20000000
+      },
+      {
+       "ledger": "Local Donations",
+       "amount": -20000000
+      }
+     ]
+    }
+   },
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Receipt",
+     "date": "2025-04-06",
+     "entries": [
+      {
+       "ledger": "Operating Bank",
+       "amount": 50000000
+      },
+      {
+       "ledger": "Grant Income",
+       "amount": -50000000
+      }
+     ]
+    }
+   },
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Payment",
+     "date": "2025-04-10",
+     "entries": [
+      {
+       "ledger": "Rent",
+       "amount": 1500000
+      },
+      {
+       "ledger": "Operating Bank",
+       "amount": -1500000
+      }
+     ]
+    }
+   },
+   {
+    "op": "voucher",
+    "v": {
+     "type": "Payment",
+     "date": "2025-04-12",
+     "entries": [
+      {
+       "ledger": "Consultancy Fees",
+       "amount": 3000000,
+       "costCentres": [
+        {
+         "costCentre": "Clean Water: Wells",
+         "amount": 3000000
+        }
+       ]
+      },
+      {
+       "ledger": "Operating Bank",
+       "amount": -3000000
+      }
+     ]
+    }
+   },
+   {
+    "op": "row",
+    "reg": "employees",
+    "row": {
+     "id": "E1",
+     "name": "First Employee",
+     "designation": "Officer",
+     "type": "Staff",
+     "basic": "20000.00",
+     "allowance": "5000.00",
+     "pfPct": "8",
+     "advance": "0.00",
+     "split": "Clean Water: Wells:100",
+     "joined": "2025-01-01"
+    }
+   },
+   {
+    "op": "run",
+    "action": "payroll",
+    "v": {
+     "month": "2025-04"
+    }
+   },
+   {
+    "op": "visit",
+    "key": "report:bs"
+   },
+   {
+    "op": "visit",
+    "key": "report:ie"
+   },
+   {
+    "op": "visit",
+    "key": "report:rp"
+   },
+   {
+    "op": "visit",
+    "key": "report:tb"
+   }
+  ],
+  "covers": [
+   "A1",
+   "A2",
+   "A3",
+   "A8",
+   "A11",
+   "B1",
+   "B3",
+   "B5",
+   "B11",
+   "B16"
+  ]
+ },
+ {
+  "id": "X2",
+  "level": "capstone",
+  "company": "scdf",
+  "title": {
+   "en": "Interview Simulator v2: all Core and NGO topics",
+   "bn": "ইন্টারভিউ সিমুলেটর v2: সব বিষয়"
+  },
+  "goal": {
+   "en": "100+ task bank, randomised, timed, scored, certificate.",
+   "bn": "১০০+ টাস্ক ব্যাংক, র‍্যান্ডম, সময়সীমাসহ, স্কোর ও সার্টিফিকেট।"
+  },
+  "steps": [
+   {
+    "instruction": {
+     "en": "Learning Centre > Interview Simulator v2: pass with 70%.",
+     "bn": "Interview Simulator v2 সম্পন্ন করুন (৭০%)।"
+    },
+    "hint": {
+     "en": "Try: see the button bar",
+     "bn": "চেষ্টা করুন: ডানদিকের বাটন দেখুন"
+    },
+    "check": {
+     "t": "visited",
+     "key": "interview:passed:v2"
+    }
+   }
+  ],
+  "solution": [
+   {
+    "op": "visit",
+    "key": "interview:passed:v2"
+   }
+  ],
+  "covers": [
+   "A1",
+   "A2",
+   "A3",
+   "A4",
+   "A5",
+   "A6",
+   "A7",
+   "A8",
+   "A9",
+   "A10",
+   "A11",
+   "A12",
+   "B1",
+   "B2",
+   "B3",
+   "B4",
+   "B5",
+   "B6",
+   "B7",
+   "B8",
+   "B9",
+   "B10",
+   "B11",
+   "B12",
+   "B13",
+   "B14",
+   "B15",
+   "B16",
+   "B17",
+   "B18"
+  ]
+ }
+]
