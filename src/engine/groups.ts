@@ -39,6 +39,8 @@ export function defaultGroups(): Group[] {
     g('Corpus Fund', 'Capital Account', 'liability', true),
     g('Capital Fund', 'Capital Account', 'liability', true),
     g('Restricted Funds', 'Capital Account', 'liability', true),
+    g('Designated Funds', 'Capital Account', 'liability', true),
+    g('General Fund', 'Capital Account', 'liability', true),
     g('Grants Received', 'Direct Incomes', 'income'),
     g('Donations', 'Direct Incomes', 'income'),
     g('Membership Fees', 'Direct Incomes', 'income'),

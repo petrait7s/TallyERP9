@@ -56,7 +56,31 @@ export interface Entry {
   costCentres?: CostAlloc[];
 }
 
+export interface EditLogEntry { seq: number; action: 'create' | 'alter' | 'cancel' | 'delete' | 'duplicate'; voucherId: number; type: string; number: string; date: string; user?: string }
+
+export type Row = Record<string, string>;
+
+export interface ErrorLabItem {
+  id: string;
+  kind: string;
+  voucherId: number;
+  description: string;
+  /** fixed when voucher is gone/cancelled (gone) or satisfies these */
+  fix: { gone?: boolean; expectLedger?: string; rejectLedger?: string; expectAmount?: number; expectCentre?: string };
+}
+
+export interface CompanyMeta {
+  seedKey?: 'scdf' | 'tea' | 'blank';
+  errorLab?: ErrorLabItem[];
+  /** simulated Tally Vault password (plain, teaching only) */
+  vault?: string;
+}
+
 export interface Voucher {
+  /** bank statement date when the bank line cleared (bank reconciliation) */
+  bankDate?: string;
+  /** foreign-currency source amount (simulated multi-currency receipt) */
+  fx?: { currency: string; amount: number; rate: number };
   id: number;
   type: string;
   number: string;
@@ -154,6 +178,10 @@ export interface Company {
   nextId: number;
   features: Features;
   config: Config;
+  /** user-defined registers (donors, grants, employees, ...) */
+  registers: Record<string, Row[]>;
+  editLog: EditLogEntry[];
+  meta: CompanyMeta;
 }
 
 export interface Period {

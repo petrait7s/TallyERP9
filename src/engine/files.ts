@@ -27,6 +27,9 @@ export function migrate(raw: any): Company {
     c.costCategories ??= ['Primary Cost Category'];
     c.costCentres ??= [];
   }
+  c.registers ??= {};
+  c.editLog ??= [];
+  c.meta ??= {};
   if (v > DATA_VERSION) throw new Error(`Company file is from a newer version (${v})`);
   c.version = DATA_VERSION;
   return c as Company;

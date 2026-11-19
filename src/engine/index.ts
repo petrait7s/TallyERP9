@@ -8,3 +8,6 @@ export * from './vouchers';
 export * from './statements';
 export * from './files';
 export * from './statutory';
+export * from './registers';
+export * from './modules';
+export * from './seed';

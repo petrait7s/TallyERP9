@@ -41,10 +41,18 @@ export function createCompany(name: string, fyStart: string, fyEnd: string, curr
     godowns: [{ name: 'Main Location', parent: null }],
     vouchers: [],
     nextId: 1,
+    registers: {},
+    editLog: [],
+    meta: {},
   };
 }
 
 export class AccountingError extends Error {}
+
+function log(c: Company, action: 'create' | 'alter' | 'cancel' | 'delete' | 'duplicate', v: Voucher): void {
+  c.editLog ??= [];
+  c.editLog.push({ seq: c.editLog.length + 1, action, voucherId: v.id, type: v.type, number: v.number, date: v.date });
+}
 
 export function addLedger(c: Company, l: Ledger): void {
   if (c.ledgers.some((x) => x.name.toLowerCase() === l.name.toLowerCase()))
@@ -97,6 +105,8 @@ export interface NewVoucher {
   chequeNo?: string;
   reverseOn?: string;
   number?: string;
+  bankDate?: string;
+  fx?: Voucher['fx'];
 }
 
 export function addVoucher(c: Company, nv: NewVoucher): Voucher {
@@ -115,8 +125,11 @@ export function addVoucher(c: Company, nv: NewVoucher): Voucher {
     postDated: nv.postDated,
     chequeNo: nv.chequeNo,
     reverseOn: nv.reverseOn,
+    bankDate: nv.bankDate,
+    fx: nv.fx,
   };
   c.vouchers.push(v);
+  log(c, 'create', v);
   return v;
 }
 
@@ -127,6 +140,7 @@ export function alterVoucher(c: Company, id: number, patch: Partial<Pick<Voucher
   const entries = patch.entries ?? v.entries;
   validateEntries(c, entries, vt.nonAccounting, vt.kind, id);
   Object.assign(v, patch, { entries: entries.map((e) => ({ ...e })) });
+  log(c, 'alter', v);
   return v;
 }
 
@@ -134,11 +148,13 @@ export function cancelVoucher(c: Company, id: number): void {
   const v = c.vouchers.find((x) => x.id === id);
   if (!v) throw new AccountingError(`No voucher ${id}`);
   v.cancelled = true;
+  log(c, 'cancel', v);
 }
 
 export function deleteVoucher(c: Company, id: number): void {
   const i = c.vouchers.findIndex((x) => x.id === id);
   if (i < 0) throw new AccountingError(`No voucher ${id}`);
+  log(c, 'delete', c.vouchers[i]);
   c.vouchers.splice(i, 1);
 }
 
