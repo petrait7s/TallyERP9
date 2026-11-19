@@ -12,6 +12,9 @@ import { VoucherScreen } from '../screens/VoucherScreens';
 import { ReportScreen } from '../screens/ReportScreen';
 import { PreviewScreen } from '../screens/PreviewScreen';
 import { CompanyScreen } from '../screens/CompanyScreens';
+import { ActionScreen, AskScreen, RegisterForm, RegisterList } from '../screens/ModuleScreens';
+import { MOD_REPORTS } from '../reports/modules';
+import { runFn } from '../functions';
 import { ToggleDialog } from '../components/ToggleDialog';
 import { LAYOUTS, type Company } from '../../engine';
 
@@ -38,6 +41,10 @@ function Menu(props: { path: string[]; register: (h: KeyHandler | null) => void 
     const it = items[i];
     if (it.quit) window.close();
     else if (it.voucher) push({ id: 'voucherEntry', title: it.voucher, data: { typeName: it.voucher } });
+    else if (it.reg) push({ id: 'regList', title: it.label, data: { reg: it.reg } });
+    else if (it.mod) push(MOD_REPORTS[it.mod].ask ? { id: 'ask', title: it.label, data: { mod: it.mod } } : { id: 'report', title: it.label, data: { params: { id: 'mod', mod: it.mod } } });
+    else if (it.run) push({ id: 'action', title: it.label, data: { action: it.run } });
+    else if (it.fn) runFn(it.fn);
     else if (it.action) push({ id: 'company', title: it.label, data: { action: it.action } });
     else if (it.report) push({ id: 'report', title: it.label, data: { params: it.report } });
     else if (it.pick) push({ id: 'masterList', title: it.label, data: { kind: it.pick.kind, mode: 'pick', pickReport: it.pick.report } });
@@ -180,7 +187,11 @@ export function Shell() {
           </div>
         </div>
         <div className="centre">
-          {top.id === 'voucherEntry' ? <VoucherScreen typeName={top.data!.typeName as string} voucherId={top.data!.voucherId as number | undefined} register={register} key={top.title + String(top.data!.voucherId ?? '')} />
+          {top.id === 'regList' ? <RegisterList reg={top.data!.reg as string} register={register} key={'rl' + top.data!.reg} />
+            : top.id === 'regForm' ? <RegisterForm reg={top.data!.reg as string} index={top.data!.index as number | undefined} register={register} key={'rf' + top.data!.reg + String(top.data!.index)} />
+            : top.id === 'ask' ? <AskScreen mod={top.data!.mod as string} register={register} key={'ask' + top.data!.mod} />
+            : top.id === 'action' ? <ActionScreen action={top.data!.action as string} register={register} key={'act' + top.data!.action} />
+            : top.id === 'voucherEntry' ? <VoucherScreen typeName={top.data!.typeName as string} voucherId={top.data!.voucherId as number | undefined} register={register} key={top.title + String(top.data!.voucherId ?? '')} />
             : top.id === 'preview' ? <PreviewScreen params={top.data!.params as any} opts={top.data!.opts as any} register={register} key={'pv' + screens.length} />
             : top.id === 'company' ? <CompanyScreen action={top.data!.action as string} cid={top.data!.cid as string | undefined} lines={top.data!.lines as string[] | undefined} title={top.title} register={register} key={top.title + String(top.data!.cid ?? '')} />
             : top.id === 'report' ? <ReportScreen params={top.data!.params as any} depth={screens.length} register={register} key={screens.length + JSON.stringify(top.data!.params)} />

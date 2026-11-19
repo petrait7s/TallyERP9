@@ -1,9 +1,10 @@
 import {
   balanceSheetGroups, costCentreStatement, costCentreSummary, dayBefore, dayBook, formatAmount, formatDrCr, fundStatement,
   groupChildren, groupSummary, ieGroups, isUnder, ledgerAccount, ledgerBalance, outstandingsReport, ratios, receiptsPayments,
-  stockSummary, tdsPayable, vatSummary, type Company, type GLine, type Paisa, type Period, type SummaryRow,
+  regDef, rows, stockSummary, tdsPayable, toPaisa, vatSummary, type Company, type GLine, type Paisa, type Period, type SummaryRow,
 } from '../../engine';
 import { formatDate } from '../dates';
+import { buildModule } from './modules';
 import type { BuildOpts, ReportModel, ReportParams, Row } from './types';
 
 const amt = (p: Paisa) => (p === 0 ? '' : formatAmount(p));
@@ -206,6 +207,8 @@ export function buildReport(c: Company, params: ReportParams, period: Period, op
       const rows: Row[] = ratios(c, period.to).map((r) => ({ cells: [r.name, r.value] }));
       return { title: 'Ratio Analysis', subtitle: `as at ${formatDate(period.to)}`, layout: 'single', columns: ['Particulars', 'Value'], numericFrom: 1, rows, canDetail: false, canVertical: false };
     }
+    case 'mod': return buildModule(c, params.mod!, params.arg ?? '', period);
+    case 'register': return buildRegisterView(c, params.reg!);
     case 'vat': {
       const v = vatSummary(c, period);
       const rows: Row[] = v.rows.map((r) => ({ cells: [r.ledger, amt(r.input), amt(r.output)], drill: { id: 'ledger', ledger: r.ledger } }));
@@ -238,4 +241,10 @@ export function toCsv(m: ReportModel): string {
     for (const r of m.rows) lines.push(r.cells.map(q).join(','));
   }
   return lines.join('\n');
+}
+
+function buildRegisterView(c: Company, id: string): ReportModel {
+  const def = regDef(id);
+  const rowsx: Row[] = rows(c, id).map((r) => ({ cells: def.fields.map((f) => (f.type === 'amount' && r[f.key] ? formatAmount(toPaisa(r[f.key])) : f.type === 'date' && r[f.key] ? formatDate(r[f.key]) : r[f.key] ?? '')) }));
+  return { title: def.title, subtitle: `${rowsx.length} record(s)`, layout: 'single', columns: def.fields.map((f) => f.label), rows: rowsx, numericFrom: 99, canDetail: false, canVertical: false };
 }

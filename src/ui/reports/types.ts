@@ -1,6 +1,6 @@
 export type ReportId =
   | 'bs' | 'ie' | 'rp' | 'tb' | 'daybook' | 'ledger' | 'group' | 'cashbank'
-  | 'outstanding' | 'stock' | 'centres' | 'centre' | 'ratio' | 'funds' | 'vat' | 'tds';
+  | 'outstanding' | 'stock' | 'centres' | 'centre' | 'ratio' | 'funds' | 'vat' | 'tds' | 'mod' | 'register';
 
 export interface ReportParams {
   id: ReportId;
@@ -9,6 +9,11 @@ export interface ReportParams {
   centre?: string;
   /** Sundry Debtors / Sundry Creditors */
   billGroup?: string;
+  /** module report key (see MOD_REPORTS) and 'k=v|k=v' arguments */
+  mod?: string;
+  arg?: string;
+  /** register id for the register viewer */
+  reg?: string;
 }
 
 export interface Row {

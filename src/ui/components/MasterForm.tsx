@@ -51,6 +51,7 @@ export function MasterForm({ kind, mode, name, initial, onDone, once }: Props) {
   const go = (i: number) => { setIdx(Math.max(0, Math.min(visible.length - 1, i))); setQuery(''); setHi(0); setError(''); };
 
   const accept = (dd: Draft = draft) => {
+    if (!useApp.getState().can(mode === 'alter' ? 'master.alter' : 'master.create')) { setError('Your user role is not allowed to do this'); return; }
     const err = mutate((c) => {
       const obj = def.fromDraft(c, dd);
       if (mode === 'alter') alterMaster(c, kind, name!, obj as never);
@@ -65,6 +66,7 @@ export function MasterForm({ kind, mode, name, initial, onDone, once }: Props) {
   };
 
   const del = () => {
+    if (!useApp.getState().can('master.alter')) { setError('Your user role is not allowed to do this'); setConfirmDel(false); return; }
     const err = mutate((c) => deleteMaster(c, kind, name!));
     if (err) { setError(err); setConfirmDel(false); return; }
     setHint(`${def.title} "${name}" deleted`);

@@ -186,6 +186,7 @@ export function VoucherForm({ typeName, voucherId, onDone }: Props) {
   };
 
   const accept = () => {
+    if (!useApp.getState().can(existing ? 'voucher.alter' : 'voucher.create')) { setError('Your user role is not allowed to do this'); return; }
     let entries: Entry[];
     try { entries = buildEntries(); } catch (e) { setError((e as Error).message); return; }
     const err = mutate((c) => {
@@ -198,12 +199,14 @@ export function VoucherForm({ typeName, voucherId, onDone }: Props) {
     if (existing) onDone(); else resetForNext();
   };
   const doDelete = () => {
+    if (!useApp.getState().can('voucher.alter')) { setError('Your user role is not allowed to do this'); setConfirm(''); return; }
     const err = mutate((c) => deleteVoucher(c, existing!.id));
     if (err) { setError(err); setConfirm(''); return; }
     setHint(`${typeName} voucher ${number} deleted`);
     onDone();
   };
   const doCancel = () => {
+    if (!useApp.getState().can('voucher.alter')) { setError('Your user role is not allowed to do this'); setConfirm(''); return; }
     const err = mutate((c) => cancelVoucher(c, existing!.id));
     if (err) { setError(err); setConfirm(''); return; }
     setHint(`${typeName} voucher ${number} cancelled`);

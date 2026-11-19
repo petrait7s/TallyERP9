@@ -31,10 +31,11 @@ function Message(props: { title: string; lines: string[]; register: Register }) 
   );
 }
 
-export async function switchCompany(id: string): Promise<string | null> {
+export async function switchCompany(id: string, password?: string): Promise<string | null> {
   await flushSave();
   const c = await loadCompanyFile(id);
   if (!c) return 'Company file not found';
+  if (c.meta.vault && password !== c.meta.vault) return 'VAULT';
   useApp.getState().openCompany(id, c);
   await getAdapter().setLast(id);
   return null;
@@ -50,7 +51,7 @@ function CompanyList(props: { mode: 'select' | 'alter' | 'delete'; register: Reg
   const nav = useListNav(items, (i) => {
     const m = metas[i];
     if (!m) return;
-    if (props.mode === 'select') void switchCompany(m.id).then((e) => setHint(e ?? `Opened ${m.name}`));
+    if (props.mode === 'select') void switchCompany(m.id).then((e) => (e === 'VAULT' ? push({ id: 'company', title: 'Tally Vault', data: { action: 'unlock', cid: m.id } }) : setHint(e ?? `Opened ${m.name}`)));
     else if (props.mode === 'alter') push({ id: 'company', title: 'Alter Company', data: { action: 'alter', cid: m.id } });
     else if (m.id === companyId) setHint('Cannot delete the open company');
     else setConfirm(m.id);
@@ -220,6 +221,34 @@ function Repair(props: { register: Register }) {
   return <Message title="Data Repair: integrity check" lines={issues.length ? [`${issues.length} issue(s) found:`, ...issues.slice(0, 20)] : ['No problems found. Vouchers balance, all references resolve, opening balances agree.']} register={props.register} />;
 }
 
+function Unlock(props: { cid: string; register: Register }) {
+  const { pop, setHint } = useApp();
+  useEffect(() => { props.register({ id: 'unlock', onKey: () => false }); return () => props.register(null); }, []);
+  return (
+    <SimpleForm title="Tally Vault: company is password protected" fields={[{ key: 'pw', label: 'Password', type: 'text' }]} initial={{ pw: '' }} onCancel={pop}
+      onAccept={async (v) => { const e = await switchCompany(props.cid, v.pw); if (e) return e === 'VAULT' ? 'Incorrect password' : e; setHint('Company opened'); return null; }} />
+  );
+}
+
+function Login(props: { register: Register }) {
+  const { company, pop, setUser, setHint } = useApp();
+  useEffect(() => { props.register({ id: 'login', onKey: () => false }); return () => props.register(null); }, []);
+  const users = company.registers.users ?? [];
+  return (
+    <SimpleForm title="Select User" fields={[{ key: 'name', label: 'User name', type: 'text', hint: users.map((u) => u.name).join(' / ') || 'admin' }, { key: 'pw', label: 'Password', type: 'text' }]}
+      initial={{ name: users[0]?.name ?? 'admin', pw: '' }} onCancel={pop}
+      onAccept={(v) => {
+        if (!users.length) { setUser({ name: v.name || 'admin', role: 'Admin' }); pop(); return null; }
+        const u = users.find((x) => x.name === v.name);
+        if (!u || u.password !== v.pw) return 'Invalid user or password';
+        setUser({ name: u.name, role: u.role as never });
+        setHint(`Signed in as ${u.name} (${u.role})`);
+        pop();
+        return null;
+      }} />
+  );
+}
+
 export function CompanyScreen(props: { action: string; cid?: string; lines?: string[]; title?: string; register: Register }) {
   const r = props.register;
   switch (props.action) {
@@ -232,6 +261,8 @@ export function CompanyScreen(props: { action: string; cid?: string; lines?: str
     case 'backup': return <Backup register={r} />;
     case 'restore': return <Restore register={r} />;
     case 'repair': return <Repair register={r} />;
+    case 'unlock': return <Unlock cid={props.cid!} register={r} />;
+    case 'login': return <Login register={r} />;
     default: return <Message title={props.title ?? 'Information'} lines={props.lines ?? []} register={r} />;
   }
 }

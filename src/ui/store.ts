@@ -1,8 +1,9 @@
 import { create } from 'zustand';
-import { addLedger, createCompany, toPaisa } from '../engine';
+import { addLedger, can as roleCan, createCompany, toPaisa, type Action, type Role } from '../engine';
 import type { Company, Period } from '../engine';
 import type { ButtonDef } from './keys';
-import { getAdapter, saveCompany, uid } from './persist';
+import { getAdapter, saveCompany } from './persist';
+import { loadSeed, SEED_KEYS } from './seeds';
 
 export interface ScreenRef {
   /** screen id, e.g. 'gateway', 'menu:Masters', 'stub:Ledgers' */
@@ -25,6 +26,13 @@ interface AppState {
   screens: ScreenRef[];
   /** transient message shown in the status bar */
   hint: string;
+  /** signed-in user (roles gate entry and masters) */
+  user: { name: string; role: Role };
+  setUser(u: { name: string; role: Role }): void;
+  can(a: Action): boolean;
+  /** keys opened/visited in this session (lesson validators) */
+  visited: Set<string>;
+  visit(k: string): void;
   extraButtons: ButtonDef[];
   /** run an engine mutation on a copy; commits only on success */
   mutate(fn: (c: Company) => void): string | null;
@@ -57,11 +65,18 @@ export const useApp = create<AppState>((set, get) => ({
   setPeriod: (period) => set({ period }),
   screens: [{ id: 'gateway', title: 'Gateway of Tally' }],
   hint: '',
+  user: { name: 'admin', role: 'Admin' },
+  setUser: (user) => set({ user }),
+  can: (a) => roleCan(get().user.role, a),
+  visited: new Set<string>(),
+  visit: (k) => { if (!get().visited.has(k)) { const v = new Set(get().visited); v.add(k); set({ visited: v }); } },
   extraButtons: [],
   mutate: (fn) => {
     const copy = structuredClone(get().company);
+    const logLen = copy.editLog?.length ?? 0;
     try {
       fn(copy);
+      for (const e of (copy.editLog ?? []).slice(logLen)) e.user = get().user.name;
     } catch (e) {
       return e instanceof Error ? e.message : String(e);
     }
@@ -97,17 +112,17 @@ useApp.subscribe((s, prev) => {
   timer = setTimeout(() => { void flushSave(); }, 400);
 });
 
-/** First run seeds the demo company; later runs reopen the last company. */
+/** First run seeds SCDF, Tea Garden and Blank NGO; later runs reopen the last company. */
 export async function boot(): Promise<void> {
   const a = getAdapter();
   let metas = await a.list();
   if (!metas.length) {
-    const id = uid();
-    await saveCompany(id, demoCompany());
+    for (const key of SEED_KEYS) await saveCompany(key, loadSeed(key));
+    await a.setLast('scdf');
     metas = await a.list();
   }
   const last = await a.getLast();
-  const id = metas.find((m) => m.id === last)?.id ?? metas[0].id;
+  const id = metas.find((m) => m.id === last)?.id ?? metas.find((m) => m.id === 'scdf')?.id ?? metas[0].id;
   const text = await a.load(id);
   if (text) {
     const { parseCompanyFile } = await import('../engine');
