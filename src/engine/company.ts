@@ -20,6 +20,11 @@ export function createCompany(name: string, fyStart: string, fyEnd: string, curr
     voucherTypes: defaultVoucherTypes(),
     costCategories: ['Primary Cost Category'],
     costCentres: [],
+    currencies: [{ name: currency, symbol: currency === 'BDT' ? '৳' : currency, rate: 10000 }],
+    units: [],
+    stockGroups: [],
+    stockItems: [],
+    godowns: [{ name: 'Main Location', parent: null }],
     vouchers: [],
     nextId: 1,
   };

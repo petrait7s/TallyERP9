@@ -7,6 +7,7 @@ import { ButtonBar } from './ButtonBar';
 import { StatusBar } from './StatusBar';
 import { DateDialog } from './DateDialog';
 import { TallyList, useListNav } from '../components/TallyList';
+import { MasterFormScreen, MasterList } from '../screens/MasterScreens';
 
 function findMenu(path: string[]): MenuItem[] {
   let items = GATEWAY;
@@ -21,6 +22,10 @@ function Menu(props: { path: string[]; register: (h: KeyHandler | null) => void 
   const nav = useListNav(items, (i) => {
     const it = items[i];
     if (it.quit) window.close();
+    else if (it.master)
+      push(it.master.mode === 'create'
+        ? { id: 'masterForm', title: it.label, data: { kind: it.master.kind, mode: 'create' } }
+        : { id: 'masterList', title: it.label, data: { kind: it.master.kind, mode: it.master.mode } });
     else if (it.children) push({ id: 'menu', title: it.label, data: { path: [...props.path, it.label] } });
     else push({ id: 'stub', title: it.label });
   });
@@ -54,7 +59,7 @@ function Stub(props: { title: string; register: (h: KeyHandler | null) => void }
 }
 
 export function Shell() {
-  const { company, currentDate, screens, setDate, setHint } = useApp();
+  const { company, currentDate, screens, setDate, setHint, extraButtons } = useApp();
   const router = useRef(new KeyRouter());
   const [handler, setHandler] = useState<KeyHandler | null>(null);
   const [dateOpen, setDateOpen] = useState(false);
@@ -94,8 +99,10 @@ export function Shell() {
       { key: 'F10', label: 'Other Vchrs' }, { key: 'F11', label: 'Features' }, { key: 'F12', label: 'Configure' },
     ];
     const own = handler?.buttons?.() ?? [];
-    return base.map((b) => own.find((o) => o.key === b.key) ?? b);
-  }, [handler]);
+    const merged = [...own, ...extraButtons];
+    const out = base.map((b) => merged.find((o) => o.key === b.key) ?? b);
+    return [...out, ...merged.filter((o) => !base.some((b) => b.key === o.key))];
+  }, [handler, extraButtons]);
 
   return (
     <div className="tally">
@@ -113,7 +120,9 @@ export function Shell() {
           </div>
         </div>
         <div className="centre">
-          {top.id === 'menu' ? <Menu path={(top.data?.path as string[]) ?? []} register={register} key={top.title} />
+          {top.id === 'masterList' ? <MasterList kind={top.data!.kind as any} mode={top.data!.mode as any} register={register} key={top.title} />
+            : top.id === 'masterForm' ? <MasterFormScreen kind={top.data!.kind as any} mode={top.data!.mode as any} name={top.data!.name as string} register={register} key={top.title + (top.data!.mode as string)} />
+            : top.id === 'menu' ? <Menu path={(top.data?.path as string[]) ?? []} register={register} key={top.title} />
             : top.id === 'stub' ? <Stub title={top.title} register={register} key={top.title} />
             : <Menu path={[]} register={register} key="gateway" />}
         </div>

@@ -70,6 +70,38 @@ export interface CostCentre {
   category: string;
 }
 
+export interface Currency {
+  /** ISO-like code, also the master name, e.g. BDT, USD */
+  name: string;
+  symbol: string;
+  /** BDT per 1 unit, scaled by 10000 (integer). Base currency = 10000. */
+  rate: number;
+}
+
+export interface Unit {
+  name: string;
+  decimals: number;
+}
+
+export interface StockGroup {
+  name: string;
+  parent: string | null; // null = Primary
+}
+
+export interface StockItem {
+  name: string;
+  group: string | null;
+  unit: string;
+  openingQty: number;
+  /** paisa per unit */
+  openingRate: Paisa;
+}
+
+export interface Godown {
+  name: string;
+  parent: string | null; // null = Primary location
+}
+
 export interface Company {
   name: string;
   fyStart: string; // ISO date
@@ -80,6 +112,11 @@ export interface Company {
   voucherTypes: VoucherType[];
   costCategories: string[];
   costCentres: CostCentre[];
+  currencies: Currency[];
+  units: Unit[];
+  stockGroups: StockGroup[];
+  stockItems: StockItem[];
+  godowns: Godown[];
   vouchers: Voucher[];
   nextId: number;
 }

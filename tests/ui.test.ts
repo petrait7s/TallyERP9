@@ -44,3 +44,29 @@ describe('dates', () => {
     expect(weekday('2025-04-01')).toBe('Tuesday');
   });
 });
+
+import { DEFS, formatOpening, parseOpening } from '../src/ui/screens/masterDefs';
+import { createCompany, createMaster, toPaisa } from '../src/engine';
+
+describe('master form defs', () => {
+  it('parses opening with Dr/Cr and default side', () => {
+    expect(parseOpening('85,000', 'Dr')).toBe(toPaisa(85000));
+    expect(parseOpening('2,00,000 cr', 'Dr')).toBe(-toPaisa(200000));
+    expect(parseOpening('', 'Cr')).toBe(0);
+    expect(parseOpening('10.5', 'Cr')).toBe(-1050);
+    expect(() => parseOpening('abc', 'Dr')).toThrow();
+    expect(formatOpening(-toPaisa(200000))).toBe('2,00,000.00 Cr');
+  });
+  it('ledger draft round-trip + default side from group nature', () => {
+    const c = createCompany('T', '2025-04-01', '2026-03-31');
+    const d = { ...DEFS.ledger.blank(c), name: 'Corpus', group: 'Corpus Fund', opening: '2,00,000' };
+    const obj: any = DEFS.ledger.fromDraft(c, d);
+    expect(obj.opening).toBe(-toPaisa(200000)); // liability group defaults to Cr
+    createMaster(c, 'ledger', obj);
+    expect(DEFS.ledger.toDraft(c, 'Corpus').opening).toBe('2,00,000.00 Cr');
+  });
+  it('currency rate scaling', () => {
+    const c = createCompany('T', '2025-04-01', '2026-03-31');
+    expect((DEFS.currency.fromDraft(c, { name: 'USD', symbol: '$', rate: '122.5' }) as any).rate).toBe(1225000);
+  });
+});
