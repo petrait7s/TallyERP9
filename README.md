@@ -7,7 +7,7 @@ A **Windows desktop practice simulator** that recreates the keyboard-driven work
 ![Gateway](docs/screenshots/01-gateway.png)
 
 ## Quick start (English)
-1. Download `TallyLearn-NGO-Setup-1.0.0.exe` (installer) or `TallyLearn-NGO-Portable-1.0.0.exe` from the GitHub **Releases** page. Builds are unsigned: Windows SmartScreen shows a warning on first run (*More info > Run anyway*).
+1. Download `TallyLearn-NGO-Setup-1.0.0.exe` (installer), `TallyLearn-NGO-Portable-1.0.0.exe`, or on Linux `TallyLearn-NGO-1.0.0.AppImage` (`chmod +x` then run) from the GitHub **Releases** page. Builds are unsigned: Windows SmartScreen shows a warning on first run (*More info > Run anyway*).
 2. Start the app. The first run creates three practice companies: **Sylhet Community Development Foundation** (about 600 vouchers), **Tea Garden Women Cooperative** (small) and **Blank NGO**.
 3. Open **Gateway > Learning Centre**, pick lesson **B1**, and follow the coach panel on the left. `Ctrl+H` hint, `Ctrl+K` show me, `Ctrl+L` English/Bangla, `Ctrl+J` collapse, `Ctrl+/` shortcuts & glossary.
 4. Everything works from the keyboard: `Enter` select/next, `Esc` back, `Ctrl+A` accept, `F4`-`F9` vouchers, `F11` features, `F12` configure, `Alt+F1` detailed view, `F2` period, `Alt+E` CSV, `Alt+P` print/PDF.
